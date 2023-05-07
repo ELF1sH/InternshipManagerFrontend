@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Sidebar from 'components/ui/organisms/sidebar/SidebarController';
+
+import AuthPage from 'pages/auth/AuthPageProvider';
+import VacanciesPage from 'pages/vacancies/VacanciesPageProvider';
+
+import { route } from 'utils/constants/route';
+
+import 'antd/dist/reset.css';
+
+const App: React.FC = () => (
+  <Routes>
+    <Route path={route.base} element={<AuthPage />} />
+    <Route
+      path="*"
+      element={(
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
+          <div style={{ padding: '20px 30px', flexGrow: 1 }}>
+            <Routes>
+              <Route path={route.vacancies} element={<VacanciesPage />} />
+              <Route path="*" element={<h1>NOT FOUND</h1>} />
+            </Routes>
+          </div>
+        </div>
+      )}
+    />
+  </Routes>
+);
 
 export default App;

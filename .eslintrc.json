@@ -1,0 +1,110 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "import",
+    "jsx-a11y",
+    "unused-imports",
+    "no-relative-import-paths"
+  ],
+  "rules": {
+    "no-use-before-define": "off",
+    "no-unused-vars": "off",
+    "class-methods-use-this": "off",
+    "no-shadow": "off",
+    "no-underscore-dangle": "off",
+    "no-nested-ternary": "off",
+    "no-template-curly-in-string": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+
+    "react/function-component-definition": "off",
+    "react/jsx-filename-extension": "off",
+    "react/require-default-props": "off",
+    "react/no-array-index-key": "off",
+    "react/prop-types": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/destructuring-assignment": "off",
+    "react/jsx-props-no-spreading": "off",
+
+    "no-relative-import-paths/no-relative-import-paths": [
+      "error",
+      { "allowSameFolder": false, "rootDir": "src", "prefix": "" }
+    ],
+
+    "unused-imports/no-unused-imports-ts": 1,
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "pathGroups": [
+          {
+            "pattern": "assets/**",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "components/**",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "domain/**",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "modules/**",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "pages/**",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "storesMobx/**",
+            "group": "index",
+            "position": "after"
+          },          {
+            "pattern": "utils/**",
+            "group": "index",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [],
+        "groups": [
+          "builtin",
+          ["external", "type"],
+          "unknown",
+          ["internal", "sibling", "parent"],
+          "index",
+          "object"
+        ]
+      }
+    ]
+  }
+}
