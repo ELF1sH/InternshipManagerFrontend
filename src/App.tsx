@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Sidebar from 'components/ui/organisms/sidebar/SidebarController';
 
@@ -17,6 +17,7 @@ const App: React.FC = () => (
     <div style={{ padding: '20px 30px', flexGrow: 1 }}>
       <AuthorityProvider>
         <Routes>
+          <Route path={route.base} element={<Navigate replace to={route.vacancies} />} />
           <Route path={route.vacancies} element={<VacanciesPage />} />
           <Route path="*" element={<h1>NOT FOUND</h1>} />
         </Routes>

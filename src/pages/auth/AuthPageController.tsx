@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { ILoginPayload } from 'domain/entities/auth';
+import { ILoginPayload } from 'domain/repositories/api/interfaces/IAuthRepository';
 
 import { AuthPageViewModel } from 'pages/auth/AuthPageViewModel';
 import AuthPageView from 'pages/auth/AuthPageView';

@@ -2,8 +2,8 @@ import {
   action, makeObservable, observable, runInAction,
 } from 'mobx';
 
+import { ILoginPayload } from 'domain/repositories/api/interfaces/IAuthRepository';
 import { LoginUseCase } from 'domain/useCases/auth/LoginUseCase';
-import { ILoginPayload } from 'domain/entities/auth';
 
 import { UserStore } from 'storesMobx/stores/UserStore';
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';

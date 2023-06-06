@@ -22,7 +22,7 @@ export abstract class APIUseCase<RequestPayloadType, ResponseType> {
   protected readonly successMessage: SuccessNotificationType = SuccessNotificationType
     .CHANGES_SUCCESSFULLY_SAVED;
 
-  protected constructor(params: ApiUseCaseConstructorParams<RequestPayloadType, ResponseType>) {
+  public constructor(params: ApiUseCaseConstructorParams<RequestPayloadType, ResponseType>) {
     this.requestCallback = params.requestCallback;
 
     this.notifyError = params.notifyError;
