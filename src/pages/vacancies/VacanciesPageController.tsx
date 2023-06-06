@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import WithLoader from 'components/ui/molecules/withLoader/WithLoader';
 
-import VacanciesPageView, { ClassesGridViewProps } from 'pages/vacancies/VacanciesPageView';
-import { VacanciesPageViewModel } from 'pages/vacancies/VacanciesPageViewModel';
+import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
+import VacanciesPageView from 'pages/vacancies/VacanciesPageView';
 
-const ClassesGridViewWithLoader = WithLoader<ClassesGridViewProps>(VacanciesPageView, true);
+const ClassesGridViewWithLoader = WithLoader(VacanciesPageView, true);
 
-interface ClassesGridControllerProps {
-  viewModel: VacanciesPageViewModel;
-}
+const VacanciesPageController: React.FC = () => {
+  const viewModel = useVacanciesPageViewModel();
 
-const VacanciesPageController: React.FC<ClassesGridControllerProps> = ({
-  viewModel,
-}) => (
-  <ClassesGridViewWithLoader
-    isLoading={false}
-  />
-);
+  useEffect(() => {
+    viewModel.initRequests();
+  }, []);
+
+  return (
+    <ClassesGridViewWithLoader
+      isLoading={viewModel.pageStatus.isLoading}
+      isFailed={viewModel.pageStatus.isFailed}
+    />
+  );
+};
 
 export default observer(VacanciesPageController);

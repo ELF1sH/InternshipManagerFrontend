@@ -1,9 +1,9 @@
 import { NavigateFunction } from 'react-router-dom';
 
 import { ApiUseCaseConstructorParams, FetchFunctionParams } from 'domain/useCases/common/types';
-import { ILoginPayload, ILoginResponse } from 'domain/entities/auth';
 import { APIUseCase } from 'domain/useCases/common/APIUseCase';
 import { ITokenRepository } from 'domain/repositories/other/interfaces/ITokenRepository';
+import { ILoginPayload, ILoginResponse } from 'domain/repositories/api/interfaces/IAuthRepository';
 
 import { ErrorNotificationType } from 'modules/notification/types';
 

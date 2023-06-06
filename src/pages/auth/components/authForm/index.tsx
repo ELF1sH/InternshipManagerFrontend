@@ -4,7 +4,7 @@ import { Form } from 'antd';
 import Input from 'components/ui/atoms/input/Input';
 import InputPassword from 'components/ui/atoms/input/InputPassword';
 
-import { ILoginPayload } from 'domain/entities/auth';
+import { ILoginPayload } from 'domain/repositories/api/interfaces/IAuthRepository';
 
 import { FormItem, LoginButton } from 'pages/auth/components/authForm/styled';
 

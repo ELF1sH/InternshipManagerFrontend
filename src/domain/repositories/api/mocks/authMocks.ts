@@ -1,4 +1,4 @@
-import { ILoginResponse } from 'domain/entities/auth';
+import { ILoginResponse } from 'domain/repositories/api/interfaces/IAuthRepository';
 import { mock } from 'domain/repositories/api/mocks/common';
 
 export const mockLogin = () => {
@@ -8,7 +8,7 @@ export const mockLogin = () => {
       const data = JSON.parse(config.data);
 
       if (data.username === 'admin' && data.password === 'admin') {
-        return [200, { accessToken: 'qwerty123456' } as ILoginResponse];
+        return [200, { accessToken: 'qwerty123456', refreshToken: 'qwerty123456' } as ILoginResponse];
       }
 
       return [400];
