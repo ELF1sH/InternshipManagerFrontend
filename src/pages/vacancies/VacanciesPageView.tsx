@@ -1,10 +1,6 @@
 import React from 'react';
 
-export interface ClassesGridViewProps {
-
-}
-
-const VacanciesPageView: React.FC<ClassesGridViewProps> = () => (
+const VacanciesPageView: React.FC = () => (
   <>
     Vacancies list
   </>

@@ -9,6 +9,7 @@ import ThemeProviderStyledComponents from 'theme/ThemeProviderStyledComponents';
 
 import { ModalProvider } from 'components/ui/organisms/modal/context/ModalProvider';
 
+import AuthenticationProvider from 'modules/authentication/AuthenticationProvider';
 import NotificationsProvider from 'modules/notification/NotificationsProvider';
 import ModalConfirmProvider from 'modules/confirmModal/ModalConfirmProvider';
 
@@ -19,21 +20,21 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <MobxStoreProvider>
-      <ThemeProviderAnt>
-        <ThemeProviderStyledComponents>
-          <NotificationsProvider>
-            <ModalConfirmProvider>
-              <ModalProvider>
-                <BrowserRouter>
+  <MobxStoreProvider>
+    <ThemeProviderAnt>
+      <ThemeProviderStyledComponents>
+        <NotificationsProvider>
+          <ModalConfirmProvider>
+            <ModalProvider>
+              <BrowserRouter>
+                <AuthenticationProvider>
                   <App />
-                </BrowserRouter>
-              </ModalProvider>
-            </ModalConfirmProvider>
-          </NotificationsProvider>
-        </ThemeProviderStyledComponents>
-      </ThemeProviderAnt>
-    </MobxStoreProvider>
-  </React.StrictMode>,
+                </AuthenticationProvider>
+              </BrowserRouter>
+            </ModalProvider>
+          </ModalConfirmProvider>
+        </NotificationsProvider>
+      </ThemeProviderStyledComponents>
+    </ThemeProviderAnt>
+  </MobxStoreProvider>,
 );

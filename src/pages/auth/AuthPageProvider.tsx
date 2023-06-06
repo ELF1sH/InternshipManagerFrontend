@@ -10,6 +10,8 @@ import { useNotifications } from 'modules/notification/useNotifications';
 import AuthFormController from 'pages/auth/AuthPageController';
 import { AuthPageViewModel } from 'pages/auth/AuthPageViewModel';
 
+import { useStore } from 'storesMobx/MobxStoreProvider';
+
 const AuthPageProvider: React.FC = () => {
   const navigate = useNavigate();
 
@@ -22,7 +24,9 @@ const AuthPageProvider: React.FC = () => {
     navigate,
   });
 
-  const viewModel = new AuthPageViewModel(loginUseCase);
+  const { userStore } = useStore();
+
+  const viewModel = new AuthPageViewModel(loginUseCase, userStore);
 
   return (
     <>

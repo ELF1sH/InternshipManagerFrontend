@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { VacanciesPageViewModel } from 'pages/vacancies/VacanciesPageViewModel';
+import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
+import { VacanciesPageViewModelContext } from 'pages/vacancies/viewModel/context';
 import ClassesGridController from 'pages/vacancies/VacanciesPageController';
 
 const VacanciesPageProvider: React.FC = () => {
-  const classesGridViewModel = new VacanciesPageViewModel();
+  const vacanciesPageViewModel = useMemo(() => new VacanciesPageViewModel(), []);
 
   return (
-    <ClassesGridController viewModel={classesGridViewModel} />
+    <VacanciesPageViewModelContext.Provider value={vacanciesPageViewModel}>
+      <ClassesGridController />
+    </VacanciesPageViewModelContext.Provider>
   );
 };
 
