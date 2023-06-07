@@ -19,7 +19,6 @@ const LinksContainer: React.FC<LinksContainerProps> = ({ isSidebarCollapsed }) =
           <SidebarItem
             text={link.text}
             isSidebarCollapsed={isSidebarCollapsed}
-            isActive={link.isActive}
             to={link.to}
             key={idx}
           >

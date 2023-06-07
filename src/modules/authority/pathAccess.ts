@@ -1,9 +1,10 @@
 import { UserRole } from 'modules/authority/enums/UserRole';
 
-import { AppRoute } from 'utils/constants/route';
+import { AppRoute, route } from 'utils/constants/route';
 
 export const pathAccess: Record<UserRole, AppRoute[]> = {
-  [UserRole.STUDENT]: ['/', '/vacancies', '/report-bug', '/about'],
+  [UserRole.STUDENT]: [route.base, route.reportBug, route.about,
+    route.profile, route.vacancies, route.internship, route.preferences, route.templates],
   [UserRole.COMPANY]: ['/', '/vacancies', '/report-bug', '/about'],
   [UserRole.UNIVERSITY_DEPARTMENT]: ['/', '/vacancies', '/report-bug', '/about'],
 };
