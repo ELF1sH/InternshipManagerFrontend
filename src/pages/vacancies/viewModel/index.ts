@@ -10,7 +10,7 @@ import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUse
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
 export class VacanciesPageViewModel {
-  @observable public pageStatus: LoadStatus = new LoadStatus(true);
+  @observable public pageStatus = new LoadStatus(true);
 
   private companiesList: ICompany[] = [];
 

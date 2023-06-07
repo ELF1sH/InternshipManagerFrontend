@@ -45,6 +45,7 @@
     "react/jsx-no-useless-fragment": "off",
     "react/destructuring-assignment": "off",
     "react/jsx-props-no-spreading": "off",
+    "react-hooks/exhaustive-deps": "off",
 
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
