@@ -47,12 +47,12 @@ export const useSidebarLinks = () => {
   return [
     ...links[role as UserRole],
     {
-      text: 'Report a bug',
+      text: 'Сообщить об ошибке',
       to: route.reportBug,
       icon: BugIcon,
     },
     {
-      text: 'About us',
+      text: 'О нас',
       to: route.about,
       icon: InfoIcon,
     },

@@ -7,7 +7,7 @@ import { IChildren } from 'utils/interfaces/IChildren';
 
 export const ModalVmContext = createContext<ModalViewModel>(new ModalViewModel());
 
-export const useModalVmContext = () => useContext(ModalVmContext);
+export const useModalViewModel = () => useContext(ModalVmContext);
 
 export const ModalProvider: React.FC<IChildren> = ({ children }) => {
   const vm = useMemo(() => new ModalViewModel(), []);
