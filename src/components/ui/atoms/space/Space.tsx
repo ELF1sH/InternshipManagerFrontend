@@ -7,6 +7,8 @@ interface SpaceProps {
   justifyContent?: 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly';
   alignItems?: 'start' | 'center' | 'end';
   gap?: number;
+  $wrap?: boolean;
+
   padding?: number;
   paddingX?: number;
   paddingY?: number;
@@ -22,6 +24,8 @@ const Space = styled.div<SpaceProps>`
     justifyContent,
     alignItems,
     gap,
+    $wrap,
+
     padding,
     paddingX,
     paddingY,
@@ -36,6 +40,7 @@ const Space = styled.div<SpaceProps>`
     justify-content: ${justifyContent};
     align-items: ${alignItems};
     gap: ${gap}px;
+    flex-wrap: ${$wrap ? 'wrap' : 'no-wrap'};
     
     padding: ${getPaddingValue(padding, paddingX, paddingY, paddingTop, paddingBottom, paddingLeft, paddingRight)};
     

@@ -7,11 +7,13 @@ import Text from 'components/ui/atoms/text/Text';
 interface ReportTemplateProps {
   title: string;
   turnInDate?: string;
+  description?: string;
 }
 
 const ReportTemplate: React.FC<ReportTemplateProps> = ({
   title,
   turnInDate,
+  description,
 }) => (
   <Card
     title={title}
@@ -19,16 +21,18 @@ const ReportTemplate: React.FC<ReportTemplateProps> = ({
       <DownloadOutlined key="download" />,
       <EyeOutlined key="inspect" />,
     ]}
+    style={{ maxWidth: '280px' }}
   >
     {
       turnInDate && (
-      <Text>
-        Дата сдачи:
-        &nbsp;
-        <Text strong>{turnInDate}</Text>
-      </Text>
+        <Text>
+          Дата сдачи:
+          &nbsp;
+          <Text strong>{turnInDate}</Text>
+        </Text>
       )
     }
+    {description}
   </Card>
 );
 
