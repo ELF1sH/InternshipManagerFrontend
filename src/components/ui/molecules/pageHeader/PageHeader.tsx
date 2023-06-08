@@ -34,13 +34,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <TitleWrapper>
       {
         prefixText && (
-        <PrefixTitle>
-          {`${prefixText}:`}
-&nbsp;
-        </PrefixTitle>
+          <PrefixTitle level={2}>
+            {`${prefixText}:`}
+            &nbsp;
+          </PrefixTitle>
         )
       }
       <TitleStyled
+        level={2}
         editable={titleEditable && {
           triggerType: ['text', 'icon'],
           onChange: onChangeTitle,
