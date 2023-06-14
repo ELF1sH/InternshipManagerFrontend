@@ -8,7 +8,7 @@ import SaveIcon from 'components/ui/atoms/icons/SaveIcon';
 import Scale from 'components/animations/scale/Scale';
 
 interface PageHeaderProps {
-  header: string;
+  header: React.ReactNode;
   prefixText?: string;
   titleEditable?: boolean;
   editable?: boolean;
