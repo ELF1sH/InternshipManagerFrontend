@@ -36,6 +36,11 @@ const links: Record<UserRole, SidebarLink[]> = {
       to: route.templates,
       icon: ClassesIcon,
     },
+    {
+      text: 'Студенты',
+      to: route.students,
+      icon: ClassesIcon,
+    },
   ],
   [UserRole.COMPANY]: [],
   [UserRole.UNIVERSITY_DEPARTMENT]: [],
