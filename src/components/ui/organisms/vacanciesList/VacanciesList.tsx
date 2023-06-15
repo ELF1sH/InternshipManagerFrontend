@@ -4,14 +4,13 @@ import Space from 'components/ui/atoms/space/Space';
 import Vacancy from 'components/ui/molecules/vacancy/Vacancy';
 import Company from 'components/ui/molecules/company/Company';
 
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
+import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
 
-const VacanciesList: React.FC = () => {
-  const { companiesWithVacancies } = useVacanciesPageViewModel();
-
-  return (
-    <>
-      {
+const VacanciesList: React.FC< {companiesWithVacancies: VacanciesPageViewModel['companiesWithVacancies']}> = (
+  { companiesWithVacancies },
+) => (
+  <>
+    {
         companiesWithVacancies.map(({
           name, minQuantity, maxQuantity, vacancies,
         }, idx) => (
@@ -31,8 +30,7 @@ const VacanciesList: React.FC = () => {
           </Space>
         ))
       }
-    </>
-  );
-};
+  </>
+);
 
 export default VacanciesList;
