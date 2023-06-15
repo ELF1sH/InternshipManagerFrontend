@@ -10,6 +10,7 @@ import TemplatesPage from 'pages/templates/TemplatesPageProvider';
 import VacanciesPage from 'pages/vacancies/VacanciesPageProvider';
 import PreferencesPage from 'pages/preferences/PreferencesPageProvider';
 import ProfilePage from 'pages/profile/ProfilePageProvider';
+import StudentsPage from 'pages/students/StudentsPageProvider';
 
 import { route } from 'utils/constants/route';
 
@@ -27,6 +28,7 @@ const App: React.FC = () => (
           <Route path={route.vacancies} element={<VacanciesPage />} />
           <Route path={route.preferences} element={<PreferencesPage />} />
           <Route path={route.templates} element={<TemplatesPage />} />
+          <Route path={route.students} element={<StudentsPage />} />
 
           <Route path="*" element={<h1>NOT FOUND</h1>} />
         </Routes>

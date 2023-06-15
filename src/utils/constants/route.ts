@@ -1,5 +1,5 @@
 export type AppRoute = '/' | '/report-bug' | '/about'
-  | '/profile' | '/vacancies' | '/internship' | '/preferences' | '/templates';
+  | '/profile' | '/vacancies' | '/internship' | '/preferences' | '/templates' | '/students';
 
 export const route: Record<string, AppRoute> = {
   base: '/',
@@ -11,4 +11,5 @@ export const route: Record<string, AppRoute> = {
   internship: '/internship',
   preferences: '/preferences',
   templates: '/templates',
+  students: '/students',
 };
