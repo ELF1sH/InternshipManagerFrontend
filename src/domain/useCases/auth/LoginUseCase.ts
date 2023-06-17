@@ -33,10 +33,10 @@ export class LoginUseCase extends APIUseCase<ILoginPayload, ILoginResponse> {
     super.fetch({
       ...params,
       onSuccess: (response) => {
-        const accessToken = response?.accessToken;
+        const authToken = response?.authToken;
 
-        if (accessToken) {
-          this.tokenRepository?.setAccessToken(accessToken);
+        if (authToken) {
+          this.tokenRepository?.setAccessToken(authToken);
 
           this.navigate('/vacancies');
         }

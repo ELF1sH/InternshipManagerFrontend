@@ -6,6 +6,7 @@ import { IVacancy } from 'domain/entities/vacancy';
 import { ICompany } from 'domain/entities/company';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUseCase';
+import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
@@ -19,6 +20,7 @@ export class VacanciesPageViewModel {
   public constructor(
     private _getCompanies: GetCompanyListUseCase,
     private _getVacancies: GetVacancyListUseCase,
+    private _addVacany: AddVacancyUseCase,
   ) {
     makeObservable(this);
   }
@@ -62,6 +64,12 @@ export class VacanciesPageViewModel {
 
   @action private getVacancies = () => this._getVacancies.fetch({
     payload: undefined,
+    onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
+    payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },
   });

@@ -1,6 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 import { mockPreferencesList } from 'domain/repositories/api/mocks/preferencesMocks';
+import { axiosInstance } from 'domain/repositories/api/axios';
 import {
   IGetPreferencesListResponse,
   IPreferencesRepository,
@@ -9,8 +10,8 @@ import {
 mockPreferencesList();
 
 export class PreferencesRepository implements IPreferencesRepository {
-  public getList = () => axios
-    .get('/preferences')
+  public getList = () => axiosInstance
+    .get('/api/v1/preferences')
     .then((response: AxiosResponse<IGetPreferencesListResponse>) => response.data);
 }
 
