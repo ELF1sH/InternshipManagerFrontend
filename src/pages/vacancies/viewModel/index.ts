@@ -21,6 +21,7 @@ export class VacanciesPageViewModel {
     private _getCompanies: GetCompanyListUseCase,
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
+    private _editVacany: AddVacancyUseCase,
   ) {
     makeObservable(this);
   }
@@ -69,6 +70,12 @@ export class VacanciesPageViewModel {
   });
 
   @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
+    payload,
+    onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public editVacancy = (payload: any) => this._addVacany.fetch({
     payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },

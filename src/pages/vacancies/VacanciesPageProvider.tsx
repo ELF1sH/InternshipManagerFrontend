@@ -5,6 +5,7 @@ import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUse
 import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
+import { EditVacancyUseCase } from 'domain/useCases/vacancy/EditVacancyUseCase';
 
 import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
 import { VacanciesPageViewModelContext } from 'pages/vacancies/viewModel/context';
@@ -23,12 +24,16 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.createVacancy,
   });
 
+  const editVacancyUseCase = new EditVacancyUseCase({
+    requestCallback: vacancyRepository.createVacancy,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getCompanyListUseCase,
       getVacancyListUseCase,
-
       addVacancyUseCase,
+      editVacancyUseCase,
     ),
     [],
   );
