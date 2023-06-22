@@ -6,6 +6,8 @@ import {
   UserAvatar, UserLink, UserLinksWrapper, UsernameLink, UserSection, UserSectionTextWrapper,
 } from 'components/ui/organisms/sidebar/components/userSection/styled';
 
+import { tokenRepository } from 'domain/repositories/other/TokenRepository';
+
 interface UserSectionViewProps {
   isSidebarCollapsed: boolean
 }
@@ -19,7 +21,14 @@ const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed })
         <UsernameLink>Иван Иванов</UsernameLink>
         <UserLinksWrapper>
           <UserLink>Settings</UserLink>
-          <UserLink>Log out</UserLink>
+          <UserLink
+            href="/"
+            onClick={() => {
+              tokenRepository.removeAccessToken();
+            }}
+          >
+            Log out
+          </UserLink>
         </UserLinksWrapper>
       </UserSectionTextWrapper>
     )}
