@@ -34,10 +34,11 @@ export class LoginUseCase extends APIUseCase<ILoginPayload, ILoginResponse> {
       ...params,
       onSuccess: (response) => {
         const authToken = response?.authToken;
+        const refreshToken = response?.refreshToken;
 
         if (authToken) {
           this.tokenRepository?.setAccessToken(authToken);
-
+          this.tokenRepository?.setRefreshToken(refreshToken);
           this.navigate('/vacancies');
         }
 

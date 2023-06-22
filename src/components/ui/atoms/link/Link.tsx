@@ -7,20 +7,22 @@ interface LinkProps {
   href?: string;
   to?: string;
   className?: string;
+  onClick?: () => void,
 }
 
 const Link: React.FC<LinkProps> = ({
   children,
   href,
   to,
+  onClick,
   className = '',
 }) => (
   to ? (
-    <StyledRouterLink to={to} className={className}>
+    <StyledRouterLink to={to} className={className} onClick={onClick}>
       {children}
     </StyledRouterLink>
   ) : (
-    <StyledLink href={href} className={className}>
+    <StyledLink href={href} className={className} onClick={onClick}>
       <div>
         {children}
       </div>

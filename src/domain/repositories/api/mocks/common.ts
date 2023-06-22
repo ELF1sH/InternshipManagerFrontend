@@ -1,5 +1,5 @@
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import { axiosInstance } from 'domain/repositories/api/axios';
-
-export const mock = new MockAdapter(axiosInstance, { delayResponse: 500 });
+const a = axios.create();
+export const mock = new MockAdapter(a, { delayResponse: 500 });
