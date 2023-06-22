@@ -4,17 +4,33 @@ import Space from 'components/ui/atoms/space/Space';
 import Vacancy from 'components/ui/molecules/vacancy/Vacancy';
 import Company from 'components/ui/molecules/company/Company';
 
-import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
+import { IVacancy } from 'domain/entities/vacancy';
 
-const VacanciesList: React.FC< {companiesWithVacancies: VacanciesPageViewModel['companiesWithVacancies']}> = (
-  { companiesWithVacancies },
-) => (
-  <>
-    {
+export interface VacanciesListProps {
+  companiesWithVacancies: CompanyWithVacancies[];
+}
+export interface CompanyWithVacancies {
+  id: number;
+  name: string;
+  minQuantity: number;
+  maxQuantity: number;
+  vacancies: GroupedVacancy[];
+}
+interface GroupedVacancy {
+  name: string;
+  vacancies: IVacancy[];
+}
+
+const VacanciesList: React.FC<VacanciesListProps> = ({ companiesWithVacancies }) => {
+  console.log(companiesWithVacancies);
+
+  return (
+    <>
+      {
         companiesWithVacancies.map(({
-          name, minQuantity, maxQuantity, vacancies,
-        }, idx) => (
-          <Space direction="vertical" key={idx} gap={10}>
+          id, name, minQuantity, maxQuantity, vacancies,
+        }) => (
+          <Space direction="vertical" key={id} gap={10}>
             <Company name={name} minQuantity={minQuantity} maxQuantity={maxQuantity} />
             <Space paddingLeft={40} direction="vertical">
               {
@@ -30,7 +46,8 @@ const VacanciesList: React.FC< {companiesWithVacancies: VacanciesPageViewModel['
           </Space>
         ))
       }
-  </>
-);
+    </>
+  );
+};
 
 export default VacanciesList;

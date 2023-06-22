@@ -34,30 +34,30 @@ const Vacancy: React.FC<VacancyProps> = ({
     </VacancyWrapper>
     <Space direction="vertical" paddingLeft={30}>
       {
-        stacks.map(({ techStack, minimumQuantity, maximumQuantity }, idx) => (
-          <StackWrapper key={idx} paddingLeft={25}>
-            <Space direction="vertical" style={{ flexGrow: 1 }}>
-              <Text>
-                Стэк технологий:
-                &nbsp;
-                <Text strong>{techStack}</Text>
-              </Text>
-              <Text>
-                Количество вакантных мест:
-                &nbsp;
-                <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
-              </Text>
-            </Space>
-            <Space justifyContent="end" alignItems="center">
-              <Tooltip title="Добавить в список предпочтений" placement="left">
-                <IconButton size="large" icon={<PlusCircleOutlined />} style={{ marginRight: '20px' }} />
-              </Tooltip>
-              <IconButton size="large" icon={<OfferIcon />} />
-              <IconButton size="large" icon={<AcceptedOffer />} />
-            </Space>
-          </StackWrapper>
-        ))
-      }
+          stacks.map(({ techStack, minimumQuantity, maximumQuantity }, idx) => (
+            <StackWrapper key={idx} paddingLeft={25}>
+              <Space direction="vertical" style={{ flexGrow: 1 }}>
+                <Text>
+                  Стэк технологий:
+                  &nbsp;
+                  <Text strong>{techStack}</Text>
+                </Text>
+                <Text>
+                  Количество вакантных мест:
+                  &nbsp;
+                  <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
+                </Text>
+              </Space>
+              <Space justifyContent="end" alignItems="center">
+                <Tooltip title="Добавить в список предпочтений" placement="left">
+                  <IconButton size="large" icon={<PlusCircleOutlined />} style={{ marginRight: '20px' }} />
+                </Tooltip>
+                <IconButton size="large" icon={<OfferIcon />} />
+                <IconButton size="large" icon={<AcceptedOffer />} />
+              </Space>
+            </StackWrapper>
+          ))
+        }
     </Space>
   </Space>
 );

@@ -6,6 +6,7 @@ export enum UserRole {
 
 export enum UserRoleBackend {
   UNVERIFIED_STUDENT = 'UNVERIFIED_STUDENT',
+  STUDENT = 'STUDENT',
   ADMIN = 'ADMIN',
   DEAN = 'DEAN',
   COMPANY = 'COMPANY',

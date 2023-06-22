@@ -1,7 +1,11 @@
 export interface IVacancy {
+  id: number;
   name: string;
   techStack: string;
   minimumQuantity: number;
   maximumQuantity: number;
-  companyId: number;
+  company: {
+    id: number;
+    name: string;
+  }
 }
