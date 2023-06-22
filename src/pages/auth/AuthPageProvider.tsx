@@ -17,14 +17,15 @@ const AuthPageProvider: React.FC = () => {
 
   const { notifyError } = useNotifications();
 
+  const { userStore } = useStore();
+
   const loginUseCase = new LoginUseCase({
     requestCallback: authRepository.login,
     notifyError,
     tokenRepository,
     navigate,
+    userStore,
   });
-
-  const { userStore } = useStore();
 
   const viewModel = new AuthPageViewModel(loginUseCase, userStore);
 
