@@ -7,7 +7,7 @@ import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalPr
 
 const Modal: React.FC = () => {
   const {
-    onOk, closeModal, isOpened, content, formTitle, style,
+    onOk, closeModal, isOpened, content, formTitle, style, footer,
   } = useModalViewModel();
 
   return (
@@ -17,6 +17,7 @@ const Modal: React.FC = () => {
       onOk={onOk}
       onCancel={closeModal}
       cancelButtonProps={{ id: CANCEL_BUTTON_ID }}
+      footer={footer}
       okText="Ок"
       cancelText="Отмена"
       style={style}

@@ -8,6 +8,6 @@ export interface ILoginPayload {
 }
 
 export interface ILoginResponse {
-  accessToken: string;
+  authToken: string;
   refreshToken: string;
 }

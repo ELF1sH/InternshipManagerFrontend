@@ -36,14 +36,41 @@ const links: Record<UserRole, SidebarLink[]> = {
       to: route.templates,
       icon: ClassesIcon,
     },
+  ],
+  [UserRole.COMPANY]: [
+    {
+      text: 'Вакансии',
+      to: route.vacancies,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Набор студентов',
+      to: route.students,
+      icon: ClassesIcon,
+    },
+  ],
+  [UserRole.UNIVERSITY_DEPARTMENT]: [
+    {
+      text: 'Профиль',
+      to: route.profile,
+      icon: ClassesIcon,
+    },
     {
       text: 'Студенты',
       to: route.students,
       icon: ClassesIcon,
     },
+    {
+      text: 'Компании и стажировки',
+      to: route.vacancies,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Шаблоны дневников практик',
+      to: route.templates,
+      icon: ClassesIcon,
+    },
   ],
-  [UserRole.COMPANY]: [],
-  [UserRole.UNIVERSITY_DEPARTMENT]: [],
 };
 
 export const useSidebarLinks = () => {

@@ -7,8 +7,12 @@ import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 
+import { UserRole } from 'modules/authority/enums/UserRole';
+
 import NewUserModal from 'pages/students/components/newUserModal.tsx/NewUserModal';
 import FilterForm from 'pages/students/components/filterForm/FilterForm';
+
+import { userStore } from 'storesMobx/stores/UserStore';
 
 const StudentsPageView: React.FC = () => {
   const columns = [
@@ -32,26 +36,36 @@ const StudentsPageView: React.FC = () => {
 
   const { openModal } = useModalViewModel();
 
+  const currentRole = userStore.role;
+  if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
+    return (
+      <>
+        <PageHeader header="Студенты">
+          <Button
+            type="text"
+            icon={<PlusIcon size={24} />}
+            onClick={() => openModal({
+              formTitle: 'Добавление студентов',
+              content: <NewUserModal />,
+            })}
+          >
+            Добавить вручную
+
+          </Button>
+
+        </PageHeader>
+        <Space direction="vertical" gap={20}>
+          <FilterForm />
+          <Table columns={columns} />
+        </Space>
+      </>
+    );
+  }
+
   return (
     <>
-      <PageHeader header="Студенты">
-        <Button
-          type="text"
-          icon={<PlusIcon size={24} />}
-          onClick={() => openModal({
-            formTitle: 'Добавление студентов',
-            content: <NewUserModal />,
-          })}
-        >
-          Добавить вручную
-
-        </Button>
-
-      </PageHeader>
-      <Space direction="vertical" gap={20}>
-        <FilterForm />
-        <Table columns={columns} />
-      </Space>
+      <PageHeader header="Набор студентов" />
+      <Space direction="vertical" gap={20} />
     </>
   );
 };

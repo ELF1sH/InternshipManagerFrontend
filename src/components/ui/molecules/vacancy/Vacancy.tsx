@@ -9,7 +9,7 @@ import Space from 'components/ui/atoms/space/Space';
 import Text from 'components/ui/atoms/text/Text';
 import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
 
-interface VacancyProps {
+export interface VacancyProps {
  name: string;
  stacks: Stack[];
 }
