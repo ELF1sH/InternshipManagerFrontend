@@ -7,8 +7,6 @@ import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 
-import { UserRole } from 'modules/authority/enums/UserRole';
-
 import NewUserModal from 'pages/students/components/newUserModal.tsx/NewUserModal';
 import FilterForm from 'pages/students/components/filterForm/FilterForm';
 
@@ -36,8 +34,8 @@ const StudentsPageView: React.FC = () => {
 
   const { openModal } = useModalViewModel();
 
-  const currentRole = userStore.role;
-  if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
+  const currentRole = userStore.profile?.role;
+  if (currentRole === 'DEAN') {
     return (
       <>
         <PageHeader header="Студенты">

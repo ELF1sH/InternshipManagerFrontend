@@ -7,8 +7,6 @@ import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Button from 'components/ui/atoms/button/Button';
 
-import { UserRole } from 'modules/authority/enums/UserRole';
-
 import { CompanyVacancy } from 'pages/vacancies/components/companyVacancy/CompanyVacancy';
 import { NewVacancyModal } from 'pages/vacancies/components/newVacancyModal/NewVacancyModal';
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
@@ -21,9 +19,9 @@ const VacanciesPageView: React.FC = () => {
   const { openModal } = useModalViewModel();
 
   const viewModel = useVacanciesPageViewModel();
-  const currentRole = userStore.role;
+  const currentRole = userStore.profile?.role;
 
-  if (currentRole === UserRole.COMPANY) {
+  if (currentRole === 'COMPANY') {
     return (
       <>
         <PageHeader header="Вакансии">
@@ -68,7 +66,7 @@ const VacanciesPageView: React.FC = () => {
       </>
     );
   }
-  if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
+  if (currentRole === 'DEAN') {
     return (
       <>
         <PageHeader header="Компании и стажировки" />

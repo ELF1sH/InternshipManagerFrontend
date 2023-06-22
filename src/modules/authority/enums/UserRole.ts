@@ -1,5 +1,1 @@
-export enum UserRole {
-  STUDENT = 0,
-  COMPANY = 1,
-  UNIVERSITY_DEPARTMENT = 2,
-}
+export type UserRole = 'UNVERIFIED_STUDENT' | 'STUDENT' |'DEAN' |'COMPANY' |'ADMIN'

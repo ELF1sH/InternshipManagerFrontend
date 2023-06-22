@@ -1,11 +1,17 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
-
-import { UserRole } from 'modules/authority/enums/UserRole';
+import { IProfileRespone } from 'domain/repositories/api/interfaces/IProfileRepository';
 
 export class UserStore {
-  @observable public role: UserRole = UserRole.COMPANY;
+  @observable public profile: IProfileRespone = {
+    id: '',
+    username: '',
+    firstname: '',
+    patronymic: '',
+    lastname: '',
+    role: 'UNVERIFIED_STUDENT',
+  };
 
   @observable public isAuthenticated: boolean = !!tokenRepository.getAccessToken();
 
@@ -15,6 +21,10 @@ export class UserStore {
 
   @action public onAuthenticateSuccess = () => {
     this.isAuthenticated = true;
+  };
+
+  @action public setCurrentProfile = (response: IProfileRespone) => {
+    this.profile = response;
   };
 }
 
