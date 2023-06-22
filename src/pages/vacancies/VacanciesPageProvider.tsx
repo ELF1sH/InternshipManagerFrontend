@@ -28,12 +28,22 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.createVacancy,
   });
 
+  const addToSelectionsUseCase = new EditVacancyUseCase({
+    requestCallback: vacancyRepository.addToSelections,
+  });
+
+  const getSelectionsUseCase = new EditVacancyUseCase({
+    requestCallback: vacancyRepository.getSelections,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getCompanyListUseCase,
       getVacancyListUseCase,
       addVacancyUseCase,
       editVacancyUseCase,
+      addToSelectionsUseCase,
+      getSelectionsUseCase,
     ),
     [],
   );

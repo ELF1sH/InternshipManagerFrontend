@@ -3,6 +3,6 @@ import { mock } from 'domain/repositories/api/mocks/common';
 
 export const mockPreferencesList = () => {
   mock
-    .onGet('/api/v1/preferences')
+    .onGet('/preferences')
     .reply(() => [200, preferencesList]);
 };

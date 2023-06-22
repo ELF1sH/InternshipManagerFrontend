@@ -11,7 +11,7 @@ mockPreferencesList();
 
 export class PreferencesRepository implements IPreferencesRepository {
   public getList = () => axiosInstance
-    .get('/api/v1/preferences')
+    .get('/preferences')
     .then((response: AxiosResponse<IGetPreferencesListResponse>) => response.data);
 }
 

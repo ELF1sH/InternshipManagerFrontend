@@ -25,7 +25,7 @@ export const CompanyVacancy: React.FC<VacancyProps & {onEditHandler: (val: any) 
     </VacancyWrapper>
     <Space direction="vertical" paddingLeft={30}>
       {
-        stacks.map(({ techStack, maximumQuantity, minimumQuantity }, idx) => (
+        stacks.map(({ techStack, maximumQuality: maximumQuantity, minimumQuality: minimumQuantity }, idx) => (
           <StackWrapper paddingLeft={25} key={idx}>
             <Space gap={10}>
               <Space direction="vertical" style={{ flexGrow: 1 }}>
