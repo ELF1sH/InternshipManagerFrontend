@@ -5,7 +5,7 @@ import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 import { UserRole } from 'modules/authority/enums/UserRole';
 
 export class UserStore {
-  @observable public role: UserRole = UserRole.STUDENT;
+  @observable public role: UserRole = UserRole.COMPANY;
 
   @observable public isAuthenticated: boolean = !!tokenRepository.getAccessToken();
 
