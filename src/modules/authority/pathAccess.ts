@@ -9,5 +9,5 @@ export const pathAccess: Record<UserRole, AppRoute[]> = {
   COMPANY: ['/', '/vacancies', '/report-bug', '/about', '/students'],
   DEAN: ['/', '/vacancies', '/report-bug', '/about', '/students', '/templates', '/profile'],
   UNVERIFIED_STUDENT: [],
-  ADMIN: [],
+  ADMIN: ['/', '/profile'],
 };

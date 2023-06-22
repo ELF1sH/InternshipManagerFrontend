@@ -8,17 +8,24 @@ import {
 
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 
+import { userStore } from 'storesMobx/stores/UserStore';
+
 interface UserSectionViewProps {
   isSidebarCollapsed: boolean
 }
 
-const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed }) => (
-  <UserSection isSidebarCollapsed={isSidebarCollapsed}>
-    <UserAvatar alt="User avatar" src={avatar} />
+const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed }) => {
+  const { profile } = userStore;
 
-    {!isSidebarCollapsed && (
+  return (
+    <UserSection isSidebarCollapsed={isSidebarCollapsed}>
+      <UserAvatar alt="User avatar" src={avatar} />
+
+      {!isSidebarCollapsed && (
       <UserSectionTextWrapper>
-        <UsernameLink>Иван Иванов</UsernameLink>
+        <UsernameLink>
+          {profile.username}
+        </UsernameLink>
         <UserLinksWrapper>
           <UserLink>Settings</UserLink>
           <UserLink
@@ -31,8 +38,9 @@ const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed })
           </UserLink>
         </UserLinksWrapper>
       </UserSectionTextWrapper>
-    )}
-  </UserSection>
-);
+      )}
+    </UserSection>
+  );
+};
 
 export default UserSectionView;

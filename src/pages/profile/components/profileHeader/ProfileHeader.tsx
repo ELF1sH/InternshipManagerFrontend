@@ -7,12 +7,17 @@ import {
   UniversityGroup,
 } from 'pages/profile/components/profileHeader/styled';
 
-const ProfileHeader: React.FC = () => (
-  <ProfileHeaderBg>
-    <ProfilePicture />
-    <StudentName level={2}>Иванов Иван Иванович</StudentName>
-    <UniversityGroup>9720Р, 972002</UniversityGroup>
-  </ProfileHeaderBg>
-);
+import { userStore } from 'storesMobx/stores/UserStore';
+
+const ProfileHeader: React.FC = () => {
+  const { profile } = userStore;
+  return (
+    <ProfileHeaderBg>
+      <ProfilePicture />
+      <StudentName level={2}>{profile.username}</StudentName>
+      <UniversityGroup>9720Р, 972002</UniversityGroup>
+    </ProfileHeaderBg>
+  );
+};
 
 export default ProfileHeader;

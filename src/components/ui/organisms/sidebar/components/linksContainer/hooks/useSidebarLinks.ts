@@ -72,7 +72,33 @@ const links: Record<UserRole, SidebarLink[]> = {
     },
   ],
   UNVERIFIED_STUDENT: [],
-  ADMIN: [],
+  ADMIN: [
+    {
+      text: 'Профиль',
+      to: route.profile,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Вакансии',
+      to: route.vacancies,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Получение стажировки',
+      to: route.internship,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Список предпочтений',
+      to: route.preferences,
+      icon: ClassesIcon,
+    },
+    {
+      text: 'Шаблоны дневников практик',
+      to: route.templates,
+      icon: ClassesIcon,
+    },
+  ],
 };
 
 export const useSidebarLinks = () => {
