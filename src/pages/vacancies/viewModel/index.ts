@@ -2,10 +2,11 @@ import {
   action, computed, makeObservable, observable,
 } from 'mobx';
 
-import { IVacancy } from 'domain/entities/vacancy';
+import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
+
 import { ICompany } from 'domain/entities/company';
+import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
-import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
@@ -14,24 +15,29 @@ import { userStore } from 'storesMobx/stores/UserStore';
 export class VacanciesPageViewModel {
   @observable public pageStatus = new LoadStatus(true);
 
-  private companiesList: ICompany[] = [];
-
   private vacanciesList: IVacancy[] = [];
 
   private selectionsList?: any[] = [];
 
+  private companiesList: ICompany[] = [];
+
   public constructor(
-    private _getCompanies: GetCompanyListUseCase,
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
     private _editVacany: AddVacancyUseCase,
     private _addToSelections: AddVacancyUseCase,
     private _getSelections: AddVacancyUseCase,
+    private _addVacancy: AddVacancyUseCase,
+    private _editVacancy: AddVacancyUseCase,
   ) {
     makeObservable(this);
   }
 
-  @computed public get companiesWithVacancies() {
+  @computed public get companiesWithVacancies(): CompanyWithVacancies[] {
+    const companies = this.vacanciesList.map((vacancy) => vacancy.company);
+    const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
+    this.companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
+
     return this.companiesList.map(({ id, name }) => {
       const vacancies = this.vacanciesList.filter((vac) => vac.company.id === id);
 
@@ -62,7 +68,7 @@ export class VacanciesPageViewModel {
   @action public initRequests = () => {
     const { profile } = userStore;
 
-    const required = [this.getCompanies(), this.getVacancies()];
+    const required = [this.getVacancies()];
     if (profile.role === 'STUDENT') {
       required.push(this.getSelections());
     }
@@ -71,12 +77,6 @@ export class VacanciesPageViewModel {
       .then(() => this.pageStatus.onEndRequest())
       .catch(() => this.pageStatus.onEndRequest(false));
   };
-
-  @action private getCompanies = () => this._getCompanies.fetch({
-    payload: undefined,
-    onSuccess: (companies) => { this.companiesList = companies; },
-    onError: () => { throw new Error(); },
-  });
 
   @action private getVacancies = () => this._getVacancies.fetch({
     payload: undefined,
@@ -90,13 +90,13 @@ export class VacanciesPageViewModel {
     onError: () => { throw new Error(); },
   });
 
-  @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
+  @action public addNewWacancy = (payload: any) => this._addVacancy.fetch({
     payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },
   });
 
-  @action public editVacancy = (payload: any) => this._addVacany.fetch({
+  @action public editVacancy = (payload: any) => this._editVacancy.fetch({
     payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },

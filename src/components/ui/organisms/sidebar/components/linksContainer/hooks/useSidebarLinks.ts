@@ -51,11 +51,6 @@ const links: Record<UserRole, SidebarLink[]> = {
   ],
   DEAN: [
     {
-      text: 'Профиль',
-      to: route.profile,
-      icon: ClassesIcon,
-    },
-    {
       text: 'Студенты',
       to: route.students,
       icon: ClassesIcon,

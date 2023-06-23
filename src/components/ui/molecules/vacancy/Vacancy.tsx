@@ -27,61 +27,41 @@ interface Stack {
 const Vacancy: React.FC<VacancyProps> = ({
   name,
   stacks,
-}) => {
-  const { addToSelections } = useVacanciesPageViewModel();
-  return (
-    <Space direction="vertical" gap={1}>
-      <VacancyWrapper paddingLeft={30} direction="vertical">
-        <Text>
-          Вакансия:
-          &nbsp;
-          <Text $primary strong>{name}</Text>
-        </Text>
-      </VacancyWrapper>
-      <Space direction="vertical" paddingLeft={30}>
-        {
-        stacks.map(({
-          techStack, minimumQuality: minimumQuantity,
-          maximumQuality: maximumQuantity,
-          id,
-          isSelected,
-        }, idx) => (
-          <StackWrapper key={idx} paddingLeft={25}>
-            <Space direction="vertical" style={{ flexGrow: 1 }}>
-              <Text>
-                Стэк технологий:
-                &nbsp;
-                <Text strong>{techStack}</Text>
-              </Text>
-              <Text>
-                Количество вакантных мест:
-                &nbsp;
-                <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
-              </Text>
-            </Space>
-            <Space justifyContent="end" alignItems="center">
-              {
-                isSelected ? <CheckCircleOutlined style={{ marginRight: '20px', color: 'green', fontSize: '20px' }} />
-                  : (
-                    <Tooltip title="Добавить в список предпочтений" placement="left">
-                      <IconButton
-                        size="large"
-                        icon={<PlusCircleOutlined />}
-                        style={{ marginRight: '20px' }}
-                        onClick={() => {
-                          addToSelections(id);
-                        }}
-                      />
-                    </Tooltip>
-                  )
-                  }
-              <IconButton size="large" icon={<OfferIcon />} />
-              <IconButton size="large" icon={<AcceptedOffer />} />
-            </Space>
-          </StackWrapper>
-        ))
-      }
-      </Space>
+}) => (
+  <Space direction="vertical" gap={1}>
+    <VacancyWrapper paddingLeft={30} direction="vertical">
+      <Text>
+        Вакансия:
+        &nbsp;
+        <Text $primary strong>{name}</Text>
+      </Text>
+    </VacancyWrapper>
+    <Space direction="vertical" paddingLeft={30}>
+      {
+          stacks.map(({ techStack, minimumQuantity, maximumQuantity }, idx) => (
+            <StackWrapper key={idx} paddingLeft={25}>
+              <Space direction="vertical" style={{ flexGrow: 1 }}>
+                <Text>
+                  Стэк технологий:
+                  &nbsp;
+                  <Text strong>{techStack}</Text>
+                </Text>
+                <Text>
+                  Количество вакантных мест:
+                  &nbsp;
+                  <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
+                </Text>
+              </Space>
+              <Space justifyContent="end" alignItems="center">
+                <Tooltip title="Добавить в список предпочтений" placement="left">
+                  <IconButton size="large" icon={<PlusCircleOutlined />} style={{ marginRight: '20px' }} />
+                </Tooltip>
+                <IconButton size="large" icon={<OfferIcon />} />
+                <IconButton size="large" icon={<AcceptedOffer />} />
+              </Space>
+            </StackWrapper>
+          ))
+        }
     </Space>
   );
 };
