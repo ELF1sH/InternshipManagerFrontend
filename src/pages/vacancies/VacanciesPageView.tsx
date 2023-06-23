@@ -9,6 +9,7 @@ import Button from 'components/ui/atoms/button/Button';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
+import { CompanyVacancy } from 'pages/vacancies/components/companyVacancy/CompanyVacancy';
 import { NewVacancyModal } from 'pages/vacancies/components/newVacancyModal/NewVacancyModal';
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
@@ -42,7 +43,7 @@ const VacanciesPageView: React.FC = () => {
 
         </PageHeader>
 
-        {/* <Space direction="vertical" gap={20}>
+        <Space direction="vertical" gap={20}>
           {
           companiesWithVacancies.filter((val) => val.name === userStore.profile.username)
             .map((val, idx) => (
@@ -58,7 +59,7 @@ const VacanciesPageView: React.FC = () => {
                   openModal({
                     formTitle: 'Редактирование компании',
                     content: <NewVacancyModal
-                      addOrEditVacancy={viewModel.editVacancy}
+                      addOrEditVacancy={() => {}}
                       defaultValues={{
                         ...val,
                         name: 'Frontend',
@@ -70,7 +71,7 @@ const VacanciesPageView: React.FC = () => {
               />
             ))
             }
-        </Space> */}
+        </Space>
 
       </>
     );

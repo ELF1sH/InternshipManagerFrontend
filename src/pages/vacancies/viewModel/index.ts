@@ -28,7 +28,6 @@ export class VacanciesPageViewModel {
     private _addVacany: AddVacancyUseCase,
     private _addToSelections: AddVacancyUseCase,
     private _getSelections: AddVacancyUseCase,
-    private _editVacancy: AddVacancyUseCase,
   ) {
     makeObservable(this);
   }
@@ -91,12 +90,6 @@ export class VacanciesPageViewModel {
   });
 
   @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
-    payload,
-    onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
-    onError: () => { throw new Error(); },
-  });
-
-  @action public editVacancy = (payload: any) => this._editVacancy.fetch({
     payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },

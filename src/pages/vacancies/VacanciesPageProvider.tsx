@@ -34,7 +34,6 @@ const VacanciesPageProvider: React.FC = () => {
     () => new VacanciesPageViewModel(
       getVacancyListUseCase,
       addVacancyUseCase,
-      editVacancyUseCase,
       addToSelectionsUseCase,
       getSelectionsUseCase,
     ),
