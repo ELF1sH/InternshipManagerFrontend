@@ -2,6 +2,7 @@ import React from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
+import InterviewIcon from 'components/ui/atoms/icons/InterviewIcon';
 import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { StackWrapper, VacancyWrapper } from 'components/ui/molecules/vacancy/styled';
@@ -48,10 +49,11 @@ const Vacancy: React.FC<VacancyProps> = ({
                   <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
                 </Text>
               </Space>
-              <Space justifyContent="end" alignItems="center">
+              <Space justifyContent="end" alignItems="center" gap={1}>
                 <Tooltip title="Добавить в список предпочтений" placement="left">
                   <IconButton size="large" icon={<PlusCircleOutlined />} style={{ marginRight: '20px' }} />
                 </Tooltip>
+                <IconButton size="large" icon={<InterviewIcon style={{ transform: 'scale(0.8)' }} />} />
                 <IconButton size="large" icon={<OfferIcon />} />
                 <IconButton size="large" icon={<AcceptedOffer />} />
               </Space>
