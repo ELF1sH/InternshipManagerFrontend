@@ -16,7 +16,11 @@ const DndFileUpload: React.FC = () => {
   };
 
   return (
-    <Dragger {...props} customRequest={({ onSuccess }) => onSuccess!('ok')}>
+    <Dragger
+      {...props}
+      customRequest={({ onSuccess }) => onSuccess!('ok')}
+      beforeUpload={() => false}
+    >
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

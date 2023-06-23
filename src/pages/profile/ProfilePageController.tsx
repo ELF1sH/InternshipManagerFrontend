@@ -9,11 +9,11 @@ import ProfilePageView from 'pages/profile/ProfilePageView';
 const ProfilePageViewWithLoader = WithLoader(ProfilePageView, true);
 
 const ProfilePageController: React.FC = () => {
-  const { pageStatus, getPreferences } = useProfilePageViewModel();
+  const { pageStatus, initRequests } = useProfilePageViewModel();
 
   useEffect(() => {
     (async () => {
-      await getPreferences();
+      await initRequests();
     })();
   }, []);
 
