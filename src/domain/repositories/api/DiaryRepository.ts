@@ -24,8 +24,6 @@ class DiaryRepository implements IDiaryRepository {
     // @ts-ignore
     formData.append('file', file);
 
-    console.log(file);
-
     return axiosInstance
       .post('/diaries', formData, {
         headers: {

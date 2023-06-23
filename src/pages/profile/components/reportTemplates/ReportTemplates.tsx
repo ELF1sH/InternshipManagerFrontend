@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Typography } from 'antd';
+import { observer } from 'mobx-react-lite';
 
 import Space from 'components/ui/atoms/space/Space';
 import ReportTemplate from 'components/ui/molecules/reportTemplate/ReportTemplate';
 
-import { IDiary } from 'domain/entities/diary';
-import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCase';
-import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
+import { useProfilePageViewModel } from 'pages/profile/viewModel/context';
 
 const { Title } = Typography;
 
 const ReportTemplates: React.FC = () => {
-  const [diaries, setDiaries] = useState<IDiary[]>([]);
-
-  const getDiariesUseCase = new GetDiariesListUseCase({
-    requestCallback: diaryRepository.getList,
-  });
-
-  useEffect(() => {
-    getDiariesUseCase.fetch({
-      payload: undefined,
-      onSuccess: (res) => setDiaries(res),
-    });
-  }, []);
+  const { diaries } = useProfilePageViewModel();
 
   return (
     <Space direction="vertical">
@@ -38,4 +26,4 @@ const ReportTemplates: React.FC = () => {
   );
 };
 
-export default ReportTemplates;
+export default observer(ReportTemplates);

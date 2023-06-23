@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCase';
+import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
 import { profilesRepository } from 'domain/repositories/api/interfaces/ProfilesRepository';
 import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 
@@ -12,8 +14,12 @@ const ProfilePageProvider: React.FC = () => {
     requestCallback: profilesRepository.getProfile,
   });
 
+  const getDiariesUseCase = new GetDiariesListUseCase({
+    requestCallback: diaryRepository.getList,
+  });
+
   const viewModel = useMemo(
-    () => new ProfilePageViewModel(getProfileUseCase),
+    () => new ProfilePageViewModel(getProfileUseCase, getDiariesUseCase),
     [],
   );
 
