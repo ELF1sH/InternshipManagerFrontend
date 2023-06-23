@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 
-import UploadReportModalContent from 'pages/profile/modals/content';
+import UploadReportModalContent from 'pages/profile/modals/uploadReport/content';
 
 export const useUploadReportModal = () => {
   const { openModal } = useModalViewModel();

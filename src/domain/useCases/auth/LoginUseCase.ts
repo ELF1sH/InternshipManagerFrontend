@@ -59,6 +59,9 @@ export class LoginUseCase extends APIUseCase<ILoginPayload, ILoginResponse> {
             case UserRoleBackend.UNVERIFIED_STUDENT:
               this.navigate('/profile');
               break;
+            case UserRoleBackend.STUDENT:
+              this.navigate('/profile');
+              break;
             case UserRoleBackend.COMPANY:
               this.navigate('/vacancies');
               break;
