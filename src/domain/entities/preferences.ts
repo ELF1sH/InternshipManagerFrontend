@@ -1,7 +1,8 @@
+import { IVacancy } from 'domain/entities/vacancy';
+
 export interface IPreferenceItem {
   id: number;
-  companyName: string;
-  vacancyName: string;
-  stack: string;
+  vacancy: IVacancy
+  studentId: string
   orderNumber: number;
 }
