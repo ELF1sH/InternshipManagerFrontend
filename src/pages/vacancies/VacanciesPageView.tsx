@@ -45,25 +45,19 @@ const VacanciesPageView: React.FC = () => {
 
         <Space direction="vertical" gap={20}>
           {
-          companiesWithVacancies.filter((val) => val.name === userStore.profile.username)
+          companiesWithVacancies[0].vacancies
             .map((val, idx) => (
               <CompanyVacancy
                 key={idx}
                 name={val.name}
-                stacks={[
-                  {
-                    techStack: 'React', minimumQuality: 1, maximumQuality: 2, id: 1,
-                  },
-                ]}
+                stacks={val.vacancies}
+                deleteVacancy={viewModel.deleteVacancy}
                 onEditHandler={(val) => {
                   openModal({
                     formTitle: 'Редактирование компании',
                     content: <NewVacancyModal
-                      addOrEditVacancy={() => {}}
-                      defaultValues={{
-                        ...val,
-                        name: 'Frontend',
-                      }}
+                      addOrEditVacancy={viewModel.editVacancy}
+                      defaultValues={val}
                     />,
                     footer: false,
                   });

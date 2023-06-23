@@ -19,7 +19,7 @@ const VacanciesPageProvider: React.FC = () => {
   });
 
   const editVacancyUseCase = new EditVacancyUseCase({
-    requestCallback: vacancyRepository.createVacancy,
+    requestCallback: vacancyRepository.editVacancy,
   });
 
   const addToSelectionsUseCase = new EditVacancyUseCase({
@@ -30,12 +30,18 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.getSelections,
   });
 
+  const deleteVacancyUseCase = new EditVacancyUseCase({
+    requestCallback: vacancyRepository.deleteVacancy,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getVacancyListUseCase,
       addVacancyUseCase,
       addToSelectionsUseCase,
       getSelectionsUseCase,
+      editVacancyUseCase,
+      deleteVacancyUseCase,
     ),
     [],
   );

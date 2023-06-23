@@ -8,26 +8,29 @@ import Text from 'components/ui/atoms/text/Text';
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { VacancyProps } from 'components/ui/molecules/vacancy/Vacancy';
 
-export const CompanyVacancy: React.FC<VacancyProps & {onEditHandler: (val: any) => void}> = ({
-  name,
-  stacks,
-  onEditHandler,
-}) => (
+export const CompanyVacancy: React.FC<VacancyProps &
+ {onEditHandler: (val: any) => void, deleteVacancy: (val: number) => void}> = ({
+   name,
+   stacks,
+   onEditHandler,
+   deleteVacancy,
+ }) => (
 
-  <Space direction="vertical" gap={10}>
+   <Space direction="vertical" gap={10}>
 
-    <VacancyWrapper paddingLeft={30} direction="vertical">
-      <Text>
-        Вакансия:
-        &nbsp;
-        <Text $primary strong>{name}</Text>
-      </Text>
-    </VacancyWrapper>
-    <Space direction="vertical" paddingLeft={30}>
-      {
+     <VacancyWrapper paddingLeft={30} direction="vertical">
+       <Text>
+         Вакансия:
+         &nbsp;
+         <Text $primary strong>{name}</Text>
+       </Text>
+     </VacancyWrapper>
+     <Space direction="vertical" paddingLeft={30}>
+       {
         stacks.map(({
           techStack, maximumQuality: maximumQuantity,
           minimumQuality: minimumQuantity,
+          id,
         }, idx) => (
           <StackWrapper paddingLeft={25} key={idx}>
             <Space gap={10}>
@@ -48,10 +51,18 @@ export const CompanyVacancy: React.FC<VacancyProps & {onEditHandler: (val: any) 
                   size="large"
                   icon={<EditFilled />}
                   onClick={() => onEditHandler({
-                    techStack, minimumQuantity, maximumQuantity,
+                    id,
+                    name,
+                    techStack,
+                    minimumQuantity,
+                    maximumQuantity,
                   })}
                 />
-                <IconButton size="large" icon={<DeleteFilled />} />
+                <IconButton
+                  size="large"
+                  icon={<DeleteFilled />}
+                  onClick={() => deleteVacancy(id)}
+                />
               </Space>
             </Space>
 
@@ -61,8 +72,8 @@ export const CompanyVacancy: React.FC<VacancyProps & {onEditHandler: (val: any) 
           </StackWrapper>
         ))
     }
-    </Space>
+     </Space>
 
-  </Space>
+   </Space>
 
-);
+ );

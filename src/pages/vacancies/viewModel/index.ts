@@ -8,6 +8,7 @@ import { ICompany } from 'domain/entities/company';
 import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
+import { EditVacancyUseCase } from 'domain/useCases/vacancy/EditVacancyUseCase';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
@@ -28,6 +29,8 @@ export class VacanciesPageViewModel {
     private _addVacany: AddVacancyUseCase,
     private _addToSelections: AddVacancyUseCase,
     private _getSelections: AddVacancyUseCase,
+    private _editVacany: EditVacancyUseCase,
+    private _deleteVacancy: EditVacancyUseCase,
   ) {
     makeObservable(this);
   }
@@ -91,7 +94,19 @@ export class VacanciesPageViewModel {
 
   @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
     payload,
-    onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
+    onSuccess: (vacancies) => { },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public editVacancy = (payload: any) => this._editVacany.fetch({
+    payload,
+    onSuccess: (vacancies) => { },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public deleteVacancy = (payload: any) => this._deleteVacancy.fetch({
+    payload,
+    onSuccess: (vacancies) => { },
     onError: () => { throw new Error(); },
   });
 

@@ -14,9 +14,9 @@ export const NewVacancyModal: React.FC<
   defaultValues?: any,
 }> = ({ addOrEditVacancy, defaultValues }) => {
   const addOrEditNewVacancy = (values: IVacancy) => {
-    addOrEditVacancy(values);
+    addOrEditVacancy({ ...values, id: defaultValues?.id || undefined });
   };
-
+  console.log(defaultValues);
   return (
 
     <Form onFinish={addOrEditNewVacancy} initialValues={defaultValues}>
@@ -38,10 +38,10 @@ export const NewVacancyModal: React.FC<
           на “рынке труда” для студентов.
         </Typography.Paragraph>
         <Space direction="horizontal" justifyContent="space-between">
-          <Form.Item name="minimumQuantity">
+          <Form.Item name="minimumQuality">
             <Input placeholder="Минимальное количество мест" />
           </Form.Item>
-          <Form.Item name="maximumQuantity">
+          <Form.Item name="maximumQuality">
             <Input placeholder="Максимальное количество мест" />
           </Form.Item>
         </Space>
