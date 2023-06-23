@@ -7,7 +7,8 @@ import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Button from 'components/ui/atoms/button/Button';
 
-import { CompanyVacancy } from 'pages/vacancies/components/companyVacancy/CompanyVacancy';
+import { UserRole } from 'modules/authority/enums/UserRole';
+
 import { NewVacancyModal } from 'pages/vacancies/components/newVacancyModal/NewVacancyModal';
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
@@ -19,9 +20,9 @@ const VacanciesPageView: React.FC = () => {
   const { openModal } = useModalViewModel();
 
   const viewModel = useVacanciesPageViewModel();
-  const currentRole = userStore.profile?.role;
+  const currentRole = userStore.profile.role;
 
-  if (currentRole === 'COMPANY') {
+  if (currentRole === UserRole.COMPANY) {
     return (
       <>
         <PageHeader header="Вакансии">
@@ -41,7 +42,7 @@ const VacanciesPageView: React.FC = () => {
 
         </PageHeader>
 
-        <Space direction="vertical" gap={20}>
+        {/* <Space direction="vertical" gap={20}>
           {
           companiesWithVacancies.filter((val) => val.name === userStore.profile.username)
             .map((val, idx) => (
@@ -69,12 +70,12 @@ const VacanciesPageView: React.FC = () => {
               />
             ))
             }
-        </Space>
+        </Space> */}
 
       </>
     );
   }
-  if (currentRole === 'DEAN') {
+  if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (
       <>
         <PageHeader header="Компании и стажировки" />

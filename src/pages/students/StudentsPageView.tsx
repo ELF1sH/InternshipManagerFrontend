@@ -9,6 +9,8 @@ import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalPr
 
 import { IStudent } from 'domain/entities/student';
 
+import { UserRole } from 'modules/authority/enums/UserRole';
+
 import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
 import NewUserModal from 'pages/students/components/newUserModal.tsx/NewUserModal';
 import FilterForm from 'pages/students/components/filterForm/FilterForm';
@@ -39,9 +41,9 @@ const StudentsPageView: React.FC = () => {
   const { studentsList, addStudentsList } = useStudentsPageViewModel();
   const [students, setStudents] = useState<IStudent[]>(studentsList);
 
-  const currentRole = userStore.profile?.role;
+  const currentRole = userStore.profile.role;
 
-  if (currentRole === 'DEAN') {
+  if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (
       <>
         <PageHeader header="Студенты">

@@ -7,7 +7,5 @@ export const pathAccess: Record<UserRole, AppRoute[]> = {
     route.profile, route.vacancies, route.internship, route.preferences,
     route.templates],
   COMPANY: ['/', '/vacancies', '/report-bug', '/about', '/students'],
-  DEAN: ['/', '/vacancies', '/report-bug', '/about', '/students', '/templates', '/profile'],
-  UNVERIFIED_STUDENT: [],
-  ADMIN: ['/', '/profile'],
+  UNIVERSITY_DEPARTMENT: ['/', '/vacancies', '/report-bug', '/about', '/students', '/templates', '/profile'],
 };

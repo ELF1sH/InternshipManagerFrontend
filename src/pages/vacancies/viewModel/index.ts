@@ -9,6 +9,8 @@ import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
 
+import { UserRole } from 'modules/authority/enums/UserRole';
+
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 import { userStore } from 'storesMobx/stores/UserStore';
 
@@ -24,10 +26,8 @@ export class VacanciesPageViewModel {
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
-    private _editVacany: AddVacancyUseCase,
     private _addToSelections: AddVacancyUseCase,
     private _getSelections: AddVacancyUseCase,
-    private _addVacancy: AddVacancyUseCase,
     private _editVacancy: AddVacancyUseCase,
   ) {
     makeObservable(this);
@@ -67,9 +67,9 @@ export class VacanciesPageViewModel {
 
   @action public initRequests = () => {
     const { profile } = userStore;
-
+    const { role } = profile;
     const required = [this.getVacancies()];
-    if (profile.role === 'STUDENT') {
+    if (role === UserRole.STUDENT) {
       required.push(this.getSelections());
     }
 
@@ -90,7 +90,7 @@ export class VacanciesPageViewModel {
     onError: () => { throw new Error(); },
   });
 
-  @action public addNewWacancy = (payload: any) => this._addVacancy.fetch({
+  @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
     payload,
     onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
     onError: () => { throw new Error(); },

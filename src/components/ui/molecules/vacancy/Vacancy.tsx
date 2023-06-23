@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
 import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
@@ -8,8 +8,6 @@ import { StackWrapper, VacancyWrapper } from 'components/ui/molecules/vacancy/st
 import Space from 'components/ui/atoms/space/Space';
 import Text from 'components/ui/atoms/text/Text';
 import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
-
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 
 export interface VacancyProps {
  name: string;
@@ -38,7 +36,7 @@ const Vacancy: React.FC<VacancyProps> = ({
     </VacancyWrapper>
     <Space direction="vertical" paddingLeft={30}>
       {
-          stacks.map(({ techStack, minimumQuantity, maximumQuantity }, idx) => (
+          stacks.map(({ techStack, minimumQuality, maximumQuality }, idx) => (
             <StackWrapper key={idx} paddingLeft={25}>
               <Space direction="vertical" style={{ flexGrow: 1 }}>
                 <Text>
@@ -49,7 +47,7 @@ const Vacancy: React.FC<VacancyProps> = ({
                 <Text>
                   Количество вакантных мест:
                   &nbsp;
-                  <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
+                  <Text strong>{`${minimumQuality}-${maximumQuality}`}</Text>
                 </Text>
               </Space>
               <Space justifyContent="end" alignItems="center">
@@ -63,7 +61,7 @@ const Vacancy: React.FC<VacancyProps> = ({
           ))
         }
     </Space>
-  );
-};
+  </Space>
+);
 
 export default Vacancy;

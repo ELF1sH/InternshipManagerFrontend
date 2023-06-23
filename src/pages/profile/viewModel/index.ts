@@ -24,7 +24,7 @@ export class ProfileViewModel {
 
   @action private getProfile = () => this._getProfile.fetch({
     payload: undefined,
-    onSuccess: (profile) => { userStore.setCurrentProfile(profile); },
+    onSuccess: (profile) => { userStore.setRole(profile.role); },
     onError: () => { throw new Error(); },
   });
 }
