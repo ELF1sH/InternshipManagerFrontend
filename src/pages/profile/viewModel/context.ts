@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
 
-import { ProfileViewModel } from 'pages/profile/viewModel';
+import { ProfilePageViewModel } from 'pages/profile/viewModel/index';
 
 export const ProfilePageViewModelContext = createContext<
-  ProfileViewModel | undefined
-  >(undefined);
+  ProfilePageViewModel | undefined
+>(undefined);
 
 export const useProfilePageViewModel = () => {
   const vm = useContext(ProfilePageViewModelContext);

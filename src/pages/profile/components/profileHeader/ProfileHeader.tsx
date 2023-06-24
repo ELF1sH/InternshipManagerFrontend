@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useProfilePageViewModel } from 'pages/profile/viewModel/context';
 import {
   ProfileHeaderBg,
   ProfilePicture,
@@ -7,15 +8,14 @@ import {
   UniversityGroup,
 } from 'pages/profile/components/profileHeader/styled';
 
-import { userStore } from 'storesMobx/stores/UserStore';
-
 const ProfileHeader: React.FC = () => {
-  const { profile } = userStore;
+  const { profile } = useProfilePageViewModel();
+
   return (
     <ProfileHeaderBg>
       <ProfilePicture />
-      <StudentName level={2}>{profile.username}</StudentName>
-      <UniversityGroup>9720Р, 972002</UniversityGroup>
+      <StudentName level={2}>{`${profile?.lastname} ${profile?.firstname} ${profile?.patronymic}`}</StudentName>
+      <UniversityGroup>{profile?.groupNumber}</UniversityGroup>
     </ProfileHeaderBg>
   );
 };

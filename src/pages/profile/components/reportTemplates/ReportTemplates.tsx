@@ -1,19 +1,29 @@
 import React from 'react';
 import { Typography } from 'antd';
+import { observer } from 'mobx-react-lite';
 
 import Space from 'components/ui/atoms/space/Space';
 import ReportTemplate from 'components/ui/molecules/reportTemplate/ReportTemplate';
 
+import { useProfilePageViewModel } from 'pages/profile/viewModel/context';
+
 const { Title } = Typography;
 
-const ReportTemplates: React.FC = () => (
-  <Space direction="vertical">
-    <Title level={3}>Сданные дневники практик</Title>
-    <Space gap={20}>
-      <ReportTemplate title="Дневник 1" turnInDate="02.03.2023" />
-      <ReportTemplate title="Дневник 2" turnInDate="02.03.2023" />
-    </Space>
-  </Space>
-);
+const ReportTemplates: React.FC = () => {
+  const { diaries } = useProfilePageViewModel();
 
-export default ReportTemplates;
+  return (
+    <Space direction="vertical">
+      <Title level={3}>Сданные дневники практик</Title>
+      <Space gap={20} $wrap>
+        {
+          diaries.map(({ id, filename, uploadDate }) => (
+            <ReportTemplate id={id} key={id} title={filename} turnInDate={uploadDate} />
+          ))
+        }
+      </Space>
+    </Space>
+  );
+};
+
+export default observer(ReportTemplates);
