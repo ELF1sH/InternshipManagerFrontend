@@ -1,5 +1,5 @@
 import {
-  action, makeObservable, observable,
+  action, makeObservable, observable, runInAction,
 } from 'mobx';
 
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
@@ -11,7 +11,7 @@ import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 export class StudentsPageViewModel {
   @observable public pageStatus = new LoadStatus(true);
 
-  public studentsList: IStudent[] = [];
+  @observable public studentsList: IStudent[] = [];
 
   public constructor(
     private _getStudents: GetStudentsListUseCase,
@@ -34,10 +34,16 @@ export class StudentsPageViewModel {
     onError: () => { throw new Error(); },
   });
 
+  @action public setStudents = (students: IStudent[]) => {
+    this.studentsList = students;
+  };
+
   @action public addStudentsList = (payload: any[]) => this._addStudentsList.fetch({
     payload,
     onSuccess: (students) => {
-      this.studentsList = [...this.studentsList, ...students];
+      runInAction(() => {
+        this.studentsList = [...this.studentsList, ...students];
+      });
     },
     onError: () => { throw new Error(); },
   });
