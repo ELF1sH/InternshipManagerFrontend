@@ -2,7 +2,6 @@ import React from 'react';
 import { Form } from 'antd';
 
 import Space from 'components/ui/atoms/space/Space';
-import Button from 'components/ui/atoms/button/Button';
 import Input from 'components/ui/atoms/input/Input';
 
 import { IStudent } from 'domain/entities/student';
@@ -11,14 +10,17 @@ const FilterForm: React.FC<{setStudents: (val: any) => void, students: IStudent[
   setStudents, students,
 }) => (
   <Form
-    onFieldsChange={(vals) => {
-      const name = vals[0]?.value || ' ';
-      const grp = vals[1]?.value || ' ';
+    onFieldsChange={(_, values) => {
+      const name = values[0]?.value || '';
+      const grp = values[1]?.value || '';
+
+      const targetName = name.toLowerCase().trim();
+      const targetGroup = grp.toLowerCase().trim();
 
       setStudents(
         students.filter((std) => `${std.firstname} ${std.lastname} ${std.patronymic}`.toLowerCase().trim()
-          .includes(name.toLowerCase().trim())
-        && std.groupNumber?.toLowerCase().trim().includes(grp.toLowerCase().trim())),
+          .includes(targetName)
+        && std.groupNumber?.toLowerCase().trim().includes(targetGroup)),
       );
     }}
   >
@@ -35,11 +37,6 @@ const FilterForm: React.FC<{setStudents: (val: any) => void, students: IStudent[
           />
         </Form.Item>
       </Space>
-      <div style={{ display: 'inline-flex', gap: 14 }}>
-        <Form.Item>
-          <Button>Поиск</Button>
-        </Form.Item>
-      </div>
     </Space>
   </Form>
 );

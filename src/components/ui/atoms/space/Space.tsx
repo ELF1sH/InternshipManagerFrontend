@@ -16,6 +16,10 @@ interface SpaceProps {
   paddingBottom?: number;
   paddingLeft?: number;
   paddingRight?: number;
+
+  growAllChildren?: boolean;
+  shrinkAllChildren?: boolean;
+  noShrink?: boolean;
 }
 
 const Space = styled.div<SpaceProps>`
@@ -33,6 +37,10 @@ const Space = styled.div<SpaceProps>`
     paddingBottom,
     paddingLeft,
     paddingRight,
+
+    growAllChildren = false,
+    shrinkAllChildren = false,
+    noShrink = false,
   }) => css`
     display: flex;
     width: 100%;
@@ -41,12 +49,30 @@ const Space = styled.div<SpaceProps>`
     align-items: ${alignItems};
     gap: ${gap}px;
     flex-wrap: ${$wrap ? 'wrap' : 'no-wrap'};
-    
+
     padding: ${getPaddingValue(padding, paddingX, paddingY, paddingTop, paddingBottom, paddingLeft, paddingRight)};
-    
+
     > * {
       margin-bottom: 0;
     }
+
+    ${growAllChildren && css`
+      > * {
+        flex-grow: 1;
+      }
+    `}
+
+    ${shrinkAllChildren && css`
+      > * {
+        flex-shrink: 1;
+      }
+    `}
+
+    ${noShrink && css`
+      > * {
+        flex-shrink: 0;
+      }
+    `}
   `}
 `;
 

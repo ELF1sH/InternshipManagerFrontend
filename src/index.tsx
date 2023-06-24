@@ -7,6 +7,7 @@ import 'antd/dist/reset.css';
 import ThemeProviderAnt from 'theme/ThemeProviderAnt';
 import ThemeProviderStyledComponents from 'theme/ThemeProviderStyledComponents';
 
+import EntityDrawerProvider from 'components/ui/organisms/entityDrawer/provider/EntityDrawerProvider';
 import { ModalProvider } from 'components/ui/organisms/modal/context/ModalProvider';
 
 import { setValidationErrors } from 'modules/form/setValidationErrors';
@@ -26,17 +27,19 @@ root.render(
   <MobxStoreProvider>
     <ThemeProviderAnt>
       <ThemeProviderStyledComponents>
-        <NotificationsProvider>
-          <ModalConfirmProvider>
-            <ModalProvider>
-              <BrowserRouter>
-                <AuthenticationProvider>
-                  <App />
-                </AuthenticationProvider>
-              </BrowserRouter>
-            </ModalProvider>
-          </ModalConfirmProvider>
-        </NotificationsProvider>
+        <EntityDrawerProvider>
+          <NotificationsProvider>
+            <ModalConfirmProvider>
+              <ModalProvider>
+                <BrowserRouter>
+                  <AuthenticationProvider>
+                    <App />
+                  </AuthenticationProvider>
+                </BrowserRouter>
+              </ModalProvider>
+            </ModalConfirmProvider>
+          </NotificationsProvider>
+        </EntityDrawerProvider>
       </ThemeProviderStyledComponents>
     </ThemeProviderAnt>
   </MobxStoreProvider>,

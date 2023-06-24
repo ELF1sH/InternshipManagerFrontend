@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
+import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Space from 'components/ui/atoms/space/Space';
 import Input from 'components/ui/atoms/input/Input';
 import Button from 'components/ui/atoms/button/Button';
@@ -13,6 +14,8 @@ import { generateRandomId } from 'utils/random';
 
 const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents }) => {
   const [students, setStudents] = useState<ColumnsType<IUser>>([]);
+
+  const { closeModal } = useModalViewModel();
 
   const setNewUser = (values: IUser) => {
     const userColumnType = {
@@ -75,17 +78,17 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
               </Button>
             </Space>
           </Form.Item>
+
+          <Table columns={columns} dataSource={students} />
+          <Button onClick={() => {
+            addStudents(students);
+            closeModal();
+          }}
+          >
+            Добавить
+          </Button>
         </Space>
       </Form>
-
-      <Table columns={columns} dataSource={students} />
-      <Button onClick={() => {
-        addStudents(students);
-      }}
-      >
-        add
-
-      </Button>
     </>
   );
 };

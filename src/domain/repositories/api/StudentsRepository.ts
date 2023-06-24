@@ -11,6 +11,10 @@ class StudentsRepository {
   public addStudentsList = (payload: any) => axiosInstance
     .post('/students/list', payload)
     .then((response: AxiosResponse<IStudent[]>) => response.data);
+
+  public getStudent = ({ id }: { id: number }) => axiosInstance
+    .get(`/students/${id}`)
+    .then((response: AxiosResponse<IStudent>) => response.data);
 }
 
 export const studentsRepository = new StudentsRepository();
