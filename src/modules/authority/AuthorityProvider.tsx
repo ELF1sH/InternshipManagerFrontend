@@ -12,9 +12,9 @@ import { IChildren } from 'utils/interfaces/IChildren';
 const AuthorityProvider: React.FC<IChildren> = ({ children }) => {
   const { pathname } = useLocation();
 
-  const { profile } = useStore().userStore;
+  const { role } = useStore().userStore;
 
-  if (pathAccess[profile?.role].includes(pathname as AppRoute)) return <>{children}</>;
+  if (pathAccess[role].includes(pathname as AppRoute)) return <>{children}</>;
   return <>NO ACCESS</>;
 };
 

@@ -3,21 +3,13 @@ import { action, makeObservable, observable } from 'mobx';
 import { default as jwtDecode } from 'jwt-decode';
 
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
-import { IProfile } from 'domain/repositories/api/interfaces/IProfileRepository';
 
 import { UserRole, UserRoleBackend } from 'modules/authority/enums/UserRole';
 
 import { IDecodedJWT } from 'utils/interfaces/IDecodedJWT';
 
 export class UserStore {
-  @observable public profile: IProfile = {
-    id: '',
-    username: '',
-    firstname: '',
-    patronymic: '',
-    lastname: '',
-    role: UserRole.COMPANY,
-  };
+  @observable public role: UserRole = UserRole.STUDENT;
 
   @observable public isAuthenticated: boolean = !!tokenRepository.getAccessToken();
 
@@ -39,25 +31,25 @@ export class UserStore {
   @action public setRole = (role: UserRoleBackend) => {
     switch (role) {
       case UserRoleBackend.ADMIN:
-        this.profile.role = UserRole.UNIVERSITY_DEPARTMENT;
+        this.role = UserRole.UNIVERSITY_DEPARTMENT;
         break;
       case UserRoleBackend.DEAN:
-        this.profile.role = UserRole.UNIVERSITY_DEPARTMENT;
+        this.role = UserRole.UNIVERSITY_DEPARTMENT;
         break;
 
       case UserRoleBackend.UNVERIFIED_STUDENT:
-        this.profile.role = UserRole.STUDENT;
+        this.role = UserRole.STUDENT;
         break;
       case UserRoleBackend.STUDENT:
-        this.profile.role = UserRole.STUDENT;
+        this.role = UserRole.STUDENT;
         break;
 
       case UserRoleBackend.COMPANY:
-        this.profile.role = UserRole.COMPANY;
+        this.role = UserRole.COMPANY;
         break;
 
       default:
-        this.profile.role = UserRole.STUDENT;
+        this.role = UserRole.STUDENT;
     }
   };
 }

@@ -21,7 +21,7 @@ const VacanciesPageView: React.FC = () => {
   const { openModal } = useModalViewModel();
 
   const viewModel = useVacanciesPageViewModel();
-  const currentRole = userStore.profile.role;
+  const currentRole = userStore.role;
 
   if (currentRole === UserRole.COMPANY) {
     return (

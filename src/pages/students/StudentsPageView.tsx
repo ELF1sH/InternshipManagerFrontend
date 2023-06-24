@@ -43,7 +43,7 @@ const StudentsPageView: React.FC = () => {
   const { studentsList, addStudentsList } = useStudentsPageViewModel();
   const [students, setStudents] = useState<IStudent[]>(studentsList);
 
-  const currentRole = userStore.profile.role;
+  const currentRole = userStore.role;
 
   if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (

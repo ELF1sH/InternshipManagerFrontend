@@ -68,8 +68,7 @@ export class VacanciesPageViewModel {
   }
 
   @action public initRequests = () => {
-    const { profile } = userStore;
-    const { role } = profile;
+    const { role } = userStore;
     const required = [this.getVacancies()];
     if (role === UserRole.STUDENT) {
       required.push(this.getSelections());

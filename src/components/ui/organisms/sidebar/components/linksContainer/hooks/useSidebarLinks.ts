@@ -69,10 +69,10 @@ const links: Record<UserRole, SidebarLink[]> = {
 };
 
 export const useSidebarLinks = () => {
-  const { profile } = useStore().userStore;
+  const { role } = useStore().userStore;
 
   return [
-    ...links[profile.role as UserRole],
+    ...links[role as UserRole],
     {
       text: 'Сообщить об ошибке',
       to: route.reportBug,
