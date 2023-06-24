@@ -9,6 +9,7 @@ import ThemeProviderStyledComponents from 'theme/ThemeProviderStyledComponents';
 
 import { ModalProvider } from 'components/ui/organisms/modal/context/ModalProvider';
 
+import { setValidationErrors } from 'modules/form/setValidationErrors';
 import AuthenticationProvider from 'modules/authentication/AuthenticationProvider';
 import NotificationsProvider from 'modules/notification/NotificationsProvider';
 import ModalConfirmProvider from 'modules/confirmModal/ModalConfirmProvider';
@@ -18,6 +19,8 @@ import { MobxStoreProvider } from 'storesMobx/MobxStoreProvider';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
+setValidationErrors();
 
 root.render(
   <MobxStoreProvider>

@@ -6,43 +6,40 @@ import InputPassword from 'components/ui/atoms/input/InputPassword';
 
 import { ILoginPayload } from 'domain/repositories/api/interfaces/IAuthRepository';
 
-import { FormItem, LoginButton } from 'pages/auth/components/authForm/styled';
+import { getYupSync } from 'modules/form/yupSync';
 
-import { FormErrors } from 'utils/form/useFormError';
+import { validationSchema } from 'pages/auth/components/authForm/constants/schema';
+import { FormItem, LoginButton } from 'pages/auth/components/authForm/styled';
 
 export interface AuthFormProps {
   isLoading: boolean;
   onSubmit: (data: ILoginPayload) => Promise<void>;
-  getValidateMessages: () => FormErrors;
 }
+
 const AuthForm: React.FC<AuthFormProps> = ({
   isLoading,
   onSubmit,
-  getValidateMessages,
-}) => (
-  <Form<ILoginPayload>
-    onFinish={onSubmit}
-    layout="vertical"
-    validateMessages={getValidateMessages()}
-  >
-    <FormItem
-      name="username"
-      rules={[{ required: true }]}
-    >
-      <Input placeholder="Username" size="large" />
-    </FormItem>
+}) => {
+  const yupSync = getYupSync(validationSchema());
 
-    <FormItem
-      name="password"
-      rules={[{ required: true }]}
+  return (
+    <Form<ILoginPayload>
+      onFinish={onSubmit}
+      layout="vertical"
     >
-      <InputPassword placeholder="Password" size="large" />
-    </FormItem>
+      <FormItem name="username" rules={[yupSync]}>
+        <Input placeholder="Username" size="large" />
+      </FormItem>
 
-    <LoginButton type="primary" htmlType="submit" loading={isLoading} size="large">
-      Login
-    </LoginButton>
-  </Form>
-);
+      <FormItem name="password" rules={[yupSync]}>
+        <InputPassword placeholder="Password" size="large" />
+      </FormItem>
+
+      <LoginButton type="primary" htmlType="submit" loading={isLoading} size="large">
+        Войти
+      </LoginButton>
+    </Form>
+  );
+};
 
 export default AuthForm;
