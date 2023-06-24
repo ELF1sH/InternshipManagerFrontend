@@ -8,6 +8,8 @@ import {
 
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 
+import { route } from 'utils/constants/route';
+
 interface UserSectionViewProps {
   isSidebarCollapsed: boolean
 }
@@ -22,14 +24,19 @@ const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed })
           Иванов Иван Иванович
         </UsernameLink>
         <UserLinksWrapper>
-          <UserLink>Settings</UserLink>
           <UserLink
-            href="/"
+            href={route.settings}
+          >
+            Настройки
+          </UserLink>
+
+          <UserLink
+            href={route.base}
             onClick={() => {
               tokenRepository.removeAccessToken();
             }}
           >
-            Log out
+            Выйти
           </UserLink>
         </UserLinksWrapper>
       </UserSectionTextWrapper>

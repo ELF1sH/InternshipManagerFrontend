@@ -6,6 +6,7 @@ import Sidebar from 'components/ui/organisms/sidebar/SidebarController';
 
 import AuthorityProvider from 'modules/authority/AuthorityProvider';
 
+import SettingsPage from 'pages/settings/SettingsPage';
 import TemplatesPage from 'pages/templates/TemplatesPageProvider';
 import VacanciesPage from 'pages/vacancies/VacanciesPageProvider';
 import PreferencesPage from 'pages/preferences/PreferencesPageProvider';
@@ -23,6 +24,7 @@ const App: React.FC = () => (
       <AuthorityProvider>
         <Routes>
           <Route path={route.base} element={<Navigate replace to={route.profile} />} />
+          <Route path={route.settings} element={<SettingsPage />} />
 
           <Route path={route.profile} element={<ProfilePage />} />
           <Route path={route.vacancies} element={<VacanciesPage />} />

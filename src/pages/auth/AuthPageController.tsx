@@ -6,15 +6,11 @@ import { ILoginPayload } from 'domain/repositories/api/interfaces/IAuthRepositor
 import { AuthPageViewModel } from 'pages/auth/AuthPageViewModel';
 import AuthPageView from 'pages/auth/AuthPageView';
 
-import { useFormError } from 'utils/form/useFormError';
-
 interface AuthFormControllerProps {
   viewModel: AuthPageViewModel;
 }
 
 const AuthPageController: React.FC<AuthFormControllerProps> = ({ viewModel }) => {
-  const { getValidateMessages } = useFormError();
-
   const onSubmit = async ({ username, password }: ILoginPayload) => {
     await viewModel.login(username, password);
   };
@@ -23,7 +19,6 @@ const AuthPageController: React.FC<AuthFormControllerProps> = ({ viewModel }) =>
     <AuthPageView
       isLoading={viewModel.pageStatus.isLoading}
       onSubmit={onSubmit}
-      getValidateMessages={getValidateMessages}
     />
   );
 };
