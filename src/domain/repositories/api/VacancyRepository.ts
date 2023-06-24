@@ -11,6 +11,21 @@ class VacancyRepository implements IVacancyRepository {
   public createVacancy = (payload: any) => axiosInstance
     .post('/vacancies', payload)
     .then((response: AxiosResponse<any>) => response.data);
+
+  public addToSelections = (payload: any) => axiosInstance
+    .post('/selections', { vacancyId: payload })
+    .then((response: AxiosResponse<any>) => response.data);
+
+  public getSelections = () => axiosInstance
+    .get('/selections')
+    .then((response: AxiosResponse<any>) => response.data);
+
+  public editVacancy = (payload: any) => axiosInstance
+    .patch('/vacancies', payload)
+    .then((response: AxiosResponse<any>) => response.data);
+
+  public deleteVacancy = (payload: any) => axiosInstance
+    .request({ url: `/vacancies/${payload}`, method: 'DELETE' });
 }
 
 export const vacancyRepository = new VacancyRepository();

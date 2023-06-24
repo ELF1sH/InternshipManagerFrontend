@@ -10,7 +10,7 @@ import { useStore } from 'storesMobx/MobxStoreProvider';
 import { route } from 'utils/constants/route';
 
 const links: Record<UserRole, SidebarLink[]> = {
-  [UserRole.STUDENT]: [
+  STUDENT: [
     {
       text: 'Профиль',
       to: route.profile,
@@ -37,7 +37,7 @@ const links: Record<UserRole, SidebarLink[]> = {
       icon: ClassesIcon,
     },
   ],
-  [UserRole.COMPANY]: [
+  COMPANY: [
     {
       text: 'Вакансии',
       to: route.vacancies,
@@ -49,7 +49,7 @@ const links: Record<UserRole, SidebarLink[]> = {
       icon: ClassesIcon,
     },
   ],
-  [UserRole.UNIVERSITY_DEPARTMENT]: [
+  UNIVERSITY_DEPARTMENT: [
     {
       text: 'Студенты',
       to: route.students,

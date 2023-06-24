@@ -11,15 +11,15 @@ import { IUser } from 'domain/entities/user';
 
 import { generateRandomId } from 'utils/random';
 
-const NewUserModal: React.FC = () => {
+const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents }) => {
   const [students, setStudents] = useState<ColumnsType<IUser>>([]);
 
-  const setNewUser = (values: IUser & {class: string, group: string}) => {
+  const setNewUser = (values: IUser) => {
     const userColumnType = {
       key: generateRandomId(),
-      student: `${values.lastname} ${values.firstname} ${values.patronymic}`,
-      class: values.class,
-      group: values.group,
+      ...values,
+      username: `${values.lastname} ${values.firstname} ${values.patronymic}`,
+      password: `${values.lastname} ${values.firstname} ${values.patronymic}`,
     };
 
     setStudents((current) => [...current, userColumnType]);
@@ -28,18 +28,13 @@ const NewUserModal: React.FC = () => {
   const columns = [
     {
       title: 'Студент',
-      dataIndex: 'student',
-      key: 'student',
-    },
-    {
-      title: 'Поток',
-      dataIndex: 'class',
-      key: 'class',
+      dataIndex: 'username',
+      key: 'username',
     },
     {
       title: 'Группа',
-      dataIndex: 'group',
-      key: 'group',
+      dataIndex: 'groupNumber',
+      key: 'groupNumber',
     },
     {
       key: 'action',
@@ -70,10 +65,7 @@ const NewUserModal: React.FC = () => {
           <Form.Item name="patronymic">
             <Input placeholder="Отчество" />
           </Form.Item>
-          <Form.Item name="class">
-            <Input placeholder="Поток" />
-          </Form.Item>
-          <Form.Item name="group">
+          <Form.Item name="groupNumber">
             <Input placeholder="Группа" />
           </Form.Item>
           <Form.Item>
@@ -82,13 +74,18 @@ const NewUserModal: React.FC = () => {
                 Добавить ещё
               </Button>
             </Space>
-
           </Form.Item>
-
         </Space>
       </Form>
 
       <Table columns={columns} dataSource={students} />
+      <Button onClick={() => {
+        addStudents(students);
+      }}
+      >
+        add
+
+      </Button>
     </>
   );
 };

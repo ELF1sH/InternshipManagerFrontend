@@ -1,11 +1,10 @@
+import { ICompany } from 'domain/entities/company';
+
 export interface IVacancy {
-  id: number;
+  id: number
+  company: ICompany
   name: string;
   techStack: string;
-  minimumQuantity: number;
-  maximumQuantity: number;
-  company: {
-    id: number;
-    name: string;
-  }
+  minimumQuality: number;
+  maximumQuality: number;
 }

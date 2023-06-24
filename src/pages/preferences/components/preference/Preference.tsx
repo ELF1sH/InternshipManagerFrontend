@@ -31,13 +31,13 @@ const Preference: React.FC<PreferenceProps> = ({
         {preference.orderNumber}
         .
         &nbsp;
-        {preference.companyName}
+        {preference.vacancy.company.name}
         :
         &nbsp;
-        {preference.vacancyName}
+        {preference.vacancy.name}
         &nbsp;
         (
-        {preference.stack}
+        {preference.vacancy.techStack}
         )
       </Text>
       <IconButton icon={<DragIcon />} {...draggableProps} />

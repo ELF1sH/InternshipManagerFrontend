@@ -18,7 +18,9 @@ const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed })
 
     {!isSidebarCollapsed && (
       <UserSectionTextWrapper>
-        <UsernameLink>Иван Иванов</UsernameLink>
+        <UsernameLink>
+          Иванов Иван Иванович
+        </UsernameLink>
         <UserLinksWrapper>
           <UserLink>Settings</UserLink>
           <UserLink

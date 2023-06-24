@@ -13,7 +13,7 @@ const VacanciesPageController: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      await viewModel.getVacancies();
+      await viewModel.initRequests();
     })();
   }, []);
 
