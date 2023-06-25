@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import Space from 'components/ui/atoms/space/Space';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
-import VacanciesList from 'components/ui/organisms/vacanciesList/VacanciesList';
+import VacanciesList, { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Button from 'components/ui/atoms/button/Button';
@@ -18,13 +18,34 @@ import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
 import { userStore } from 'storesMobx/stores/UserStore';
 
 const VacanciesPageView: React.FC = () => {
-  const { companiesWithVacancies } = useVacanciesPageViewModel();
+  const {
+    companiesWithVacancies,
+    vacancySearchString,
+    companySearchString,
+  } = useVacanciesPageViewModel();
   const { openModal } = useModalViewModel();
 
   const viewModel = useVacanciesPageViewModel();
   const currentRole = userStore.role;
+  const [filtredCompanies, setFiltredCompanies] = useState<
+  CompanyWithVacancies[]
+  >(companiesWithVacancies);
 
-  console.log(companiesWithVacancies);
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setFiltredCompanies(filtredCompanies);
+    }, 400);
+
+    let filtredCompanies = companiesWithVacancies
+      .filter((val) => val.name.toLowerCase().trim().includes(companySearchString));
+
+    filtredCompanies = filtredCompanies.map((val) => ({
+      ...val,
+      vacancies: val.vacancies.filter((vac) => vac.name.toLowerCase()
+        .trim().includes(vacancySearchString)),
+    }));
+    return (() => clearTimeout(timeOut));
+  }, [vacancySearchString, companySearchString]);
 
   if (currentRole === UserRole.COMPANY) {
     return (
@@ -80,7 +101,7 @@ const VacanciesPageView: React.FC = () => {
         <PageHeader header="Компании и стажировки" />
         <Space direction="vertical" gap={20}>
           <FilterForm />
-          <VacanciesList companiesWithVacancies={companiesWithVacancies} />
+          <VacanciesList companiesWithVacancies={filtredCompanies} />
         </Space>
       </>
     );
