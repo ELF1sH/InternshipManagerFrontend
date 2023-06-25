@@ -5,7 +5,7 @@ import { axiosInstance } from 'domain/repositories/api/axios';
 import {
   IDeletePreferencePayload,
   IGetPreferencesListResponse,
-  IPatchPreferencePayload,
+  IPatchPreferencePayload, IPostPreferencePayload,
   IPreferencesRepository,
 } from 'domain/repositories/api/interfaces/IPreferencesRepository';
 
@@ -14,8 +14,12 @@ export class PreferencesRepository implements IPreferencesRepository {
     .get('/preferences')
     .then((response: AxiosResponse<IGetPreferencesListResponse>) => response.data);
 
+  public post = (payload: IPostPreferencePayload) => axiosInstance
+    .post('/preferences', { ...payload })
+    .then((response: AxiosResponse) => response.data);
+
   public patch = (payload: IPatchPreferencePayload) => axiosInstance
-    .patch('/preferences')
+    .patch('/preferences', payload)
     .then((response: AxiosResponse<IPreferenceItem>) => response.data);
 
   public delete = ({ id }: IDeletePreferencePayload) => axiosInstance

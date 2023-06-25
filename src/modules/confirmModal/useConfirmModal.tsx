@@ -6,10 +6,15 @@ import { ModalConfirmContext } from 'modules/confirmModal/ModalConfirmProvider';
 interface UseConfirmProps {
   title: string;
   cbOnOk: Function;
+  cbOnCancel?: Function;
   content?: string;
+  okText?: string;
+  cancelText?: string;
 }
 
-export const useConfirmModal = ({ title, cbOnOk, content }: UseConfirmProps) => {
+export const useConfirmModal = ({
+  title, cbOnOk, cbOnCancel, content, okText, cancelText,
+}: UseConfirmProps) => {
   const api = useContext(ModalConfirmContext);
 
   const showConfirm = () => {
@@ -20,6 +25,19 @@ export const useConfirmModal = ({ title, cbOnOk, content }: UseConfirmProps) => 
       onOk() {
         cbOnOk();
       },
+      onCancel(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        // @ts-ignore
+        e?.();
+
+        if (e.toString() !== '() => {}') {
+          cbOnCancel?.();
+        }
+      },
+      keyboard: false,
+      cancelButtonProps: { id: 'cancelButton' },
+      okText,
+      cancelText,
+      maskClosable: true,
     });
   };
 

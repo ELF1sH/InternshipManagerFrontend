@@ -1,5 +1,5 @@
 import {
-  action, computed, makeObservable, observable, runInAction, toJS,
+  action, computed, makeObservable, observable, runInAction,
 } from 'mobx';
 
 import { PatchPreferencesListUseCase } from 'domain/useCases/preferences/PatchPreferencesListUseCase';
@@ -38,8 +38,10 @@ export class PreferencesPageViewModel {
     payload: undefined,
     onSuccess: (preferences) => {
       runInAction(() => {
-        this._preferencesList = preferences;
-        this.preferencesListEdited = preferences;
+        const sortedPreferences = preferences.sort((a, b) => a.orderNumber - b.orderNumber);
+
+        this._preferencesList = sortedPreferences;
+        this.preferencesListEdited = sortedPreferences;
         this.pageStatus.onEndRequest();
       });
     },
@@ -57,39 +59,28 @@ export class PreferencesPageViewModel {
   };
 
   public onSaveChanges = async () => {
-    console.log(toJS(this._preferencesList));
-    console.log(toJS(this.preferencesListEdited));
-
     const deletedPreferencesIds = this._preferencesList
       .filter((pref) => (
         !this.preferencesListEdited.find((prefEdited) => pref.id === prefEdited.id)
       ))
       .map((x) => x.id);
 
-    console.log(deletedPreferencesIds);
+    const promisesToDelete = deletedPreferencesIds.map((id) => (
+      this._deletePreference.fetch({ payload: { id } })
+    ));
 
-    deletedPreferencesIds.forEach((id) => {
-      (async () => {
-        await this._deletePreference.fetch({ payload: { id } });
-      })();
+    const promisesToPatch = this.preferencesListEdited.map((pref, idx) => (
+      this._patchPreference.fetch({
+        payload: {
+          id: pref.id,
+          vacancyId: pref.vacancy.id,
+          orderNumber: idx,
+        },
+      })
+    ));
+
+    Promise.all([...promisesToDelete, ...promisesToPatch]).then(() => {
+      this.getPreferences();
     });
-
-    this.preferencesListEdited.forEach((pref, idx) => {
-      const initialPref = this._preferencesList.find((initPref) => initPref.id === pref.id)!;
-
-      if (initialPref.orderNumber === idx + 1) return;
-
-      (async () => {
-        await this._patchPreference.fetch({
-          payload: {
-            id: pref.id,
-            vacancyId: pref.vacancy.id,
-            orderNumber: idx + 1,
-          },
-        });
-      })();
-    });
-
-    await this.getPreferences();
   };
 }
