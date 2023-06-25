@@ -13,8 +13,7 @@ export const useUploadReportModal = () => {
   const handleOpenModal = () => {
     openModal({
       formTitle: 'Сдать дневник практики',
-      content: <UploadReportModalContent />,
-      cbOnComplete: () => initRequests(),
+      content: <UploadReportModalContent initRequests={initRequests} />,
     });
   };
 

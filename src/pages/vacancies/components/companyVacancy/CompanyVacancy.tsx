@@ -9,32 +9,31 @@ import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { VacancyProps } from 'components/ui/molecules/vacancy/Vacancy';
 
 export const CompanyVacancy: React.FC<VacancyProps &
- {onEditHandler: (val: any) => void, deleteVacancy: (val: number) => void}> = ({
-   name,
-   stacks,
-   onEditHandler,
-   deleteVacancy,
- }) => (
+{onEditHandler: (val: any) => void, deleteVacancy: (val: number) => void}> = ({
+  name,
+  stacks,
+  onEditHandler,
+  deleteVacancy,
+}) => (
+  <Space direction="vertical" gap={10}>
+    <VacancyWrapper paddingLeft={30} direction="vertical">
+      <Text>
+        Вакансия:
+        &nbsp;
+        <Text $primary strong>{name}</Text>
+      </Text>
+    </VacancyWrapper>
 
-   <Space direction="vertical" gap={10}>
-
-     <VacancyWrapper paddingLeft={30} direction="vertical">
-       <Text>
-         Вакансия:
-         &nbsp;
-         <Text $primary strong>{name}</Text>
-       </Text>
-     </VacancyWrapper>
-     <Space direction="vertical" paddingLeft={30}>
-       {
+    <Space direction="vertical" paddingLeft={30} gap={5}>
+      {
         stacks.map(({
           techStack, maximumQuantity,
           minimumQuantity,
           id,
         }, idx) => (
-          <StackWrapper paddingLeft={25} key={idx}>
+          <StackWrapper paddingLeft={25} key={idx} gap={30}>
             <Space gap={10}>
-              <Space direction="vertical" style={{ flexGrow: 1 }}>
+              <Space direction="vertical">
                 <Text>
                   Стэк технологий:
                   &nbsp;
@@ -46,7 +45,7 @@ export const CompanyVacancy: React.FC<VacancyProps &
                   <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
                 </Text>
               </Space>
-              <Space justifyContent="start" alignItems="start">
+              <Space justifyContent="start" alignItems="center" style={{ width: 'fit-content' }}>
                 <IconButton
                   size="large"
                   icon={<EditFilled />}
@@ -66,14 +65,12 @@ export const CompanyVacancy: React.FC<VacancyProps &
               </Space>
             </Space>
 
-            <Space justifyContent="end" alignItems="center">
+            <Space alignItems="center" style={{ width: 'fit-content' }}>
               <Button type="primary" size="small" danger>Прекратить набор</Button>
             </Space>
           </StackWrapper>
         ))
-    }
-     </Space>
-
-   </Space>
-
- );
+      }
+    </Space>
+  </Space>
+);
