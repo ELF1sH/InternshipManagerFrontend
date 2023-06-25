@@ -8,6 +8,9 @@ import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
 import { EditVacancyUseCase } from 'domain/useCases/vacancy/EditVacancyUseCase';
+import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCase';
+import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
+import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
 
 import { useNotifications } from 'modules/notification/useNotifications';
 
@@ -30,16 +33,16 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.editVacancy,
   });
 
-  const addToSelectionsUseCase = new EditVacancyUseCase({
+  const addToSelectionsUseCase = new AddToSelectionsUseCase({
     requestCallback: vacancyRepository.addToSelections,
   });
 
-  const getSelectionsUseCase = new EditVacancyUseCase({
-    requestCallback: vacancyRepository.getSelections,
+  const deleteVacancyUseCase = new DeleteVacancyUseCase({
+    requestCallback: vacancyRepository.deleteVacancy,
   });
 
-  const deleteVacancyUseCase = new EditVacancyUseCase({
-    requestCallback: vacancyRepository.deleteVacancy,
+  const getSelectionsUseCase = new GetSelectionsUseCase({
+    requestCallback: vacancyRepository.getSelectionsList,
   });
 
   const getPreferencesUseCase = new GetPreferencesListUseCase({

@@ -13,6 +13,10 @@ import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
 import { EditVacancyUseCase } from 'domain/useCases/vacancy/EditVacancyUseCase';
+import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCase';
+import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
+import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
+import { ICreateOrEditVacancyPayload } from 'domain/repositories/api/interfaces/IVacancyRepository';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
@@ -31,10 +35,10 @@ export class VacanciesPageViewModel {
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
-    private _addToSelections: AddVacancyUseCase,
-    private _getSelections: AddVacancyUseCase,
+    private _addToSelections: AddToSelectionsUseCase,
+    private _getSelections: GetSelectionsUseCase,
     private _editVacany: EditVacancyUseCase,
-    private _deleteVacancy: EditVacancyUseCase,
+    private _deleteVacancy: DeleteVacancyUseCase,
     private _getPreferences: GetPreferencesListUseCase,
     private _postPreference: PostPreferenceUseCase,
     private _patchSelection: PatchSelectionUseCase,
@@ -119,23 +123,28 @@ export class VacanciesPageViewModel {
 
   @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
     payload,
-    onSuccess: (vacancies) => { },
+    onSuccess: (newVacancy) => { this.vacanciesList.push(newVacancy); },
     onError: () => { throw new Error(); },
   });
 
-  @action public editVacancy = (payload: any) => this._editVacany.fetch({
+  @action public editVacancy = (payload: ICreateOrEditVacancyPayload) => this._editVacany.fetch({
     payload,
-    onSuccess: (vacancies) => { },
+    onSuccess: (editedVacancy) => {
+      const index = this.vacanciesList.findIndex((vacancy) => vacancy.id === editedVacancy.id);
+      this.vacanciesList[index] = editedVacancy;
+    },
     onError: () => { throw new Error(); },
   });
 
-  @action public deleteVacancy = (payload: any) => this._deleteVacancy.fetch({
+  @action public deleteVacancy = (payload: number) => this._deleteVacancy.fetch({
     payload,
-    onSuccess: (vacancies) => { },
+    onSuccess: () => {
+      this.vacanciesList = this.vacanciesList.filter((vacancy) => vacancy.id !== payload);
+    },
     onError: () => { throw new Error(); },
   });
 
-  @action public addToSelections = (payload: any) => this._addToSelections.fetch({
+  @action public addToSelections = (payload: number) => this._addToSelections.fetch({
     payload,
     onSuccess: () => { this.initRequests(); },
     onError: () => { throw new Error(); },

@@ -7,11 +7,11 @@ export enum SelectionStatus {
   GOT_OFFER = 'GOT_OFFER',
   ACCEPTED_OFFER = 'ACCEPTED_OFFER',
   REJECTED_OFFER = 'REJECTED_OFFER',
-  LOST_OFFER = 'LOST_OFFER',
+  LOST_OFFER = 'LOST_OFFER'
 }
 
 export interface ISelection {
-  id: number;
-  vacancy: IVacancy;
-  status: SelectionStatus;
+  id: number
+  company: IVacancy
+  status: SelectionStatus
 }

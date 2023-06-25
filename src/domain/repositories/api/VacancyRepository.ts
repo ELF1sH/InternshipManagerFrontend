@@ -1,11 +1,7 @@
 import { AxiosResponse } from 'axios';
 
+import { IVacancy } from 'domain/entities/vacancy';
 import { axiosInstance } from 'domain/repositories/api/axios';
-import {
-  IGetVacancyListResponse,
-  IPatchSelectionPayload,
-  IVacancyRepository,
-} from 'domain/repositories/api/interfaces/IVacancyRepository';
 
 class VacancyRepository implements IVacancyRepository {
   // ==============================================
@@ -16,8 +12,12 @@ class VacancyRepository implements IVacancyRepository {
     .get('/vacancies')
     .then((response: AxiosResponse<IGetVacancyListResponse>) => response.data);
 
-  public createVacancy = (payload: any) => axiosInstance
+  public createVacancy = (payload: ICreateOrEditVacancyPayload) => axiosInstance
     .post('/vacancies', payload)
+    .then((response: AxiosResponse<IVacancy>) => response.data);
+
+  public addToSelections = (payload: number) => axiosInstance
+    .post('/selections', { vacancyId: payload })
     .then((response: AxiosResponse<any>) => response.data);
 
   public editVacancy = (payload: any) => axiosInstance
@@ -31,9 +31,9 @@ class VacancyRepository implements IVacancyRepository {
   // ==================selections==================
   // ==============================================
 
-  public getSelections = () => axiosInstance
+  public getSelectionsList = () => axiosInstance
     .get('/selections')
-    .then((response: AxiosResponse<any>) => response.data);
+    .then((response: AxiosResponse<IGetSelectionsListResponse>) => response.data);
 
   public addToSelections = (payload: any) => axiosInstance
     .post('/selections', { vacancyId: payload })
