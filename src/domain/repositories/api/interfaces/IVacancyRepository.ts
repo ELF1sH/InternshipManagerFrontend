@@ -1,3 +1,4 @@
+import { ISelection, SelectionStatus } from 'domain/entities/selection';
 import { IVacancy } from 'domain/entities/vacancy';
 
 export interface IVacancyRepository {

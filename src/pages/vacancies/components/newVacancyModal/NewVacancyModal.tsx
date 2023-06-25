@@ -13,10 +13,15 @@ export const NewVacancyModal: React.FC<
 {
   addOrEditVacancy: (payload: ICreateOrEditVacancyPayload) => void
   defaultValues?: IVacancy,
-  buttonText: string
-}> = ({ addOrEditVacancy, defaultValues, buttonText }) => {
+  buttonText: string,
+  closeModal: () => void,
+}> = ({
+  addOrEditVacancy, defaultValues, buttonText, closeModal,
+}) => {
   const addOrEditNewVacancy = (values: IVacancy) => {
     addOrEditVacancy({ ...values, id: defaultValues?.id || undefined });
+
+    closeModal();
   };
 
   return (

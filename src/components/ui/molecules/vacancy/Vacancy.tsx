@@ -17,7 +17,7 @@ export interface VacancyProps {
  stacks: Stack[];
 }
 
-interface Stack {
+export interface Stack {
   id: number
   techStack: string;
   minimumQuantity: number;

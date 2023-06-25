@@ -18,10 +18,12 @@ import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
 import { userStore } from 'storesMobx/stores/UserStore';
 
 const VacanciesPageView: React.FC = () => {
-  const { companiesWithVacancies } = useVacanciesPageViewModel();
-  const { openModal } = useModalViewModel();
+  const {
+    companiesWithVacancies, addNewWacancy, deleteVacancy, editVacancy,
+  } = useVacanciesPageViewModel();
 
-  const viewModel = useVacanciesPageViewModel();
+  const { openModal, closeModal } = useModalViewModel();
+
   const currentRole = userStore.role;
 
   console.log(companiesWithVacancies);
@@ -36,8 +38,9 @@ const VacanciesPageView: React.FC = () => {
             onClick={() => openModal({
               formTitle: 'Создание новой вакансии',
               content: <NewVacancyModal
-                addOrEditVacancy={viewModel.addNewVacancy}
+                addOrEditVacancy={addNewWacancy}
                 buttonText="Создать"
+                closeModal={closeModal}
               />,
               footer: false,
             })}
@@ -54,14 +57,15 @@ const VacanciesPageView: React.FC = () => {
                 key={idx}
                 name={val.name}
                 stacks={val.vacancies}
-                deleteVacancy={viewModel.deleteVacancy}
+                deleteVacancy={deleteVacancy}
                 onEditHandler={(val) => {
                   openModal({
                     formTitle: 'Редактирование компании',
                     content: <NewVacancyModal
-                      addOrEditVacancy={viewModel.editVacancy}
+                      addOrEditVacancy={editVacancy}
                       defaultValues={val}
                       buttonText="Сохранить изменения"
+                      closeModal={closeModal}
                     />,
                     footer: false,
                   });
