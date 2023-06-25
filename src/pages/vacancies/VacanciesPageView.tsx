@@ -20,7 +20,7 @@ import { userStore } from 'storesMobx/stores/UserStore';
 const VacanciesPageView: React.FC = () => {
   const {
     companiesWithVacancies,
-    addNewWacancy,
+    addNewVacancy,
     deleteVacancy,
     editVacancy,
     vacancySearchString,
@@ -60,7 +60,7 @@ const VacanciesPageView: React.FC = () => {
             onClick={() => openModal({
               formTitle: 'Создание новой вакансии',
               content: <NewVacancyModal
-                addOrEditVacancy={addNewWacancy}
+                addOrEditVacancy={addNewVacancy}
                 buttonText="Создать"
                 closeModal={closeModal}
               />,
