@@ -11,6 +11,8 @@ import { IPreferenceItem } from 'domain/entities/preferences';
 
 import { useConfirmModal } from 'modules/confirmModal/useConfirmModal';
 
+import { usePreferencesPageViewModel } from 'pages/preferences/viewModel/context';
+
 interface PreferenceProps {
   preference: IPreferenceItem;
   draggableProps?: DraggableProvidedDragHandleProps | null;
@@ -20,9 +22,11 @@ const Preference: React.FC<PreferenceProps> = ({
   preference,
   draggableProps,
 }) => {
+  const { deletePreference } = usePreferencesPageViewModel();
+
   const { showConfirm } = useConfirmModal({
     title: 'Вы уверены, что хотите убрать эту вакансию из списка предпочтений?',
-    cbOnOk: () => {},
+    cbOnOk: () => deletePreference(preference.id),
   });
 
   return (

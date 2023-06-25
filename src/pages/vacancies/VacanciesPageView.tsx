@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import Space from 'components/ui/atoms/space/Space';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
@@ -23,6 +24,8 @@ const VacanciesPageView: React.FC = () => {
   const viewModel = useVacanciesPageViewModel();
   const currentRole = userStore.role;
 
+  console.log(companiesWithVacancies);
+
   if (currentRole === UserRole.COMPANY) {
     return (
       <>
@@ -38,9 +41,7 @@ const VacanciesPageView: React.FC = () => {
             })}
           >
             Добавить
-
           </Button>
-
         </PageHeader>
 
         <Space direction="vertical" gap={20}>
@@ -96,4 +97,4 @@ const VacanciesPageView: React.FC = () => {
   );
 };
 
-export default VacanciesPageView;
+export default observer(VacanciesPageView);

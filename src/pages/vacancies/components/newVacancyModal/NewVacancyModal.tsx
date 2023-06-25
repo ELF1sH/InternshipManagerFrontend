@@ -16,9 +16,8 @@ export const NewVacancyModal: React.FC<
   const addOrEditNewVacancy = (values: IVacancy) => {
     addOrEditVacancy({ ...values, id: defaultValues?.id || undefined });
   };
-  console.log(defaultValues);
-  return (
 
+  return (
     <Form onFinish={addOrEditNewVacancy} initialValues={defaultValues}>
       <Space gap={14} direction="vertical">
         <Form.Item name="name" style={{ marginTop: '16px' }}>
@@ -38,10 +37,10 @@ export const NewVacancyModal: React.FC<
           на “рынке труда” для студентов.
         </Typography.Paragraph>
         <Space direction="horizontal" justifyContent="space-between">
-          <Form.Item name="minimumQuality">
+          <Form.Item name="minimumQuantity">
             <Input placeholder="Минимальное количество мест" />
           </Form.Item>
-          <Form.Item name="maximumQuality">
+          <Form.Item name="maximumQuantity">
             <Input placeholder="Максимальное количество мест" />
           </Form.Item>
         </Space>

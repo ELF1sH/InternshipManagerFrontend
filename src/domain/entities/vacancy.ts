@@ -5,6 +5,6 @@ export interface IVacancy {
   company: ICompany
   name: string;
   techStack: string;
-  minimumQuality: number;
-  maximumQuality: number;
+  minimumQuantity: number;
+  maximumQuantity: number;
 }
