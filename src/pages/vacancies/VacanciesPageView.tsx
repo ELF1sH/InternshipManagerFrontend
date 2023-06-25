@@ -30,7 +30,6 @@ const VacanciesPageView: React.FC = () => {
     return (
       <>
         <PageHeader header="Вакансии">
-
           <Button
             type="text"
             icon={<PlusIcon size={24} />}

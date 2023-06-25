@@ -4,6 +4,11 @@ import {
 
 import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 
+import { SelectionStatus } from 'domain/entities/selection';
+import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
+import { PostPreferenceUseCase } from 'domain/useCases/preferences/PostPreferenceUseCase';
+import { IPreferenceItem } from 'domain/entities/preferences';
+import { GetPreferencesListUseCase } from 'domain/useCases/preferences/GetPreferencesListUseCase';
 import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
@@ -25,6 +30,8 @@ export class VacanciesPageViewModel {
 
   @observable private selectionsList?: any[] = [];
 
+  @observable private preferencesList?: IPreferenceItem[] = [];
+
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
@@ -32,6 +39,9 @@ export class VacanciesPageViewModel {
     private _getSelections: GetSelectionsUseCase,
     private _editVacany: EditVacancyUseCase,
     private _deleteVacancy: DeleteVacancyUseCase,
+    private _getPreferences: GetPreferencesListUseCase,
+    private _postPreference: PostPreferenceUseCase,
+    private _patchSelection: PatchSelectionUseCase,
   ) {
     makeObservable(this);
   }
@@ -55,6 +65,7 @@ export class VacanciesPageViewModel {
         vacancies: vacancies.filter(({ name }) => name === uniqueName).map((vacancy) => ({
           ...vacancy,
           isSelected: this.selectionsList?.find((sel) => sel.vacancy.id === vacancy.id),
+          isPreferenced: this.preferencesList?.find((pref) => pref.vacancy.id === vacancy.id),
         })),
       }));
 
@@ -72,10 +83,8 @@ export class VacanciesPageViewModel {
     const { role } = userStore;
     const required = [this.getVacancies()];
     if (role === UserRole.STUDENT) {
-      required.push(this.getSelections());
+      required.push(this.getSelections(), this.getPreferences());
     }
-
-    console.log('init requests');
 
     Promise.all(required)
       .then(() => this.pageStatus.onEndRequest())
@@ -102,7 +111,17 @@ export class VacanciesPageViewModel {
     onError: () => { throw new Error(); },
   });
 
-  @action public addNewVacancy = (payload: ICreateOrEditVacancyPayload) => this._addVacany.fetch({
+  @action private getPreferences = () => this._getPreferences.fetch({
+    payload: undefined,
+    onSuccess: (preferences) => {
+      runInAction(() => {
+        this.preferencesList = preferences;
+      });
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
     payload,
     onSuccess: (newVacancy) => { this.vacanciesList.push(newVacancy); },
     onError: () => { throw new Error(); },
@@ -130,4 +149,18 @@ export class VacanciesPageViewModel {
     onSuccess: () => { this.initRequests(); },
     onError: () => { throw new Error(); },
   });
+
+  @action public postPreference = (id: number) => this._postPreference.fetch({
+    payload: { vacancyId: id },
+    onSuccess: () => { this.initRequests(); },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public patchSelection = (id: number, status: SelectionStatus) => (
+    this._patchSelection.fetch({
+      payload: { id, status },
+      onSuccess: () => { this.initRequests(); },
+      onError: () => { throw new Error(); },
+    })
+  );
 }

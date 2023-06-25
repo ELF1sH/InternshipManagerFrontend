@@ -1,4 +1,3 @@
-import { ISelection } from 'domain/entities/selection';
 import { IVacancy } from 'domain/entities/vacancy';
 
 export interface IVacancyRepository {
@@ -20,4 +19,9 @@ export type ICreateOrEditVacancyPayload = {
   techStack: string
   minimumQuantity: number
   maximumQuantity: number
+}
+
+export interface IPatchSelectionPayload {
+  id: number;
+  status: SelectionStatus;
 }

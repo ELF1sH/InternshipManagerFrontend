@@ -1,5 +1,9 @@
 import React, { useMemo } from 'react';
 
+import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
+import { PostPreferenceUseCase } from 'domain/useCases/preferences/PostPreferenceUseCase';
+import { GetPreferencesListUseCase } from 'domain/useCases/preferences/GetPreferencesListUseCase';
+import { preferencesRepository } from 'domain/repositories/api/PreferencesList';
 import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
@@ -8,11 +12,15 @@ import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCa
 import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
 import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
 
+import { useNotifications } from 'modules/notification/useNotifications';
+
 import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
 import { VacanciesPageViewModelContext } from 'pages/vacancies/viewModel/context';
 import ClassesGridController from 'pages/vacancies/VacanciesPageController';
 
 const VacanciesPageProvider: React.FC = () => {
+  const { notifyError, notifySuccess } = useNotifications();
+
   const getVacancyListUseCase = new GetVacancyListUseCase({
     requestCallback: vacancyRepository.getList,
   });
@@ -37,6 +45,22 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.getSelectionsList,
   });
 
+  const getPreferencesUseCase = new GetPreferencesListUseCase({
+    requestCallback: preferencesRepository.getList,
+  });
+
+  const postPreferenceUseCase = new PostPreferenceUseCase({
+    requestCallback: preferencesRepository.post,
+    notifySuccess,
+    notifyError,
+  });
+
+  const patchPreferenceUseCase = new PatchSelectionUseCase({
+    requestCallback: vacancyRepository.patchSelection,
+    notifyError,
+    notifySuccess,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getVacancyListUseCase,
@@ -45,6 +69,9 @@ const VacanciesPageProvider: React.FC = () => {
       getSelectionsUseCase,
       editVacancyUseCase,
       deleteVacancyUseCase,
+      getPreferencesUseCase,
+      postPreferenceUseCase,
+      patchPreferenceUseCase,
     ),
     [],
   );

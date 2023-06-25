@@ -1,6 +1,6 @@
 import { IVacancy } from 'domain/entities/vacancy';
 
-enum SelectionStatus {
+export enum SelectionStatus {
   NONE = 'NONE',
   SUBMITTED_RESUME = 'SUBMITTED_RESUME',
   PASSED_INTERVIEW = 'PASSED_INTERVIEW',

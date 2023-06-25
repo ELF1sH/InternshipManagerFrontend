@@ -32,7 +32,7 @@ const Preference: React.FC<PreferenceProps> = ({
   return (
     <Space alignItems="center" gap={10}>
       <Text>
-        {preference.orderNumber}
+        {preference.orderNumber + 1}
         .
         &nbsp;
         {preference.vacancy.company.name}

@@ -1,18 +1,14 @@
 import React from 'react';
-import { CheckCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
 
-import InterviewIcon from 'components/ui/atoms/icons/InterviewIcon';
-import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
-import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { StackWrapper, VacancyWrapper } from 'components/ui/molecules/vacancy/styled';
 import Space from 'components/ui/atoms/space/Space';
 import Text from 'components/ui/atoms/text/Text';
-import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
+import Actions from 'components/ui/molecules/vacancy/components/actions/Actions';
+
+import { ISelection } from 'domain/entities/selection';
+import { IPreferenceItem } from 'domain/entities/preferences';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
-
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 
 import { useStore } from 'storesMobx/MobxStoreProvider';
 
@@ -26,15 +22,14 @@ interface Stack {
   techStack: string;
   minimumQuantity: number;
   maximumQuantity: number;
-  isSelected?: boolean
+  isSelected?: ISelection;
+  isPreferenced?: IPreferenceItem;
 }
 
 const Vacancy: React.FC<VacancyProps> = ({
   name,
   stacks,
 }) => {
-  const { addToSelections } = useVacanciesPageViewModel();
-
   const { role } = useStore().userStore;
 
   return (
@@ -46,13 +41,14 @@ const Vacancy: React.FC<VacancyProps> = ({
           <Text $primary strong>{name}</Text>
         </Text>
       </VacancyWrapper>
+
       <Space direction="vertical" paddingLeft={30}>
         {
           stacks.map(({
-            techStack, minimumQuantity, maximumQuantity, isSelected, id,
+            techStack, minimumQuantity, maximumQuantity, isSelected, id, isPreferenced,
           }, idx) => (
             <StackWrapper key={idx} paddingLeft={25}>
-              <Space direction="vertical" style={{ flexGrow: 1 }}>
+              <Space direction="vertical">
                 <Text>
                   Стэк технологий:
                   &nbsp;
@@ -67,27 +63,7 @@ const Vacancy: React.FC<VacancyProps> = ({
 
               {
                 role === UserRole.STUDENT && (
-                  <Space justifyContent="end" alignItems="center">
-                    {
-                      isSelected
-                        ? <CheckCircleOutlined style={{ fontSize: '20px', color: 'green', marginRight: '30px' }} />
-                        : (
-                          <Tooltip title="Добавить в список предпочтений" placement="left">
-                            <IconButton
-                              size="large"
-                              icon={<PlusCircleOutlined />}
-                              style={{ marginRight: '20px' }}
-                              onClick={() => {
-                                addToSelections(id);
-                              }}
-                            />
-                          </Tooltip>
-                        )
-                    }
-                    <IconButton size="large" icon={<InterviewIcon style={{ transform: 'scale(0.8)' }} />} />
-                    <IconButton size="large" icon={<OfferIcon />} />
-                    <IconButton size="large" icon={<AcceptedOffer />} />
-                  </Space>
+                  <Actions id={id} isSelected={isSelected} isPreferenced={isPreferenced} />
                 )
               }
 
