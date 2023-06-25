@@ -36,7 +36,10 @@ const VacanciesPageView: React.FC = () => {
             icon={<PlusIcon size={24} />}
             onClick={() => openModal({
               formTitle: 'Создание новой вакансии',
-              content: <NewVacancyModal addOrEditVacancy={viewModel.addNewWacancy} />,
+              content: <NewVacancyModal
+                addOrEditVacancy={viewModel.addNewVacancy}
+                buttonText="Создать"
+              />,
               footer: false,
             })}
           >
@@ -59,6 +62,7 @@ const VacanciesPageView: React.FC = () => {
                     content: <NewVacancyModal
                       addOrEditVacancy={viewModel.editVacancy}
                       defaultValues={val}
+                      buttonText="Сохранить изменения"
                     />,
                     footer: false,
                   });

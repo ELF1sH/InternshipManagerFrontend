@@ -7,12 +7,14 @@ import Space from 'components/ui/atoms/space/Space';
 import Button from 'components/ui/atoms/button/Button';
 
 import { IVacancy } from 'domain/entities/vacancy';
+import { ICreateOrEditVacancyPayload } from 'domain/repositories/api/interfaces/IVacancyRepository';
 
 export const NewVacancyModal: React.FC<
 {
-  addOrEditVacancy: (payload: any) => void
-  defaultValues?: any,
-}> = ({ addOrEditVacancy, defaultValues }) => {
+  addOrEditVacancy: (payload: ICreateOrEditVacancyPayload) => void
+  defaultValues?: IVacancy,
+  buttonText: string
+}> = ({ addOrEditVacancy, defaultValues, buttonText }) => {
   const addOrEditNewVacancy = (values: IVacancy) => {
     addOrEditVacancy({ ...values, id: defaultValues?.id || undefined });
   };
@@ -48,7 +50,7 @@ export const NewVacancyModal: React.FC<
         <Form.Item>
           <Space justifyContent="center" paddingBottom={16}>
             <Button type="primary" htmlType="submit">
-              Добавить
+              {buttonText}
             </Button>
           </Space>
 
