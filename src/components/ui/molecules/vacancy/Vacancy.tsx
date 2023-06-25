@@ -10,8 +10,6 @@ import { IPreferenceItem } from 'domain/entities/preferences';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
-
 import { useStore } from 'storesMobx/MobxStoreProvider';
 
 export interface VacancyProps {
@@ -32,8 +30,6 @@ const Vacancy: React.FC<VacancyProps> = ({
   name,
   stacks,
 }) => {
-  const { postPreference, addToSelections } = useVacanciesPageViewModel();
-
   const { role } = useStore().userStore;
 
   return (
