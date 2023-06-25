@@ -11,3 +11,5 @@ export interface IStudent {
     name: string;
   }
 }
+
+export type AddStudentRequest = Omit<IStudent, 'internshipPlace' | 'studyYear'>

@@ -3,7 +3,7 @@ import {
 } from 'mobx';
 
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
-import { IStudent } from 'domain/entities/student';
+import { AddStudentRequest, IStudent } from 'domain/entities/student';
 import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
@@ -38,7 +38,7 @@ export class StudentsPageViewModel {
     this.studentsList = students;
   };
 
-  @action public addStudentsList = (payload: any[]) => this._addStudentsList.fetch({
+  @action public addStudentsList = (payload: AddStudentRequest[]) => this._addStudentsList.fetch({
     payload,
     onSuccess: (students) => {
       runInAction(() => {
