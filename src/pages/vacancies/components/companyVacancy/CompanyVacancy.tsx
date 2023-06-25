@@ -1,12 +1,11 @@
 import React from 'react';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
 
 import Space from 'components/ui/atoms/space/Space';
-import Button from 'components/ui/atoms/button/Button';
-import { VacancyWrapper, StackWrapper } from 'components/ui/molecules/vacancy/styled';
+import { VacancyWrapper } from 'components/ui/molecules/vacancy/styled';
 import Text from 'components/ui/atoms/text/Text';
-import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { VacancyProps } from 'components/ui/molecules/vacancy/Vacancy';
+
+import StackComponent from 'pages/vacancies/components/companyVacancy/components/Stack';
 
 export const CompanyVacancy: React.FC<VacancyProps &
 {onEditHandler: (val: any) => void, deleteVacancy: (val: number) => void}> = ({
@@ -26,49 +25,14 @@ export const CompanyVacancy: React.FC<VacancyProps &
 
     <Space direction="vertical" paddingLeft={30} gap={5}>
       {
-        stacks.map(({
-          techStack, maximumQuantity,
-          minimumQuantity,
-          id,
-        }, idx) => (
-          <StackWrapper paddingLeft={25} key={idx} gap={30}>
-            <Space gap={10}>
-              <Space direction="vertical">
-                <Text>
-                  Стэк технологий:
-                  &nbsp;
-                  <Text strong>{techStack}</Text>
-                </Text>
-                <Text>
-                  Количество вакантных мест:
-                  &nbsp;
-                  <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
-                </Text>
-              </Space>
-              <Space justifyContent="start" alignItems="center" style={{ width: 'fit-content' }}>
-                <IconButton
-                  size="large"
-                  icon={<EditFilled />}
-                  onClick={() => onEditHandler({
-                    id,
-                    name,
-                    techStack,
-                    minimumQuantity,
-                    maximumQuantity,
-                  })}
-                />
-                <IconButton
-                  size="large"
-                  icon={<DeleteFilled />}
-                  onClick={() => deleteVacancy(id)}
-                />
-              </Space>
-            </Space>
-
-            <Space alignItems="center" style={{ width: 'fit-content' }}>
-              <Button type="primary" size="small" danger>Прекратить набор</Button>
-            </Space>
-          </StackWrapper>
+        stacks.map((stack) => (
+          <StackComponent
+            key={stack.id}
+            stack={stack}
+            name={name}
+            onEditHandler={onEditHandler}
+            deleteVacancy={deleteVacancy}
+          />
         ))
       }
     </Space>
