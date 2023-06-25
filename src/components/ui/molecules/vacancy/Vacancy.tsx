@@ -2,6 +2,7 @@ import React from 'react';
 import { CheckCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
+import InterviewIcon from 'components/ui/atoms/icons/InterviewIcon';
 import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { StackWrapper, VacancyWrapper } from 'components/ui/molecules/vacancy/styled';
@@ -9,7 +10,11 @@ import Space from 'components/ui/atoms/space/Space';
 import Text from 'components/ui/atoms/text/Text';
 import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
 
+import { UserRole } from 'modules/authority/enums/UserRole';
+
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
+
+import { useStore } from 'storesMobx/MobxStoreProvider';
 
 export interface VacancyProps {
  name: string;
@@ -19,8 +24,8 @@ export interface VacancyProps {
 interface Stack {
   id: number
   techStack: string;
-  minimumQuality: number;
-  maximumQuality: number;
+  minimumQuantity: number;
+  maximumQuantity: number;
   isSelected?: boolean
 }
 
@@ -29,6 +34,9 @@ const Vacancy: React.FC<VacancyProps> = ({
   stacks,
 }) => {
   const { addToSelections } = useVacanciesPageViewModel();
+
+  const { role } = useStore().userStore;
+
   return (
     <Space direction="vertical" gap={1}>
       <VacancyWrapper paddingLeft={30} direction="vertical">
@@ -41,7 +49,7 @@ const Vacancy: React.FC<VacancyProps> = ({
       <Space direction="vertical" paddingLeft={30}>
         {
           stacks.map(({
-            techStack, minimumQuality, maximumQuality, isSelected, id,
+            techStack, minimumQuantity, maximumQuantity, isSelected, id,
           }, idx) => (
             <StackWrapper key={idx} paddingLeft={25}>
               <Space direction="vertical" style={{ flexGrow: 1 }}>
@@ -53,28 +61,36 @@ const Vacancy: React.FC<VacancyProps> = ({
                 <Text>
                   Количество вакантных мест:
                   &nbsp;
-                  <Text strong>{`${minimumQuality}-${maximumQuality}`}</Text>
+                  <Text strong>{`${minimumQuantity}-${maximumQuantity}`}</Text>
                 </Text>
               </Space>
-              <Space justifyContent="end" alignItems="center">
-                {
-                  isSelected ? <CheckCircleOutlined style={{ fontSize: '20px', color: 'green', marginRight: '20px' }} /> : (
-                    <Tooltip title="Добавить в список предпочтений" placement="left">
-                      <IconButton
-                        size="large"
-                        icon={<PlusCircleOutlined />}
-                        style={{ marginRight: '20px' }}
-                        onClick={() => {
-                          addToSelections(id);
-                        }}
-                      />
-                    </Tooltip>
-                  )
-                }
 
-                <IconButton size="large" icon={<OfferIcon />} />
-                <IconButton size="large" icon={<AcceptedOffer />} />
-              </Space>
+              {
+                role === UserRole.STUDENT && (
+                  <Space justifyContent="end" alignItems="center">
+                    {
+                      isSelected
+                        ? <CheckCircleOutlined style={{ fontSize: '20px', color: 'green', marginRight: '30px' }} />
+                        : (
+                          <Tooltip title="Добавить в список предпочтений" placement="left">
+                            <IconButton
+                              size="large"
+                              icon={<PlusCircleOutlined />}
+                              style={{ marginRight: '20px' }}
+                              onClick={() => {
+                                addToSelections(id);
+                              }}
+                            />
+                          </Tooltip>
+                        )
+                    }
+                    <IconButton size="large" icon={<InterviewIcon style={{ transform: 'scale(0.8)' }} />} />
+                    <IconButton size="large" icon={<OfferIcon />} />
+                    <IconButton size="large" icon={<AcceptedOffer />} />
+                  </Space>
+                )
+              }
+
             </StackWrapper>
           ))
         }

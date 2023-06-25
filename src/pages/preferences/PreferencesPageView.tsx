@@ -7,7 +7,7 @@ import { usePreferencesPageViewModel } from 'pages/preferences/viewModel/context
 import DnDWrapper from 'pages/preferences/components/dndWrapper/DnDWrapper';
 
 const PreferencesPageView: React.FC = () => {
-  const { wasEdited } = usePreferencesPageViewModel();
+  const { wasEdited, onSaveChanges } = usePreferencesPageViewModel();
 
   return (
     <>
@@ -15,6 +15,7 @@ const PreferencesPageView: React.FC = () => {
         header=" Список предпочтений"
         editable
         wasEdited={wasEdited}
+        onSaveChanges={onSaveChanges}
       />
       <DnDWrapper />
     </>

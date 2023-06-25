@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { DeletePreferencesListUseCase } from 'domain/useCases/preferences/DeletePreferencesListUseCase';
+import { PatchPreferencesListUseCase } from 'domain/useCases/preferences/PatchPreferencesListUseCase';
 import { preferencesRepository } from 'domain/repositories/api/PreferencesList';
 import { GetPreferencesListUseCase } from 'domain/useCases/preferences/GetPreferencesListUseCase';
 
@@ -12,8 +14,20 @@ const PreferencesPageProvider: React.FC = () => {
     requestCallback: preferencesRepository.getList,
   });
 
+  const patchPreferenceUseCase = new PatchPreferencesListUseCase({
+    requestCallback: preferencesRepository.patch,
+  });
+
+  const deletePreferenceUseCase = new DeletePreferencesListUseCase({
+    requestCallback: preferencesRepository.delete,
+  });
+
   const viewModel = useMemo(
-    () => new PreferencesPageViewModel(getPreferencesUseCase),
+    () => new PreferencesPageViewModel(
+      getPreferencesUseCase,
+      patchPreferenceUseCase,
+      deletePreferenceUseCase,
+    ),
     [],
   );
 

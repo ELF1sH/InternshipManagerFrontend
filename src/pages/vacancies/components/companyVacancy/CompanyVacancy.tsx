@@ -28,8 +28,8 @@ export const CompanyVacancy: React.FC<VacancyProps &
      <Space direction="vertical" paddingLeft={30}>
        {
         stacks.map(({
-          techStack, maximumQuality: maximumQuantity,
-          minimumQuality: minimumQuantity,
+          techStack, maximumQuantity,
+          minimumQuantity,
           id,
         }, idx) => (
           <StackWrapper paddingLeft={25} key={idx}>

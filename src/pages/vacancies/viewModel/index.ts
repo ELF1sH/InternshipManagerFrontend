@@ -1,10 +1,9 @@
 import {
-  action, computed, makeObservable, observable,
+  action, computed, makeObservable, observable, runInAction,
 } from 'mobx';
 
 import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 
-import { ICompany } from 'domain/entities/company';
 import { IVacancy } from 'domain/entities/vacancy';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { AddVacancyUseCase } from 'domain/useCases/vacancy/AddVacancyUseCase';
@@ -18,11 +17,9 @@ import { userStore } from 'storesMobx/stores/UserStore';
 export class VacanciesPageViewModel {
   @observable public pageStatus = new LoadStatus(true);
 
-  private vacanciesList: IVacancy[] = [];
+  @observable private vacanciesList: IVacancy[] = [];
 
-  private selectionsList?: any[] = [];
-
-  private companiesList: ICompany[] = [];
+  @observable private selectionsList?: any[] = [];
 
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
@@ -38,13 +35,13 @@ export class VacanciesPageViewModel {
   @computed public get companiesWithVacancies(): CompanyWithVacancies[] {
     const companies = this.vacanciesList.map((vacancy) => vacancy.company);
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
-    this.companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
+    const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
 
-    return this.companiesList.map(({ id, name }) => {
+    return companiesList.map(({ id, name }) => {
       const vacancies = this.vacanciesList.filter((vac) => vac.company.id === id);
 
-      const minQuantity = vacancies.reduce((acc, cur) => acc + cur.minimumQuality, 0);
-      const maxQuantity = vacancies.reduce((acc, cur) => acc + cur.maximumQuality, 0);
+      const minQuantity = vacancies.reduce((acc, cur) => acc + cur.minimumQuantity, 0);
+      const maxQuantity = vacancies.reduce((acc, cur) => acc + cur.maximumQuantity, 0);
 
       const vacancyNames = vacancies.map((vac) => vac.name);
       const uniqueVacancyNames = Array.from(new Set(vacancyNames));
@@ -74,6 +71,8 @@ export class VacanciesPageViewModel {
       required.push(this.getSelections());
     }
 
+    console.log('init requests');
+
     Promise.all(required)
       .then(() => this.pageStatus.onEndRequest())
       .catch(() => this.pageStatus.onEndRequest(false));
@@ -81,13 +80,21 @@ export class VacanciesPageViewModel {
 
   @action private getVacancies = () => this._getVacancies.fetch({
     payload: undefined,
-    onSuccess: (vacancies) => { this.vacanciesList = vacancies; },
+    onSuccess: (vacancies) => {
+      runInAction(() => {
+        this.vacanciesList = vacancies;
+      });
+    },
     onError: () => { throw new Error(); },
   });
 
   @action private getSelections = () => this._getSelections.fetch({
     payload: undefined,
-    onSuccess: (selectionsList) => { this.selectionsList = selectionsList; },
+    onSuccess: (selectionsList) => {
+      runInAction(() => {
+        this.selectionsList = selectionsList;
+      });
+    },
     onError: () => { throw new Error(); },
   });
 
@@ -111,7 +118,7 @@ export class VacanciesPageViewModel {
 
   @action public addToSelections = (payload: any) => this._addToSelections.fetch({
     payload,
-    onSuccess: () => { },
+    onSuccess: () => { this.initRequests(); },
     onError: () => { throw new Error(); },
   });
 }
