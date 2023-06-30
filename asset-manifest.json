@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/InternshipManagerFrontend/static/css/main.98e63bf6.css",
+    "main.js": "/InternshipManagerFrontend/static/js/main.ab444167.js",
+    "static/media/profileBg.jpg": "/InternshipManagerFrontend/static/media/profileBg.708cb1ab1b7ee9ac4b80.jpg",
+    "static/media/profilePicture.jpg": "/InternshipManagerFrontend/static/media/profilePicture.bfa63f7f922d30bb022a.jpg",
+    "static/media/red_mad_robot.png": "/InternshipManagerFrontend/static/media/red_mad_robot.79547bfaa3faef61abe2.png",
+    "index.html": "/InternshipManagerFrontend/index.html",
+    "main.98e63bf6.css.map": "/InternshipManagerFrontend/static/css/main.98e63bf6.css.map",
+    "main.ab444167.js.map": "/InternshipManagerFrontend/static/js/main.ab444167.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.98e63bf6.css",
+    "static/js/main.ab444167.js"
+  ]
+}
