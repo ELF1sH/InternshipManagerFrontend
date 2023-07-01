@@ -4,41 +4,43 @@ import { Form } from 'antd';
 import Space from 'components/ui/atoms/space/Space';
 import Input from 'components/ui/atoms/input/Input';
 
-import { IStudent } from 'domain/entities/student';
+import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
 
-const FilterForm: React.FC<{setStudents: (val: any) => void, students: IStudent[]}> = ({
-  setStudents, students,
-}) => (
-  <Form
-    onFieldsChange={(_, values) => {
-      const name = values[0]?.value || '';
-      const grp = values[1]?.value || '';
+const FilterForm: React.FC = () => {
+  const { setFullnameSearchString, setGroupSearchString } = useStudentsPageViewModel();
+  return (
+    <Form>
+      <Space>
+        <Space gap={14} $wrap>
+          <Form.Item name="student">
+            <Input
+              placeholder="Студент"
+              onChange={(e) => {
+                setFullnameSearchString(e.currentTarget.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item name="group">
+            <Input
+              placeholder="Группа"
+              onChange={(e) => {
+                setGroupSearchString(e.currentTarget.value);
+              }}
+            />
+          </Form.Item>
 
-      const targetName = name.toLowerCase().trim();
-      const targetGroup = grp.toLowerCase().trim();
-
-      setStudents(
-        students.filter((std) => `${std.firstname} ${std.lastname} ${std.patronymic}`.toLowerCase().trim()
-          .includes(targetName)
-        && std.groupNumber?.toLowerCase().trim().includes(targetGroup)),
-      );
-    }}
-  >
-    <Space>
-      <Space gap={14} $wrap>
-        <Form.Item name="student">
-          <Input
-            placeholder="Студент"
-          />
-        </Form.Item>
-        <Form.Item name="group">
-          <Input
-            placeholder="Группа"
-          />
-        </Form.Item>
+          <Form.Item name="intership">
+            <Input
+              placeholder="Стажировка"
+              onChange={(e) => {
+                setGroupSearchString(e.currentTarget.value);
+              }}
+            />
+          </Form.Item>
+        </Space>
       </Space>
-    </Space>
-  </Form>
-);
+    </Form>
+  );
+};
 
 export default FilterForm;

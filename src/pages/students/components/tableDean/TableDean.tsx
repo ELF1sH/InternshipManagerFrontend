@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { observer } from 'mobx-react-lite';
 
@@ -9,6 +9,8 @@ import Button from 'components/ui/atoms/button/Button';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import Space from 'components/ui/atoms/space/Space';
 
+import { IStudent } from 'domain/entities/student';
+
 import { useTableDeanColumns } from 'pages/students/components/tableDean/hooks/useTableDeanColumns';
 import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
 import NewUserModal from 'pages/students/components/newUserModal.tsx/NewUserModal';
@@ -16,11 +18,23 @@ import FilterForm from 'pages/students/components/filterForm/FilterForm';
 
 const TableDean: React.FC = () => {
   const { openModal } = useModalViewModel();
-  const { studentsList, addStudentsList, setStudents } = useStudentsPageViewModel();
+  const {
+    studentsList, filtredStudents: filtredStudentsPromise, addStudentsList, setStudents,
+  } = useStudentsPageViewModel();
 
   const { columns } = useTableDeanColumns();
 
   const { open } = useStudentEntityDrawer();
+
+  const [filtredStudents, setFiltredStudents] = useState<
+  IStudent[]
+  >(studentsList);
+
+  useEffect(() => {
+    filtredStudentsPromise.then((val) => {
+      setFiltredStudents(val);
+    });
+  }, [filtredStudentsPromise]);
 
   return (
     <>
@@ -39,14 +53,11 @@ const TableDean: React.FC = () => {
       </PageHeader>
 
       <Space direction="vertical" gap={20}>
-        <FilterForm
-          setStudents={(val) => setStudents(val)}
-          students={studentsList}
-        />
+        <FilterForm />
 
         <Table
           columns={columns}
-          dataSource={studentsList.map(({
+          dataSource={filtredStudents.map(({
             firstname, lastname, patronymic, internshipPlace, groupNumber, id,
           }) => ({
             internshipPlace: internshipPlace ?? '--',
