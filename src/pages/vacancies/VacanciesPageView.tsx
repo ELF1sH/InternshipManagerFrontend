@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import Space from 'components/ui/atoms/space/Space';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
-import VacanciesList from 'components/ui/organisms/vacanciesList/VacanciesList';
+import VacanciesList, { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Button from 'components/ui/atoms/button/Button';
@@ -19,14 +19,26 @@ import { userStore } from 'storesMobx/stores/UserStore';
 
 const VacanciesPageView: React.FC = () => {
   const {
-    companiesWithVacancies, addNewWacancy, deleteVacancy, editVacancy,
+    companiesWithVacancies,
+    filtredCompanies: filtredCompaniesPromise,
+    addNewVacancy,
+    deleteVacancy,
+    editVacancy,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
 
   const currentRole = userStore.role;
 
-  console.log(companiesWithVacancies);
+  const [filtredCompanies, setFiltredCompanies] = useState<
+  CompanyWithVacancies[]
+  >(companiesWithVacancies);
+
+  useEffect(() => {
+    filtredCompaniesPromise.then((val) => {
+      setFiltredCompanies(val);
+    });
+  }, [filtredCompaniesPromise]);
 
   if (currentRole === UserRole.COMPANY) {
     return (
@@ -38,7 +50,7 @@ const VacanciesPageView: React.FC = () => {
             onClick={() => openModal({
               formTitle: 'Создание новой вакансии',
               content: <NewVacancyModal
-                addOrEditVacancy={addNewWacancy}
+                addOrEditVacancy={addNewVacancy}
                 buttonText="Создать"
                 closeModal={closeModal}
               />,
@@ -84,7 +96,7 @@ const VacanciesPageView: React.FC = () => {
         <PageHeader header="Компании и стажировки" />
         <Space direction="vertical" gap={20}>
           <FilterForm />
-          <VacanciesList companiesWithVacancies={companiesWithVacancies} />
+          <VacanciesList companiesWithVacancies={filtredCompanies} />
         </Space>
       </>
     );

@@ -79,6 +79,35 @@ export class VacanciesPageViewModel {
     });
   }
 
+  @observable public companySearchString: string = '';
+
+  @action public setCompanySearchString = (val: string) => {
+    this.companySearchString = val.toLowerCase().trim();
+  };
+
+  @observable public vacancySearchString: string = '';
+
+  @action public setVacancySearchString = (val: string) => {
+    this.vacancySearchString = val.toLowerCase().trim();
+  };
+
+  @computed public get filtredCompanies(): Promise<CompanyWithVacancies[]> {
+    let filtredCompanies = this.companiesWithVacancies
+      .filter((val) => val.name.toLowerCase().trim()
+        .includes(this.companySearchString));
+
+    filtredCompanies = filtredCompanies.map((val) => ({
+      ...val,
+      vacancies: val.vacancies
+        .filter((vac) => vac.name.toLowerCase().trim()
+          .includes(this.vacancySearchString)),
+    }));
+
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(filtredCompanies), 400);
+    });
+  }
+
   @action public initRequests = () => {
     const { role } = userStore;
     const required = [this.getVacancies()];
@@ -121,7 +150,7 @@ export class VacanciesPageViewModel {
     onError: () => { throw new Error(); },
   });
 
-  @action public addNewWacancy = (payload: any) => this._addVacany.fetch({
+  @action public addNewVacancy = (payload: any) => this._addVacany.fetch({
     payload,
     onSuccess: (newVacancy) => { this.vacanciesList.push(newVacancy); },
     onError: () => { throw new Error(); },

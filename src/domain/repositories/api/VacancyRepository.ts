@@ -28,7 +28,7 @@ class VacancyRepository implements IVacancyRepository {
 
   public editVacancy = (payload: ICreateOrEditVacancyPayload) => axiosInstance
     .patch('/vacancies', payload)
-    .then((response: AxiosResponse<any>) => response.data);
+    .then((response: AxiosResponse<IVacancy>) => response.data);
 
   public deleteVacancy = (payload: number) => axiosInstance
     .delete(`/vacancies/${payload}`)
