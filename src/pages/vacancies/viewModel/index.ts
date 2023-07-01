@@ -46,18 +46,6 @@ export class VacanciesPageViewModel {
     makeObservable(this);
   }
 
-  @observable public companySearchString: string = '';
-
-  @action public setCompanySearchString = (val: string) => {
-    this.companySearchString = val.toLowerCase().trim();
-  };
-
-  @observable public vacancySearchString: string = '';
-
-  @action public setVacancySearchString = (val: string) => {
-    this.vacancySearchString = val.toLowerCase().trim();
-  };
-
   @computed public get companiesWithVacancies(): CompanyWithVacancies[] {
     const companies = this.vacanciesList.map((vacancy) => vacancy.company);
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
@@ -88,6 +76,35 @@ export class VacanciesPageViewModel {
         minQuantity,
         maxQuantity,
       };
+    });
+  }
+
+  @observable public companySearchString: string = '';
+
+  @action public setCompanySearchString = (val: string) => {
+    this.companySearchString = val.toLowerCase().trim();
+  };
+
+  @observable public vacancySearchString: string = '';
+
+  @action public setVacancySearchString = (val: string) => {
+    this.vacancySearchString = val.toLowerCase().trim();
+  };
+
+  @computed public get filtredCompanies(): Promise<CompanyWithVacancies[]> {
+    let filtredCompanies = this.companiesWithVacancies
+      .filter((val) => val.name.toLowerCase().trim()
+        .includes(this.companySearchString));
+
+    filtredCompanies = filtredCompanies.map((val) => ({
+      ...val,
+      vacancies: val.vacancies
+        .filter((vac) => vac.name.toLowerCase().trim()
+          .includes(this.vacancySearchString)),
+    }));
+
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(filtredCompanies), 400);
     });
   }
 

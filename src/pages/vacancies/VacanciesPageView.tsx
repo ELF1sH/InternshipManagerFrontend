@@ -20,35 +20,25 @@ import { userStore } from 'storesMobx/stores/UserStore';
 const VacanciesPageView: React.FC = () => {
   const {
     companiesWithVacancies,
+    filtredCompanies: filtredCompaniesPromise,
     addNewVacancy,
     deleteVacancy,
     editVacancy,
-    vacancySearchString,
-    companySearchString,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
 
   const currentRole = userStore.role;
+
   const [filtredCompanies, setFiltredCompanies] = useState<
   CompanyWithVacancies[]
   >(companiesWithVacancies);
 
   useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setFiltredCompanies(filtredCompanies);
-    }, 400);
-
-    let filtredCompanies = companiesWithVacancies
-      .filter((val) => val.name.toLowerCase().trim().includes(companySearchString));
-
-    filtredCompanies = filtredCompanies.map((val) => ({
-      ...val,
-      vacancies: val.vacancies.filter((vac) => vac.name.toLowerCase()
-        .trim().includes(vacancySearchString)),
-    }));
-    return (() => clearTimeout(timeOut));
-  }, [vacancySearchString, companySearchString]);
+    filtredCompaniesPromise.then((val) => {
+      setFiltredCompanies(val);
+    });
+  }, [filtredCompaniesPromise]);
 
   if (currentRole === UserRole.COMPANY) {
     return (
