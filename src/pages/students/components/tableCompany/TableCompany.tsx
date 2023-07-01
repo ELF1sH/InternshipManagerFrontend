@@ -1,14 +1,29 @@
 import React from 'react';
-import { Table, Tabs } from 'antd';
+import { Empty, Table, Tabs } from 'antd';
 import { observer } from 'mobx-react-lite';
 
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import Space from 'components/ui/atoms/space/Space';
 
+import { ICandidate } from 'domain/entities/condidate';
+
 import { useTableCompanyColumns } from 'pages/students/components/tableCompany/hooks/useTableCompanyColumns';
 
-const TableCompany: React.FC = () => {
+export interface SortedCandidatesByGroup {
+  sortedCandidatesByGroup:{
+    groupNumber: string
+    candidates: ICandidate[]
+  }[]
+}
+
+const TableCompany: React.FC<SortedCandidatesByGroup> = ({ sortedCandidatesByGroup }) => {
   const { columns } = useTableCompanyColumns();
+
+  if (sortedCandidatesByGroup.length <= 0) {
+    return (
+      <Empty />
+    );
+  }
 
   return (
     <>
@@ -17,23 +32,31 @@ const TableCompany: React.FC = () => {
         <Tabs
           tabPosition="left"
           items={
-            [
-              {
-                label: '2021-2022 (9720Р)',
-                key: '2021-2022 (9720Р)',
-                children: <Table
-                  columns={columns}
-                  dataSource={[{
+            sortedCandidatesByGroup.map((group) => ({
+              label: group.groupNumber,
+              key: group.groupNumber,
+              children: <Table
+                columns={columns}
+                dataSource={
+                  group.candidates.map((candidate) => {
+                    const { vacancy, student } = candidate;
+                    const { firstname, lastname, patronymic } = student;
+                    return {
+                      student: `${lastname} ${firstname} ${patronymic}`,
+                      vacancy: {
+                        name: vacancy.name,
+                        techStack: vacancy.techStack,
+                      },
+                      action: {
+                        selectionStatus: candidate.selection.status,
+                        selectionId: candidate.selection.id,
+                      },
+                    };
+                  })
+              }
+              />,
+            }))
 
-                  }]}
-                />,
-              },
-              {
-                label: '2020-2021 (9719Р)',
-                key: '2020-2021 (9719Р)',
-                children: <div>2</div>,
-              },
-            ]
           }
         />
       </Space>

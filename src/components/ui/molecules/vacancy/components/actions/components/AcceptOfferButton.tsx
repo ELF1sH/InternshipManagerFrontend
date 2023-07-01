@@ -44,8 +44,16 @@ const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({ id, isSelected })
   const { showConfirm } = useConfirmModal({
     title: offerConfirmationTitle,
     content: offerConfirmationContent,
-    cbOnOk: () => patchSelection?.(id, SelectionStatus.ACCEPTED_OFFER),
-    cbOnCancel: () => patchSelection?.(id, SelectionStatus.REJECTED_OFFER),
+    cbOnOk: () => {
+      if (isSelected?.id) {
+        patchSelection?.(isSelected.id, SelectionStatus.ACCEPTED_OFFER);
+      }
+    },
+    cbOnCancel: () => {
+      if (isSelected?.id) {
+        patchSelection?.(isSelected.id, SelectionStatus.REJECTED_OFFER);
+      }
+    },
     okText: 'Принять оффер',
     cancelText: 'Отклонить оффер',
   });
