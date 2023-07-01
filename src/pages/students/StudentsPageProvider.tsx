@@ -3,6 +3,10 @@ import React, { useMemo } from 'react';
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
 import { studentsRepository } from 'domain/repositories/api/StudentsRepository';
 import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
+import { companyRepository } from 'domain/repositories/api/CompanyRepository';
+import { GetCandidateListUseCase } from 'domain/useCases/company/GetCandidateListUseCase';
+import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
+import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
 
 import { StudentsPageViewModelContext } from 'pages/students/viewModel/context';
 import { StudentsPageViewModel } from 'pages/students/viewModel';
@@ -17,10 +21,20 @@ const StudentsPageProvider: React.FC = () => {
     requestCallback: studentsRepository.addStudentsList,
   });
 
+  const getCandidatesListUseCase = new GetCandidateListUseCase({
+    requestCallback: companyRepository.getCandidates,
+  });
+
+  const patchSelectionUseCase = new PatchSelectionUseCase({
+    requestCallback: vacancyRepository.patchSelection,
+  });
+
   const studentsPageViewModel = useMemo(
     () => new StudentsPageViewModel(
       getStudentsListUseCase,
       addStudentsListUseCase,
+      getCandidatesListUseCase,
+      patchSelectionUseCase,
     ),
     [],
   );

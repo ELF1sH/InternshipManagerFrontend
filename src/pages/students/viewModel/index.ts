@@ -5,17 +5,30 @@ import {
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
 import { AddStudentRequest, IStudent } from 'domain/entities/student';
 import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
+import { ICandidate } from 'domain/entities/condidate';
+import { GetCandidateListUseCase } from 'domain/useCases/company/GetCandidateListUseCase';
+import { SelectionStatus } from 'domain/entities/selection';
+import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
+
+import { UserRole } from 'modules/authority/enums/UserRole';
+
+import { SortedCandidatesByGroup } from 'pages/students/components/tableCompany/TableCompany';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
+import { userStore } from 'storesMobx/stores/UserStore';
 
 export class StudentsPageViewModel {
   @observable public pageStatus = new LoadStatus(true);
 
   @observable public studentsList: IStudent[] = [];
 
+  @observable public candidatesList: ICandidate[] = [];
+
   public constructor(
     private _getStudents: GetStudentsListUseCase,
     private _addStudentsList: AddStudentsListUseCase,
+    private _getCandidatesList: GetCandidateListUseCase,
+    private _patchSelection: PatchSelectionUseCase,
   ) {
     makeObservable(this);
   }
@@ -56,8 +69,38 @@ export class StudentsPageViewModel {
     });
   }
 
+  @computed public get sortedCandidates(): SortedCandidatesByGroup {
+    const groups = new Map<string, SortedCandidatesByGroup['sortedCandidatesByGroup'][0]>();
+
+    this.candidatesList.forEach((val) => {
+      const { groupNumber } = val.student;
+      const currentVal = groups.get(groupNumber);
+
+      const vl: SortedCandidatesByGroup['sortedCandidatesByGroup'][0] = {
+        groupNumber: val.student.groupNumber,
+        candidates: currentVal?.candidates ? [...currentVal.candidates, val] : [val],
+      };
+
+      groups.set(
+        groupNumber,
+        vl,
+      );
+    });
+
+    return {
+      sortedCandidatesByGroup: Array.from(groups).map(([_name, value]) => (value)),
+    };
+  }
+
   @action public initRequests = () => {
-    Promise.all([this.getStudents()])
+    const { role } = userStore;
+    const promises = [this.getStudents()];
+
+    if (role === UserRole.COMPANY) {
+      promises.push(this.getCandidates());
+    }
+
+    Promise.all(promises)
       .then(() => this.pageStatus.onEndRequest())
       .catch(() => this.pageStatus.onEndRequest(false));
   };
@@ -83,4 +126,20 @@ export class StudentsPageViewModel {
     },
     onError: () => { throw new Error(); },
   });
+
+  @action private getCandidates = () => this._getCandidatesList.fetch({
+    payload: undefined,
+    onSuccess: (candidates) => {
+      this.candidatesList = candidates;
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public patchSelection = (id: number, status: SelectionStatus) => (
+    this._patchSelection.fetch({
+      payload: { id, status },
+      onSuccess: () => { this.initRequests(); },
+      onError: () => { throw new Error(); },
+    })
+  );
 }
