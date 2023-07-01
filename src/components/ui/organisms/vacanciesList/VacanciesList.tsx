@@ -1,4 +1,5 @@
 import React from 'react';
+import { Empty } from 'antd';
 
 import Space from 'components/ui/atoms/space/Space';
 import Vacancy from 'components/ui/molecules/vacancy/Vacancy';
@@ -24,6 +25,11 @@ interface GroupedVacancy {
 const VacanciesList: React.FC<VacanciesListProps> = ({ companiesWithVacancies }) => {
   console.log(companiesWithVacancies);
 
+  if (companiesWithVacancies.length <= 0) {
+    return (
+      <Empty description="Ничего не найдено" />
+    );
+  }
   return (
     <>
       {
