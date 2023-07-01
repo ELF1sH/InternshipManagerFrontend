@@ -34,6 +34,16 @@ const getTitle = (status?: SelectionStatus) => {
       return '';
   }
 };
+
+const getOfferTooltipTitle = (status?: SelectionStatus) => {
+  switch (status) {
+    case SelectionStatus.GOT_OFFER:
+      return 'Оффер отправлен';
+    default:
+      return '';
+  }
+};
+
 export const useTableCompanyColumns = () => {
   const { openModal } = useModalViewModel();
   const { patchSelection } = useStudentsPageViewModel();
@@ -60,9 +70,7 @@ export const useTableCompanyColumns = () => {
       dataIndex: 'action',
       title: 'Статус студента',
       render: ({ selectionStatus, selectionId }:
-        {selectionStatus: SelectionStatus, selectionId: number}, record: any) => {
-        console.log(selectionStatus);
-        return (
+        {selectionStatus: SelectionStatus, selectionId: number}, record: any) => (
           <Space>
 
             <IconButton
@@ -80,26 +88,16 @@ export const useTableCompanyColumns = () => {
             <IconButton
               type="ghost"
               icon={(
-                <OfferIcon
-                  style={{
-                    color: selectionStatus === SelectionStatus.GOT_OFFER ? 'green' : '',
-                  }}
-                />
-                )}
-              size="large"
-            />
-
-            <IconButton
-              type="ghost"
-              icon={(
-                <>
-                  <Tooltip placement="left" title={getTitle(selectionStatus)}>
-                    <AcceptedOffer style={{
-                      color: getColor(selectionStatus),
+                <Tooltip
+                  placement="left"
+                  title={getOfferTooltipTitle(selectionStatus)}
+                >
+                  <OfferIcon
+                    style={{
+                      color: selectionStatus === SelectionStatus.GOT_OFFER ? 'green' : '',
                     }}
-                    />
-                  </Tooltip>
-                </>
+                  />
+                </Tooltip>
               )}
               size="large"
               onClick={() => {
@@ -134,9 +132,23 @@ export const useTableCompanyColumns = () => {
                 });
               }}
             />
+            <IconButton
+              type="ghost"
+              icon={(
+                <>
+                  <Tooltip placement="left" title={getTitle(selectionStatus)}>
+                    <AcceptedOffer style={{
+                      color: getColor(selectionStatus),
+                    }}
+                    />
+                  </Tooltip>
+                </>
+              )}
+              size="large"
+
+            />
           </Space>
-        );
-      },
+      ),
     },
   ];
 
