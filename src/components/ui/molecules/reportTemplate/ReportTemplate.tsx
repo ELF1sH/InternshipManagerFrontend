@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import { DownloadOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EditOutlined } from '@ant-design/icons';
 
 import Text from 'components/ui/atoms/text/Text';
 
@@ -78,7 +78,6 @@ const ReportTemplate: React.FC<ReportTemplateProps> = ({
         }}
         key="edit"
       />,
-      <EyeOutlined key="inspect" onClick={onDownload} />,
     );
   }
 
