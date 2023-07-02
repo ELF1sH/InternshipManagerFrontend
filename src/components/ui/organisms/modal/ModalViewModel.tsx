@@ -9,6 +9,7 @@ interface IOpenModalProps {
   cbOnComplete?: Function;
   style?: React.CSSProperties | undefined;
   footer?: boolean| undefined
+  width?: string;
 }
 
 export class ModalViewModel {
@@ -24,12 +25,14 @@ export class ModalViewModel {
 
   @observable public footer: boolean | undefined;
 
+  @observable public width: string | undefined;
+
   public constructor() {
     makeObservable(this);
   }
 
   @action public openModal = ({
-    formTitle, content, cbOnComplete, style, footer,
+    formTitle, content, cbOnComplete, style, footer, width,
   }: IOpenModalProps) => {
     this.isOpened = true;
 
@@ -38,6 +41,8 @@ export class ModalViewModel {
     this.cbOnComplete = cbOnComplete;
     this.style = style;
     this.footer = footer;
+
+    this.width = width;
   };
 
   @action public onOk = () => {

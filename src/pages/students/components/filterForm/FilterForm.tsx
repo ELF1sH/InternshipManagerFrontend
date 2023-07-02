@@ -7,7 +7,12 @@ import Input from 'components/ui/atoms/input/Input';
 import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
 
 const FilterForm: React.FC = () => {
-  const { setFullnameSearchString, setGroupSearchString } = useStudentsPageViewModel();
+  const {
+    setFullnameSearchString,
+    setGroupSearchString,
+    setIntershipSearchString,
+  } = useStudentsPageViewModel();
+
   return (
     <Form>
       <Space>
@@ -33,7 +38,7 @@ const FilterForm: React.FC = () => {
             <Input
               placeholder="Стажировка"
               onChange={(e) => {
-                setGroupSearchString(e.currentTarget.value);
+                setIntershipSearchString(e.currentTarget.value);
               }}
             />
           </Form.Item>

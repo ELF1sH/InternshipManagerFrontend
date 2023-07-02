@@ -38,8 +38,8 @@ const EntityDrawerStudentContent: React.FC = () => {
       </Space>
 
       {
-        vm.student?.internshipPlace
-          ? <Company name={vm.student.internshipPlace.name} />
+        vm.student?.company
+          ? <Company name={vm.student.company.name} />
           : <Text>Без стажировки</Text>
       }
     </Space>

@@ -7,7 +7,7 @@ import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalPr
 
 const Modal: React.FC = () => {
   const {
-    onOk, closeModal, isOpened, content, formTitle, style, footer,
+    onOk, closeModal, isOpened, content, formTitle, style, footer, width,
   } = useModalViewModel();
 
   return (
@@ -21,6 +21,7 @@ const Modal: React.FC = () => {
       okText="Ок"
       cancelText="Отмена"
       style={style}
+      width={width}
     >
       {content}
     </ModalAnt>

@@ -11,6 +11,7 @@ import Space from 'components/ui/atoms/space/Space';
 
 import { IStudent } from 'domain/entities/student';
 
+import { useImportStudentsViaCSVModal } from 'pages/students/modals/importStudentsViaCSV';
 import { useTableDeanColumns } from 'pages/students/components/tableDean/hooks/useTableDeanColumns';
 import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
 import NewUserModal from 'pages/students/components/newUserModal.tsx/NewUserModal';
@@ -36,12 +37,14 @@ const TableDean: React.FC = () => {
     });
   }, [filtredStudentsPromise]);
 
+  const { openImportStudentsViaCSVModal } = useImportStudentsViaCSVModal();
+
   return (
     <>
       <PageHeader header="Студенты">
         <Button
           type="text"
-          icon={<PlusIcon size={24} />}
+          icon={<PlusIcon />}
           onClick={() => openModal({
             formTitle: 'Добавление студентов',
             content: <NewUserModal addStudents={addStudentsList} />,
@@ -50,6 +53,8 @@ const TableDean: React.FC = () => {
         >
           Добавить вручную
         </Button>
+
+        <Button type="text" icon={<PlusIcon />} onClick={openImportStudentsViaCSVModal}>Импортировать через CSV</Button>
       </PageHeader>
 
       <Space direction="vertical" gap={20}>
@@ -58,9 +63,9 @@ const TableDean: React.FC = () => {
         <Table
           columns={columns}
           dataSource={filtredStudents.map(({
-            firstname, lastname, patronymic, internshipPlace, groupNumber, id,
+            firstname, lastname, patronymic, company, groupNumber, id,
           }) => ({
-            internshipPlace: internshipPlace ?? '--',
+            company: company?.name ?? '--',
             groupNumber: groupNumber ?? '--',
             name: `${firstname ?? ''} ${lastname ?? ''} ${patronymic ?? ''}`,
             key: id,

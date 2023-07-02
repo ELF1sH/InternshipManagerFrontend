@@ -2,8 +2,9 @@ import {
   action, computed, makeObservable, observable, runInAction,
 } from 'mobx';
 
+import { IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
-import { AddStudentRequest, IStudent } from 'domain/entities/student';
+import { IStudent } from 'domain/entities/student';
 import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
 import { ICandidate } from 'domain/entities/condidate';
 import { GetCandidateListUseCase } from 'domain/useCases/company/GetCandidateListUseCase';
@@ -61,7 +62,7 @@ export class StudentsPageViewModel {
         .includes(this.groupSearchString));
 
     filtredStudents = filtredStudents
-      .filter(({ internshipPlace }) => `${internshipPlace?.name}`.toLowerCase().trim()
+      .filter(({ company }) => `${company?.name}`.toLowerCase().trim()
         .includes(this.intershipSearchString));
 
     return new Promise((resolve) => {
@@ -117,7 +118,9 @@ export class StudentsPageViewModel {
     this.studentsList = students;
   };
 
-  @action public addStudentsList = (payload: AddStudentRequest[]) => this._addStudentsList.fetch({
+  @action public addStudentsList = (
+    payload: IAddStudentsListPayload,
+  ) => this._addStudentsList.fetch({
     payload,
     onSuccess: (students) => {
       runInAction(() => {

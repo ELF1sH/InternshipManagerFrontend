@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { useForm } from 'antd/es/form/Form';
 
+import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import Space from 'components/ui/atoms/space/Space';
 import Input from 'components/ui/atoms/input/Input';
@@ -17,6 +19,8 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
 
   const { closeModal } = useModalViewModel();
 
+  const [form] = useForm();
+
   const setNewUser = (values: IUser) => {
     const userColumnType = {
       key: generateRandomId(),
@@ -26,6 +30,8 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
     };
 
     setStudents((current) => [...current, userColumnType]);
+
+    form.resetFields();
   };
 
   const columns = [
@@ -42,11 +48,8 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
     {
       key: 'action',
       render: (_: any, record: any) => (
-
-        <Button
-          type="ghost"
-          icon={<DeleteIcon size={24} color="red" />}
-          size="small"
+        <IconButton
+          icon={<DeleteIcon color="red" />}
           onClick={() => {
             setStudents((current) => current.filter((user) => user.key !== record.key));
           }}
@@ -57,7 +60,7 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
 
   return (
     <>
-      <Form onFinish={setNewUser}>
+      <Form onFinish={setNewUser} form={form}>
         <Space gap={14} direction="vertical">
           <Form.Item name="lastname">
             <Input placeholder="Фамилия" />

@@ -66,7 +66,6 @@ const Vacancy: React.FC<VacancyProps> = ({
                   <Actions id={id} isSelected={isSelected} isPreferenced={isPreferenced} />
                 )
               }
-
             </StackWrapper>
           ))
         }
