@@ -1,11 +1,15 @@
 import React from 'react';
 import { Card } from 'antd';
-import { DownloadOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EditOutlined } from '@ant-design/icons';
 
 import Text from 'components/ui/atoms/text/Text';
 
 import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
 import { GetDiaryUseCase } from 'domain/useCases/diary/GetDiaryUseCase';
+
+import { UserRole } from 'modules/authority/enums/UserRole';
+
+import { userStore } from 'storesMobx/stores/UserStore';
 
 interface ReportTemplateProps {
   id?: number;
@@ -65,19 +69,22 @@ const ReportTemplate: React.FC<ReportTemplateProps> = ({
     });
   };
 
+  const cardActions = [<DownloadOutlined key="download" onClick={onDownload} />];
+  if (userStore.role !== UserRole.STUDENT) {
+    cardActions.push(
+      <EditOutlined
+        onClick={() => {
+          clickEditHandler?.({ id, title, description });
+        }}
+        key="edit"
+      />,
+    );
+  }
+
   return (
     <Card
       title={title}
-      actions={[
-        <DownloadOutlined key="download" onClick={onDownload} />,
-        <EditOutlined
-          onClick={() => {
-            clickEditHandler?.({ id, title, description });
-          }}
-          key="edit"
-        />,
-        <EyeOutlined key="inspect" onClick={onDownload} />,
-      ]}
+      actions={cardActions}
       style={{ width: '280px' }}
     >
       {
