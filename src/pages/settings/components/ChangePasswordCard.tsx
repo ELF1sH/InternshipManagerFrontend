@@ -6,6 +6,11 @@ import InputPassword from 'components/ui/atoms/input/InputPassword';
 import Button from 'components/ui/atoms/button/Button';
 import Space from 'components/ui/atoms/space/Space';
 
+import { tokenRepository } from 'domain/repositories/other/TokenRepository';
+import { authRepository } from 'domain/repositories/api/AuthRepository';
+import { ChangePasswordUseCase } from 'domain/useCases/auth/ChangePasswordUseCase';
+
+import { useNotifications } from 'modules/notification/useNotifications';
 import { getYupSync } from 'modules/form/yupSync';
 
 import { validateSchema } from 'pages/settings/components/constants/schema';
@@ -18,9 +23,23 @@ export interface IChangePasswordFormState {
 }
 
 const ChangePasswordCard: React.FC = () => {
+  const { notifyError, notifySuccess } = useNotifications();
+
+  const changePasswordUseCase = new ChangePasswordUseCase({
+    requestCallback: authRepository.changePassword,
+    notifyError,
+    notifySuccess,
+    tokenRepository,
+  });
+
   const onFinish = (values: IChangePasswordFormState) => {
-    console.log('submitting');
-    console.log(values);
+    changePasswordUseCase.fetch({
+      payload: {
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      },
+      onSuccess: () => form.resetFields(),
+    });
   };
 
   const yupSync = getYupSync(validateSchema());

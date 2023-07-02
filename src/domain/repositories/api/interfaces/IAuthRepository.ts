@@ -1,5 +1,6 @@
 export interface IAuthRepository {
   login: (payload: ILoginPayload) => Promise<ILoginResponse>;
+  changePassword: (payload: IChangePasswordPayload) => Promise<ILoginResponse>;
 }
 
 export interface ILoginPayload {
@@ -10,4 +11,9 @@ export interface ILoginPayload {
 export interface ILoginResponse {
   authToken: string;
   refreshToken: string;
+}
+
+export interface IChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
 }
