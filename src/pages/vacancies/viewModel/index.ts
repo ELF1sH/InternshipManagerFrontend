@@ -18,6 +18,8 @@ import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCa
 import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
 import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
 import { ICreateOrEditVacancyPayload } from 'domain/repositories/api/interfaces/IVacancyRepository';
+import { AddCompanyUseCase } from 'domain/useCases/vacancy/AddCompanyUseCase';
+import { ICompany } from 'domain/entities/company';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
@@ -33,6 +35,8 @@ export class VacanciesPageViewModel {
 
   @observable private preferencesList?: IPreferenceItem[] = [];
 
+  @observable private companyList: ICompany[] = [];
+
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
@@ -43,6 +47,7 @@ export class VacanciesPageViewModel {
     private _getPreferences: GetPreferencesListUseCase,
     private _postPreference: PostPreferenceUseCase,
     private _patchSelection: PatchSelectionUseCase,
+    private _addCompany: AddCompanyUseCase,
   ) {
     makeObservable(this);
   }
@@ -214,4 +219,10 @@ export class VacanciesPageViewModel {
       onError: () => { throw new Error(); },
     })
   );
+
+  @action public addCompany = (payload: any) => this._addCompany.fetch({
+    payload,
+    onSuccess: (newCompany) => { this.companyList.push(newCompany); },
+    onError: () => { throw new Error(); },
+  });
 }

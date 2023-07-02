@@ -11,6 +11,7 @@ import { EditVacancyUseCase } from 'domain/useCases/vacancy/EditVacancyUseCase';
 import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCase';
 import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
 import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
+import { AddCompanyUseCase } from 'domain/useCases/vacancy/AddCompanyUseCase';
 
 import { useNotifications } from 'modules/notification/useNotifications';
 
@@ -61,6 +62,10 @@ const VacanciesPageProvider: React.FC = () => {
     notifySuccess,
   });
 
+  const addCompaniesListUseCase = new AddCompanyUseCase({
+    requestCallback: vacancyRepository.addCompany,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getVacancyListUseCase,
@@ -72,6 +77,7 @@ const VacanciesPageProvider: React.FC = () => {
       getPreferencesUseCase,
       postPreferenceUseCase,
       patchPreferenceUseCase,
+      addCompaniesListUseCase,
     ),
     [],
   );
