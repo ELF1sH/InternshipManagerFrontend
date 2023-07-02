@@ -6,10 +6,8 @@ export interface IStudent {
   lastname: string;
   groupNumber: string;
   studyYear: number,
-  internshipPlace: {
+  company: {
     id: number;
     name: string;
   }
 }
-
-export type AddStudentRequest = Omit<IStudent, 'internshipPlace' | 'studyYear'>

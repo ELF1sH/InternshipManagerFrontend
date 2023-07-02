@@ -12,8 +12,8 @@ export const useTableDeanColumns = () => {
     },
     {
       title: 'Стажировка',
-      dataIndex: 'internshipPlace',
-      key: 'internshipPlace',
+      dataIndex: 'company',
+      key: 'company',
     },
   ];
 

@@ -13,6 +13,8 @@ interface OfferButtonProps {
 const getColor = (status?: SelectionStatus) => {
   switch (status) {
     case SelectionStatus.GOT_OFFER:
+    case SelectionStatus.ACCEPTED_OFFER:
+    case SelectionStatus.REJECTED_OFFER:
       return 'green';
     case SelectionStatus.LOST_OFFER:
       return 'red';
