@@ -14,7 +14,9 @@ import { userStore } from 'storesMobx/stores/UserStore';
 
 const StudentsPageView: React.FC = () => {
   const currentRole = userStore.role;
+
   const { sortedCandidates } = useStudentsPageViewModel();
+
   if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return <TableDean />;
   }

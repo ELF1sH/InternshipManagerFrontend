@@ -42,6 +42,7 @@ const TableCompany: React.FC<SortedCandidatesByGroup> = ({ sortedCandidatesByGro
                     const { vacancy, student } = candidate;
                     const { firstname, lastname, patronymic } = student;
                     return {
+                      key: `${lastname} ${firstname} ${patronymic} ${vacancy.name} ${vacancy.techStack}`,
                       student: `${lastname} ${firstname} ${patronymic}`,
                       vacancy: {
                         name: vacancy.name,

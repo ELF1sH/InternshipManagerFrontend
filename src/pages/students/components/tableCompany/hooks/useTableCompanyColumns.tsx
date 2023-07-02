@@ -1,26 +1,50 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 
-import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
 import Space from 'components/ui/atoms/space/Space';
-import Button from 'components/ui/atoms/button/Button';
 import InterviewIcon from 'components/ui/atoms/icons/InterviewIcon';
 import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
 
 import { SelectionStatus } from 'domain/entities/selection';
 
-import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
+import { useSendStudentVerdictModal } from 'pages/students/modals/sendStudentVerdictModal/useSendStudentVerdictModal';
 
-const getColor = (status?: SelectionStatus) => {
+const getOfferStatusColor = (status?: SelectionStatus) => {
   switch (status) {
     case SelectionStatus.ACCEPTED_OFFER:
       return 'green';
     case SelectionStatus.REJECTED_OFFER:
       return 'red';
     default:
-      return '';
+      return 'black';
+  }
+};
+
+const getVerdictStatusColor = (status?: SelectionStatus) => {
+  switch (status) {
+    case SelectionStatus.GOT_OFFER:
+    case SelectionStatus.ACCEPTED_OFFER:
+    case SelectionStatus.REJECTED_OFFER:
+      return 'green';
+    case SelectionStatus.LOST_OFFER:
+      return 'red';
+    default:
+      return 'black';
+  }
+};
+
+const getInterviewColor = (status?: SelectionStatus) => {
+  switch (status) {
+    case SelectionStatus.PASSED_INTERVIEW:
+    case SelectionStatus.GOT_OFFER:
+    case SelectionStatus.ACCEPTED_OFFER:
+    case SelectionStatus.REJECTED_OFFER:
+    case SelectionStatus.LOST_OFFER:
+      return 'green';
+    default:
+      return 'black';
   }
 };
 
@@ -45,8 +69,8 @@ const getOfferTooltipTitle = (status?: SelectionStatus) => {
 };
 
 export const useTableCompanyColumns = () => {
-  const { openModal } = useModalViewModel();
-  const { patchSelection } = useStudentsPageViewModel();
+  const { openSendStudentVerdictModal } = useSendStudentVerdictModal();
+
   const columns = [
     {
       title: 'Студент',
@@ -58,7 +82,6 @@ export const useTableCompanyColumns = () => {
       dataIndex: 'vacancy',
       key: 'vacancy',
       render: ({ name, techStack }: {name: string, techStack: string}, record: any) => (
-
         <>
           <div>{name}</div>
           <div>{techStack}</div>
@@ -72,80 +95,33 @@ export const useTableCompanyColumns = () => {
       render: ({ selectionStatus, selectionId }:
         {selectionStatus: SelectionStatus, selectionId: number}, record: any) => (
           <Space>
-
             <IconButton
               type="ghost"
               icon={(
-                <InterviewIcon style={{
-                  transform: 'scale(0.8)',
-                  color: selectionStatus === SelectionStatus.PASSED_INTERVIEW ? 'green' : '',
-                }}
-                />
-                )}
+                <InterviewIcon style={{ transform: 'scale(0.8)', color: getInterviewColor(selectionStatus) }} />
+              )}
               size="large"
             />
-
             <IconButton
               type="ghost"
               icon={(
-                <Tooltip
-                  placement="left"
-                  title={getOfferTooltipTitle(selectionStatus)}
-                >
+                <Tooltip placement="left" title={getOfferTooltipTitle(selectionStatus)}>
                   <OfferIcon
-                    style={{
-                      color: selectionStatus === SelectionStatus.GOT_OFFER ? 'green' : '',
-                    }}
+                    style={{ color: getVerdictStatusColor(selectionStatus) }}
                   />
                 </Tooltip>
               )}
               size="large"
-              onClick={() => {
-                openModal({
-                  formTitle: 'Отправить студенту вердикт',
-                  content: (
-                    <Space direction="vertical" gap={20}>
-                      Вы можете отправить студенту оффер или отказ.
-                      Студент увидит ваше решение.
-                      Если вы отправите оффер, у студента появится
-                      возможность принять/отклонить его.
-                      <Space direction="horizontal" justifyContent="space-between">
-                        <Button
-                          onClick={() => {
-                            patchSelection(selectionId, SelectionStatus.LOST_OFFER);
-                          }}
-                        >
-                          Отправить отказ
-                        </Button>
-
-                        <Button
-                          type="primary"
-                          onClick={() => {
-                            patchSelection(selectionId, SelectionStatus.GOT_OFFER);
-                          }}
-                        >
-                          Отправить оффер
-                        </Button>
-                      </Space>
-                    </Space>),
-                  footer: false,
-                });
-              }}
+              onClick={() => openSendStudentVerdictModal(selectionId)}
             />
             <IconButton
               type="ghost"
               icon={(
-                <>
-                  <Tooltip placement="left" title={getTitle(selectionStatus)}>
-                    <AcceptedOffer style={{
-                      color: getColor(selectionStatus),
-                    }}
-                    />
-                  </Tooltip>
-                </>
+                <Tooltip placement="left" title={getTitle(selectionStatus)}>
+                  <AcceptedOffer style={{ color: getOfferStatusColor(selectionStatus) }} />
+                </Tooltip>
               )}
               size="large"
-
             />
           </Space>
       ),
