@@ -28,11 +28,17 @@ const Company: React.FC<CompanyProps> = ({
         &nbsp;
         <Text strong $primary $size="large">{name}</Text>
       </Text>
-      <Text>
-        Количество вакантных мест:
-        &nbsp;
-        <Text strong>{`${minQuantity}-${maxQuantity}`}</Text>
-      </Text>
+      {
+       (minQuantity && maxQuantity)
+       && (
+       <Text>
+         Количество вакантных мест:
+         &nbsp;
+         <Text strong>{`${minQuantity}-${maxQuantity}`}</Text>
+       </Text>
+       )
+      }
+
       {
         companyRole && (
           <Text>

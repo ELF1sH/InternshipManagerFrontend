@@ -4,6 +4,8 @@ import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCa
 import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
 import { profilesRepository } from 'domain/repositories/api/interfaces/ProfilesRepository';
 import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
+import { GetIntershipHistoryUseCase } from 'domain/useCases/profiles/GetIntershipHistoryUseCase';
+import { internshipHistoryRepository } from 'domain/repositories/api/IntershipHistoryRepository';
 
 import { ProfilePageViewModelContext } from 'pages/profile/viewModel/context';
 import { ProfilePageViewModel } from 'pages/profile/viewModel';
@@ -18,8 +20,16 @@ const ProfilePageProvider: React.FC = () => {
     requestCallback: diaryRepository.getList,
   });
 
+  const getIntershipHistoryUseCase = new GetIntershipHistoryUseCase({
+    requestCallback: internshipHistoryRepository.getList,
+  });
+
   const viewModel = useMemo(
-    () => new ProfilePageViewModel(getProfileUseCase, getDiariesUseCase),
+    () => new ProfilePageViewModel(
+      getProfileUseCase,
+      getDiariesUseCase,
+      getIntershipHistoryUseCase,
+    ),
     [],
   );
 
