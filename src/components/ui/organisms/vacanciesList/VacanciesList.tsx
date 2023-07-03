@@ -15,6 +15,7 @@ export interface CompanyWithVacancies {
   name: string;
   minQuantity: number;
   maxQuantity: number;
+  imageUrl: string;
   vacancies: GroupedVacancy[];
 }
 interface GroupedVacancy {
@@ -30,14 +31,20 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ companiesWithVacancies })
       <Empty description="Ничего не найдено" />
     );
   }
+
   return (
     <>
       {
         companiesWithVacancies.map(({
-          id, name, minQuantity, maxQuantity, vacancies,
+          id, name, minQuantity, maxQuantity, vacancies, imageUrl,
         }) => (
           <Space direction="vertical" key={id} gap={10}>
-            <Company name={name} minQuantity={minQuantity} maxQuantity={maxQuantity} />
+            <Company
+              name={name}
+              minQuantity={minQuantity}
+              maxQuantity={maxQuantity}
+              imageUrl={imageUrl}
+            />
             <Space paddingLeft={40} direction="vertical">
               {
                 vacancies.map(({ name, vacancies }) => (

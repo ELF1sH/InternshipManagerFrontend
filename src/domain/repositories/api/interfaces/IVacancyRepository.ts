@@ -7,7 +7,9 @@ export interface IVacancyRepository {
   editVacancy: (payload: ICreateOrEditVacancyPayload) => Promise<IVacancy>
   deleteVacancy: (payload: number) => Promise<void>
 
-  getSelectionsList:() => Promise<IGetSelectionsListResponse>
+  getSelectionsList: () => Promise<IGetSelectionsListResponse>;
+  getSelectionsByStudent: (payload: IGetSelectionsByStudentPayload) =>
+    Promise<IGetSelectionsListResponse>;
 }
 
 export type IGetVacancyListResponse = IVacancy[];
@@ -25,4 +27,8 @@ export type ICreateOrEditVacancyPayload = {
 export interface IPatchSelectionPayload {
   id: number;
   status: SelectionStatus;
+}
+
+export interface IGetSelectionsByStudentPayload {
+  studentId: number;
 }

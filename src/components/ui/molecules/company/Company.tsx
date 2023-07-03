@@ -1,7 +1,5 @@
 import React from 'react';
 
-import redMadRobotLogo from 'assets/companyLogos/red_mad_robot.png';
-
 import { CompanyWrapper } from 'components/ui/molecules/company/styled';
 import Text from 'components/ui/atoms/text/Text';
 import Space from 'components/ui/atoms/space/Space';
@@ -12,6 +10,7 @@ interface CompanyProps {
   maxQuantity?: number;
   companyRole?: string;
   beginningDate?: string;
+  imageUrl?: string;
 }
 
 const Company: React.FC<CompanyProps> = ({
@@ -20,6 +19,7 @@ const Company: React.FC<CompanyProps> = ({
   minQuantity,
   companyRole,
   beginningDate,
+  imageUrl,
 }) => (
   <CompanyWrapper justifyContent="space-between" alignItems="center">
     <Space direction="vertical">
@@ -52,7 +52,7 @@ const Company: React.FC<CompanyProps> = ({
         )
       }
     </Space>
-    <img alt="company logo" src={redMadRobotLogo} height={50} />
+    <img alt="company logo" src={imageUrl} height={50} />
   </CompanyWrapper>
 );
 

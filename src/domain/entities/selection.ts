@@ -12,6 +12,6 @@ export enum SelectionStatus {
 
 export interface ISelection {
   id: number
-  company: IVacancy
+  vacancy: IVacancy
   status: SelectionStatus
 }
