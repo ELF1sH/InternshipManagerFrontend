@@ -7,4 +7,5 @@ export interface IVacancy {
   techStack: string;
   minimumQuantity: number;
   maximumQuantity: number;
+  imageUrl?: string
 }
