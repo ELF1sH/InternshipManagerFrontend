@@ -15,6 +15,10 @@ import { GetStudentUseCase } from 'domain/useCases/students/GetStudentUseCase';
 import { studentsRepository } from 'domain/repositories/api/StudentsRepository';
 import { GetIntershipHistoryByIdUseCase } from 'domain/useCases/profiles/GetIntershipHistoryByIdUseCase';
 import { internshipHistoryRepository } from 'domain/repositories/api/IntershipHistoryRepository';
+import { GetSelectionsByIdUseCase } from 'domain/useCases/vacancy/GetSelectionsByIdUseCase';
+import { GetPreferencesListByIdUseCase } from 'domain/useCases/preferences/GetPreferencesListByIdUseCase';
+import { preferencesRepository } from 'domain/repositories/api/PreferencesList';
+import { GetDiariesListByIdUseCase } from 'domain/useCases/diary/GetDiariesListByIdUseCase';
 
 import { ProfilePageViewModelContext } from 'pages/profile/viewModel/context';
 import { ProfilePageViewModel } from 'pages/profile/viewModel';
@@ -57,6 +61,18 @@ const ProfilePageProvider: React.FC = () => {
     requestCallback: internshipHistoryRepository.getListById,
   });
 
+  const getSelectionsByIdUseCase = new GetSelectionsByIdUseCase({
+    requestCallback: studentsRepository.getSelectionsListById,
+  });
+
+  const getPreferencesByIdUseCase = new GetPreferencesListByIdUseCase({
+    requestCallback: preferencesRepository.getListById,
+  });
+
+  const getDiaresByIdUseCase = new GetDiariesListByIdUseCase({
+    requestCallback: studentsRepository.getDiaresListById,
+  });
+
   const viewModel = useMemo(
     () => new ProfilePageViewModel(
       getProfileUseCase,
@@ -68,6 +84,9 @@ const ProfilePageProvider: React.FC = () => {
       getFeedbackUseCase,
       getStudentUseCase,
       getIntershipHistoryByIdUseCase,
+      getSelectionsByIdUseCase,
+      getPreferencesByIdUseCase,
+      getDiaresByIdUseCase,
     ),
     [],
   );

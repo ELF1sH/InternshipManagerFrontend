@@ -8,12 +8,14 @@ import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { ISelection, SelectionStatus } from 'domain/entities/selection';
 
 import { useConfirmModal } from 'modules/confirmModal/useConfirmModal';
+import { UserRole } from 'modules/authority/enums/UserRole';
 
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
+import { useStore } from 'storesMobx/MobxStoreProvider';
 
 interface AcceptOfferButtonProps {
   id: number;
   isSelected?: ISelection;
+  patchSelection?: (id: number, status: SelectionStatus) => Promise<void>
 }
 
 const getColor = (status?: SelectionStatus) => {
@@ -27,19 +29,23 @@ const getColor = (status?: SelectionStatus) => {
   }
 };
 
-const getTitle = (status?: SelectionStatus) => {
+const getTitle = (role: UserRole, status?: SelectionStatus) => {
   switch (status) {
     case SelectionStatus.ACCEPTED_OFFER:
-      return 'Вы приняли оффер';
+      return role === UserRole.STUDENT ? 'Вы приняли оффер' : 'Студент принял оффер';
     case SelectionStatus.REJECTED_OFFER:
-      return 'Вы отказались от оффера';
+      return role === UserRole.STUDENT ? 'Вы отказались от оффера' : 'Студент отказался от оффера';
     default:
       return '';
   }
 };
 
-const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({ id, isSelected }) => {
-  const { patchSelection } = useVacanciesPageViewModel();
+const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({
+  id,
+  isSelected,
+  patchSelection,
+}) => {
+  const { role } = useStore().userStore;
 
   const { showConfirm } = useConfirmModal({
     title: offerConfirmationTitle,
@@ -69,7 +75,7 @@ const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({ id, isSelected })
   }
 
   return (
-    <Tooltip placement="left" title={getTitle(isSelected?.status)}>
+    <Tooltip placement="left" title={getTitle(role, isSelected?.status)}>
       <IconButton
         size="large"
         icon={<AcceptedOffer />}

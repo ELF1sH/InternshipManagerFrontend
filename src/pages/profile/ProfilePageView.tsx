@@ -7,7 +7,9 @@ import {
 import Space from 'components/ui/atoms/space/Space';
 import Button from 'components/ui/atoms/button/Button';
 import Company from 'components/ui/molecules/company/Company';
-import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
+import VacanciesList, { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
+
+import { UserRole } from 'modules/authority/enums/UserRole';
 
 import { NewInternshipModalCreate } from 'pages/profile/modals/NewInternshipModalCreate/NewInternshipModalCreate';
 import { NewInternshipModal } from 'pages/profile/modals/NewInternshipModal/NewInternshipModal';
@@ -15,6 +17,8 @@ import { useProfilePageViewModel } from 'pages/profile/viewModel/context';
 import { useUploadReportModal } from 'pages/profile/modals/uploadReport/useUploadReportModal';
 import ReportTemplates from 'pages/profile/components/reportTemplates/ReportTemplates';
 import ProfileHeader from 'pages/profile/components/profileHeader/ProfileHeader';
+
+import { useStore } from 'storesMobx/MobxStoreProvider';
 
 const ProfilePageView: React.FC = () => {
   const { handleOpenModal } = useUploadReportModal();
@@ -25,9 +29,8 @@ const ProfilePageView: React.FC = () => {
   const {
     filtredCompanies: filtredCompaniesPromise,
     companiesWithVacancies,
-    setCompanySearchString,
-    setVacancySearchString,
     patchinternshipByVacancy,
+    companiesWithVacanciesSelectedOrPreferenced,
   } = useProfilePageViewModel();
 
   const [filtredCompanies, setFiltredCompanies] = useState<
@@ -40,6 +43,7 @@ const ProfilePageView: React.FC = () => {
     });
   }, [filtredCompaniesPromise]);
 
+  const { role } = useStore().userStore;
   return (
     <>
       <Modal
@@ -86,11 +90,25 @@ const ProfilePageView: React.FC = () => {
           <Button type="primary" onClick={() => { setIsModalOpen(true); }}>
             Добавить новое место стажировки
           </Button>
-          <Button type="primary" onClick={handleOpenModal}>
-            Сдать дневник практики
-          </Button>
+          {
+            role === UserRole.STUDENT
+            && (
+            <Button type="primary" onClick={handleOpenModal}>
+              Сдать дневник практики
+            </Button>
+            )
+          }
+
         </Space>
 
+        {
+          role === UserRole.UNIVERSITY_DEPARTMENT && (
+          <VacanciesList
+            companiesWithVacancies={companiesWithVacanciesSelectedOrPreferenced}
+            showActions
+          />
+          )
+        }
         <ReportTemplates />
       </Space>
     </>
