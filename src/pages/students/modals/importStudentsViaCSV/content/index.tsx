@@ -7,23 +7,31 @@ import { Table } from 'antd';
 import Button from 'components/ui/atoms/button/Button';
 import Space from 'components/ui/atoms/space/Space';
 
-import { IAddStudentResponse, IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
-import { studentsRepository } from 'domain/repositories/api/StudentsRepository';
-import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
+import {
+  IAddStudentPayload,
+  IAddStudentsListPayload,
+} from 'domain/repositories/api/interfaces/IStudentsRepository';
 
+import { StudentsPageViewModel } from 'pages/students/viewModel';
 import { useDownloadStudentCreationResult } from 'pages/students/modals/downloadStudentCreationResult';
 import { useAddStudentsTableColumns } from 'pages/students/modals/importStudentsViaCSV/hooks/useColumns';
 
-const ImportStudentsViaCVSModal: React.FC = () => {
-  const { columns } = useAddStudentsTableColumns(() => {});
+import compareObjects from 'utils/compareObjects';
 
+export interface ImportStudentsViaCVSModalProps {
+  addStudents: StudentsPageViewModel['addStudentsList'];
+}
+
+const ImportStudentsViaCVSModal: React.FC<ImportStudentsViaCVSModalProps> = ({ addStudents }) => {
   const { openDownloadStudentCreationResult } = useDownloadStudentCreationResult();
 
   const [students, setStudents] = useState<IAddStudentsListPayload>([]);
 
-  const addStudents = new AddStudentsListUseCase({
-    requestCallback: studentsRepository.addStudentsList,
-  });
+  const onDelete = (record: IAddStudentPayload) => {
+    setStudents((prev) => prev.filter((student) => !compareObjects(student, record)));
+  };
+
+  const { columns } = useAddStudentsTableColumns(onDelete);
 
   const onChange = (info: UploadChangeParam) => {
     const file = info.fileList[0].originFileObj;
@@ -48,24 +56,11 @@ const ImportStudentsViaCVSModal: React.FC = () => {
     }
   };
 
-  const resultToCSV = (res: IAddStudentResponse[]) => {
-    const lines = res.map((student) => (
-      `${student.lastname};${student.firstname};${student.patronymic};${student.groupNumber};${student.username};${student.password}`
-    ));
-
-    return lines.join('\n');
-  };
-
   const onCreate = () => {
-    addStudents.fetch({
-      payload: students,
-      onSuccess: (res) => {
-        console.log(res);
-        const csv = resultToCSV(res);
-        console.log(csv);
-        openDownloadStudentCreationResult(csv);
-      },
-    });
+    addStudents(
+      students,
+      (res) => openDownloadStudentCreationResult(res),
+    );
   };
 
   return (

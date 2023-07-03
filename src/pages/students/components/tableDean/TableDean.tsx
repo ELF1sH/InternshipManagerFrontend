@@ -37,7 +37,7 @@ const TableDean: React.FC = () => {
     });
   }, [filtredStudentsPromise]);
 
-  const { openImportStudentsViaCSVModal } = useImportStudentsViaCSVModal();
+  const { openImportStudentsViaCSVModal } = useImportStudentsViaCSVModal(addStudentsList);
 
   return (
     <>
@@ -67,7 +67,7 @@ const TableDean: React.FC = () => {
           }) => ({
             company: company?.name ?? '--',
             groupNumber: groupNumber ?? '--',
-            name: `${firstname ?? ''} ${lastname ?? ''} ${patronymic ?? ''}`,
+            name: `${lastname ?? ''} ${firstname ?? ''} ${patronymic ?? ''}`,
             key: id,
           }))}
           onRow={(record, rowIndex) => ({
