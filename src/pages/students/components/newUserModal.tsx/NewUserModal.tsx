@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
 import { useForm } from 'antd/es/form/Form';
 
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
@@ -10,12 +9,23 @@ import Input from 'components/ui/atoms/input/Input';
 import Button from 'components/ui/atoms/button/Button';
 import DeleteIcon from 'components/ui/atoms/icons/DeleteIcon';
 
+import { IAddStudentPayload, IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
 import { IUser } from 'domain/entities/user';
 
+import { useDownloadStudentCreationResult } from 'pages/students/modals/downloadStudentCreationResult';
+import { StudentsPageViewModel } from 'pages/students/viewModel';
+
+import compareObjects from 'utils/compareObjects';
 import { generateRandomId } from 'utils/random';
 
-const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents }) => {
-  const [students, setStudents] = useState<ColumnsType<IUser>>([]);
+interface NewUserModalProps {
+  addStudents: StudentsPageViewModel['addStudentsList'];
+}
+
+const NewUserModal: React.FC<NewUserModalProps> = ({ addStudents }) => {
+  const [students, setStudents] = useState<IAddStudentsListPayload>([]);
+
+  const { openDownloadStudentCreationResult } = useDownloadStudentCreationResult();
 
   const { closeModal } = useModalViewModel();
 
@@ -34,6 +44,10 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
     form.resetFields();
   };
 
+  const onDelete = (record: IAddStudentPayload) => {
+    setStudents((prev) => prev.filter((student) => !compareObjects(student, record)));
+  };
+
   const columns = [
     {
       title: 'Студент',
@@ -50,9 +64,7 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
       render: (_: any, record: any) => (
         <IconButton
           icon={<DeleteIcon color="red" />}
-          onClick={() => {
-            setStudents((current) => current.filter((user) => user.key !== record.key));
-          }}
+          onClick={() => onDelete(record)}
         />
       ),
     },
@@ -84,7 +96,7 @@ const NewUserModal: React.FC<{addStudents: (val: any) => void}> = ({ addStudents
 
           <Table columns={columns} dataSource={students} />
           <Button onClick={() => {
-            addStudents(students);
+            addStudents(students, (res) => openDownloadStudentCreationResult(res));
             closeModal();
           }}
           >

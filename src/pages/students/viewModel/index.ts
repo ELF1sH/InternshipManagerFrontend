@@ -2,7 +2,7 @@ import {
   action, computed, makeObservable, observable, runInAction,
 } from 'mobx';
 
-import { IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
+import { IAddStudentResponse, IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
 import { IStudent } from 'domain/entities/student';
 import { AddStudentsListUseCase } from 'domain/useCases/students/AddStudentsListUseCase';
@@ -109,7 +109,9 @@ export class StudentsPageViewModel {
   @action private getStudents = () => this._getStudents.fetch({
     payload: undefined,
     onSuccess: (students) => {
-      this.studentsList = students;
+      runInAction(() => {
+        this.studentsList = students;
+      });
     },
     onError: () => { throw new Error(); },
   });
@@ -120,12 +122,13 @@ export class StudentsPageViewModel {
 
   @action public addStudentsList = (
     payload: IAddStudentsListPayload,
+    onSuccess?: (res: IAddStudentResponse[]) => void,
   ) => this._addStudentsList.fetch({
     payload,
     onSuccess: (students) => {
-      runInAction(() => {
-        this.studentsList = [...this.studentsList, ...students];
-      });
+      this.initRequests();
+
+      onSuccess?.(students);
     },
     onError: () => { throw new Error(); },
   });
