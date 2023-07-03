@@ -51,8 +51,6 @@ const ProfilePageView: React.FC = () => {
       >
         <NewInternshipModal
           filtredCompanies={filtredCompanies}
-          setCompanySearchString={setCompanySearchString}
-          setVacancySearchString={setVacancySearchString}
           patchinternshipByVacancy={patchinternshipByVacancy}
           setIsModalOpenCreate={setIsModalOpenCreate}
           setIsModalOpen={setIsModalOpen}
