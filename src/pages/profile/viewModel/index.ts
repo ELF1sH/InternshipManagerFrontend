@@ -14,6 +14,8 @@ import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUse
 import { IVacancy } from 'domain/entities/vacancy';
 import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase copy';
 import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
+import { GetFeedbackListUseCase } from 'domain/useCases/feedback/GetFeedbackListUseCase';
+import { IFeedback } from 'domain/entities/feedback';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
@@ -28,6 +30,8 @@ export class ProfilePageViewModel {
 
   @observable private vacanciesList: IVacancy[] = [];
 
+  @observable public feedbackList: IFeedback[] = [];
+
   public constructor(
     private _getProfile: GetProfileUseCase,
     private _getDiaries: GetDiariesListUseCase,
@@ -35,6 +39,7 @@ export class ProfilePageViewModel {
     private _getVacancies: GetVacancyListUseCase,
     private _patchinternshipByVacancy: PatchIntershipHistoryByVacancyUseCase,
     private _createInternshipByVacancy: PostIntershipUseCase,
+    private _getFeedbackList: GetFeedbackListUseCase,
   ) {
     makeObservable(this);
   }
@@ -102,7 +107,9 @@ export class ProfilePageViewModel {
     Promise.all([this.getProfile(), this.getDiaries(),
       this.getInternshipHistory(), this.getVacancies()])
       .then(() => {
-        this.pageStatus.onEndRequest();
+        this.getFeedback(this.profile?.id || 0).then(() => {
+          this.pageStatus.onEndRequest();
+        });
       })
       .catch(() => {
         this.pageStatus.onEndRequest(false);
@@ -169,6 +176,16 @@ export class ProfilePageViewModel {
     semester: number}) => this._createInternshipByVacancy.fetch({
     payload: { companyName, semester },
     onSuccess: () => {
+      this.initRequests();
+      this.pageStatus.onEndRequest();
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public getFeedback = (payload: number) => this._getFeedbackList.fetch({
+    payload: { studentId: payload },
+    onSuccess: (feedback) => {
+      this.feedbackList = feedback;
       this.initRequests();
       this.pageStatus.onEndRequest();
     },
