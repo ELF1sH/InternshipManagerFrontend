@@ -80,7 +80,7 @@ const ProfilePageView: React.FC = () => {
               key={id}
               name={company.name}
               beginningDate={`${startDate}, семестер ${semester} `}
-              imgUrl={company.imageUrl}
+              imageUrl={company.imageUrl}
             />
           ))
         }

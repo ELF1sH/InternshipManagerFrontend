@@ -42,7 +42,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ companiesWithVacancies })
               name={name}
               minQuantity={minQuantity}
               maxQuantity={maxQuantity}
-              imgUrl={imageUrl}
+              imageUrl={imageUrl}
             />
             <Space paddingLeft={40} direction="vertical">
               {

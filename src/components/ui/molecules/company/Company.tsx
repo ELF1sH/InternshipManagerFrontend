@@ -11,8 +11,7 @@ interface CompanyProps {
   companyRole?: string;
   beginningDate?: string;
   button?: React.ReactElement
-  showImage?: boolean
-  imgUrl?: string
+  imageUrl?: string
 }
 
 const Company: React.FC<CompanyProps> = ({
@@ -22,8 +21,7 @@ const Company: React.FC<CompanyProps> = ({
   companyRole,
   beginningDate,
   button,
-  imgUrl,
-  showImage = true,
+  imageUrl,
 }) => (
   <CompanyWrapper justifyContent="space-between" alignItems="center">
 
@@ -68,7 +66,7 @@ const Company: React.FC<CompanyProps> = ({
     </Space>
 
     {
-  (showImage && imgUrl) && <img alt="company logo" src={imgUrl} height={50} />
+    imageUrl && <img alt="company logo" src={imageUrl} height={50} />
   }
 
   </CompanyWrapper>

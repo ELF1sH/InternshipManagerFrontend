@@ -68,7 +68,6 @@ export const NewInternshipModal = (
               name={name}
               minQuantity={minQuantity}
               maxQuantity={maxQuantity}
-              showImage={false}
             />
             <Space paddingLeft={40} direction="vertical">
               {
