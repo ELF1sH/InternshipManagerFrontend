@@ -24,6 +24,8 @@ const NewInternshipModal = (
     setCompanySearchString,
     setVacancySearchString,
     patchinternshipByVacancy,
+    setIsModalOpenCreate,
+    setIsModalOpen,
   }:
    {
     filtredCompanies: CompanyWithVacancies[],
@@ -32,7 +34,9 @@ const NewInternshipModal = (
     patchinternshipByVacancy: ({ vacancyId, semester }: {
       vacancyId: number;
       semester: number;
-  }) => void
+  }) => Promise<void>
+  setIsModalOpenCreate:(val: boolean) => void,
+  setIsModalOpen:(val: boolean) => void
 },
 ) => {
   const [selectedVacancy, setSelecetedVacancy] = useState<number>();
@@ -126,7 +130,7 @@ const NewInternshipModal = (
           </Space>
         ))}
 
-      <Button type="primary">Моей стажировки нет в этом списке</Button>
+      <Button type="primary" onClick={() => setIsModalOpenCreate(true)}>Моей стажировки нет в этом списке</Button>
 
       <Space direction="vertical" gap={16}>
         <Text>Укажите номер семестра</Text>
@@ -146,7 +150,9 @@ const NewInternshipModal = (
           disabled={!selectedVacancy || !semester}
           onClick={() => {
             if (selectedVacancy && semester) {
-              patchinternshipByVacancy({ vacancyId: selectedVacancy, semester });
+              patchinternshipByVacancy({ vacancyId: selectedVacancy, semester }).then(() => {
+                setIsModalOpen(false);
+              });
             }
           }}
         >
@@ -159,12 +165,49 @@ const NewInternshipModal = (
   );
 };
 
+const NewInternshipModalCreate = ({ setIsModalOpenCreate }:
+   {setIsModalOpenCreate:(val: boolean) => void}) => {
+  const { createInternship } = useProfilePageViewModel();
+  return (
+
+    <Form
+      layout="vertical"
+      style={{ width: '100%' }}
+      onFinish={(vals) => {
+        createInternship(vals).then(() => {
+          setIsModalOpenCreate(false);
+        });
+      }}
+    >
+      <Space gap={20} direction="vertical">
+        <Form.Item name="companyName" label="Компания" style={{ width: '100%' }}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="semester" label="Вакансия" style={{ width: '100%' }}>
+          <InputNumber
+            placeholder="Номер семестра"
+            min={1}
+            max={8}
+          />
+        </Form.Item>
+      </Space>
+
+      <Form.Item style={{ marginTop: '32px' }}>
+        <Button type="primary" htmlType="submit">
+          Создать
+        </Button>
+      </Form.Item>
+    </Form>
+
+  );
+};
+
 const ProfilePageView: React.FC = () => {
   const { handleOpenModal } = useUploadReportModal();
   const { internshipHistory } = useProfilePageViewModel();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isModalOpenCreate, setIsModalOpenCreate] = useState(false);
   const {
     filtredCompanies: filtredCompaniesPromise,
     companiesWithVacancies,
@@ -197,7 +240,19 @@ const ProfilePageView: React.FC = () => {
           setCompanySearchString={setCompanySearchString}
           setVacancySearchString={setVacancySearchString}
           patchinternshipByVacancy={patchinternshipByVacancy}
+          setIsModalOpenCreate={setIsModalOpenCreate}
+          setIsModalOpen={setIsModalOpen}
         />
+      </Modal>
+
+      <Modal
+        open={isModalOpenCreate}
+        onCancel={() => setIsModalOpenCreate(false)}
+        width={600}
+        title="Добавить новое место стажировки"
+        footer={null}
+      >
+        <NewInternshipModalCreate setIsModalOpenCreate={setIsModalOpenCreate} />
       </Modal>
 
       <ProfileHeader />

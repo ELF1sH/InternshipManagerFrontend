@@ -8,7 +8,8 @@ import { GetIntershipHistoryUseCase } from 'domain/useCases/profiles/GetIntershi
 import { internshipHistoryRepository } from 'domain/repositories/api/IntershipHistoryRepository';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
-import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase';
+import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
+import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase copy';
 
 import { ProfilePageViewModelContext } from 'pages/profile/viewModel/context';
 import { ProfilePageViewModel } from 'pages/profile/viewModel';
@@ -35,6 +36,10 @@ const ProfilePageProvider: React.FC = () => {
     requestCallback: internshipHistoryRepository.patchByVacancy,
   });
 
+  const createInternshipUseCase = new PostIntershipUseCase({
+    requestCallback: internshipHistoryRepository.postInternship,
+  });
+
   const viewModel = useMemo(
     () => new ProfilePageViewModel(
       getProfileUseCase,
@@ -42,6 +47,7 @@ const ProfilePageProvider: React.FC = () => {
       getIntershipHistoryUseCase,
       getVacancyListUseCase,
       patchInternshipUseCase,
+      createInternshipUseCase,
     ),
     [],
   );

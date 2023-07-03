@@ -12,7 +12,8 @@ import { IInternshipHistory } from 'domain/entities/intershipHistory';
 import { GetIntershipHistoryUseCase } from 'domain/useCases/profiles/GetIntershipHistoryUseCase';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { IVacancy } from 'domain/entities/vacancy';
-import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase';
+import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase copy';
+import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
@@ -33,6 +34,7 @@ export class ProfilePageViewModel {
     private _getInternshipHistory: GetIntershipHistoryUseCase,
     private _getVacancies: GetVacancyListUseCase,
     private _patchinternshipByVacancy: PatchIntershipHistoryByVacancyUseCase,
+    private _createInternshipByVacancy: PostIntershipUseCase,
   ) {
     makeObservable(this);
   }
@@ -157,6 +159,17 @@ export class ProfilePageViewModel {
      semester: number}) => this._patchinternshipByVacancy.fetch({
     payload: { vacancyId, semester },
     onSuccess: () => {
+      this.initRequests();
+      this.pageStatus.onEndRequest();
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public createInternship = ({ companyName, semester }:{companyName: string,
+    semester: number}) => this._createInternshipByVacancy.fetch({
+    payload: { companyName, semester },
+    onSuccess: () => {
+      this.initRequests();
       this.pageStatus.onEndRequest();
     },
     onError: () => { throw new Error(); },

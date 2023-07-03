@@ -15,6 +15,13 @@ class InternshipHistoryRepository implements IInternshipHistoryRepository {
   ) => axiosInstance
     .patch(`/internships/vacancies/${payload.vacancyId}`, { semester: payload.semester })
     .then(() => {});
+
+  public postInternship = (
+    payload:
+      { companyName: string; semester: number; },
+  ) => axiosInstance
+    .post('/internship', { semester: payload.semester, companyName: payload.companyName })
+    .then(() => {});
 }
 
 export const internshipHistoryRepository = new InternshipHistoryRepository();
