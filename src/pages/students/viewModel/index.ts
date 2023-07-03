@@ -2,6 +2,7 @@ import {
   action, computed, makeObservable, observable, runInAction,
 } from 'mobx';
 
+import { GetSelectionsByStudentUseCase } from 'domain/useCases/vacancy/GetSelectionsByStudentUseCase';
 import { IAddStudentResponse, IAddStudentsListPayload } from 'domain/repositories/api/interfaces/IStudentsRepository';
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
 import { IStudent } from 'domain/entities/student';
@@ -30,6 +31,7 @@ export class StudentsPageViewModel {
     private _addStudentsList: AddStudentsListUseCase,
     private _getCandidatesList: GetCandidateListUseCase,
     private _patchSelection: PatchSelectionUseCase,
+    public getSelectionsByStudent: GetSelectionsByStudentUseCase,
   ) {
     makeObservable(this);
   }

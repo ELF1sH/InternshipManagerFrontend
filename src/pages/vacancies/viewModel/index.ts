@@ -72,6 +72,7 @@ export class VacanciesPageViewModel {
       return {
         id,
         name,
+        imageUrl,
         vacancies: groupedVacancies,
         minQuantity,
         maxQuantity,

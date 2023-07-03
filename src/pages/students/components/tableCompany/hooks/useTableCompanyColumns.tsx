@@ -11,42 +11,7 @@ import { SelectionStatus } from 'domain/entities/selection';
 
 import { useSendStudentVerdictModal } from 'pages/students/modals/sendStudentVerdictModal/useSendStudentVerdictModal';
 
-const getOfferStatusColor = (status?: SelectionStatus) => {
-  switch (status) {
-    case SelectionStatus.ACCEPTED_OFFER:
-      return 'green';
-    case SelectionStatus.REJECTED_OFFER:
-      return 'red';
-    default:
-      return 'black';
-  }
-};
-
-const getVerdictStatusColor = (status?: SelectionStatus) => {
-  switch (status) {
-    case SelectionStatus.GOT_OFFER:
-    case SelectionStatus.ACCEPTED_OFFER:
-    case SelectionStatus.REJECTED_OFFER:
-      return 'green';
-    case SelectionStatus.LOST_OFFER:
-      return 'red';
-    default:
-      return 'black';
-  }
-};
-
-const getInterviewColor = (status?: SelectionStatus) => {
-  switch (status) {
-    case SelectionStatus.PASSED_INTERVIEW:
-    case SelectionStatus.GOT_OFFER:
-    case SelectionStatus.ACCEPTED_OFFER:
-    case SelectionStatus.REJECTED_OFFER:
-    case SelectionStatus.LOST_OFFER:
-      return 'green';
-    default:
-      return 'black';
-  }
-};
+import { getInterviewColor, getOfferStatusColor, getVerdictStatusColor } from 'utils/colors/selectionStatusColors';
 
 const getTitle = (status?: SelectionStatus) => {
   switch (status) {

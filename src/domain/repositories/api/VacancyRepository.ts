@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import { IGetVacancyListResponse } from 'domain/repositories/api/interfaces/IStudentsRepository';
 import {
-  ICreateOrEditVacancyPayload,
+  ICreateOrEditVacancyPayload, IGetSelectionsByStudentPayload,
   IGetSelectionsListResponse,
   IPatchSelectionPayload, IVacancyRepository,
 } from 'domain/repositories/api/interfaces/IVacancyRepository';
@@ -40,6 +40,10 @@ class VacancyRepository implements IVacancyRepository {
 
   public getSelectionsList = () => axiosInstance
     .get('/selections')
+    .then((response: AxiosResponse<IGetSelectionsListResponse>) => response.data);
+
+  public getSelectionsByStudent = ({ studentId }: IGetSelectionsByStudentPayload) => axiosInstance
+    .get(`/students/${studentId}/selections`)
     .then((response: AxiosResponse<IGetSelectionsListResponse>) => response.data);
 
   public patchSelection = ({ id, status }: IPatchSelectionPayload) => axiosInstance

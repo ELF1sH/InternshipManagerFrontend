@@ -11,6 +11,8 @@ import Space from 'components/ui/atoms/space/Space';
 
 import { IStudent } from 'domain/entities/student';
 
+import ExpandedRow from 'pages/students/components/tableDean/components/expandedRow/ExpandedRow';
+import { getDataSource } from 'pages/students/components/tableDean/helpers/getDataSource';
 import { useImportStudentsViaCSVModal } from 'pages/students/modals/importStudentsViaCSV';
 import { useTableDeanColumns } from 'pages/students/components/tableDean/hooks/useTableDeanColumns';
 import { useStudentsPageViewModel } from 'pages/students/viewModel/context';
@@ -27,9 +29,7 @@ const TableDean: React.FC = () => {
 
   const { open } = useStudentEntityDrawer();
 
-  const [filtredStudents, setFiltredStudents] = useState<
-  IStudent[]
-  >(studentsList);
+  const [filtredStudents, setFiltredStudents] = useState<IStudent[]>(studentsList);
 
   useEffect(() => {
     filtredStudentsPromise.then((val) => {
@@ -62,17 +62,14 @@ const TableDean: React.FC = () => {
 
         <Table
           columns={columns}
-          dataSource={filtredStudents.map(({
-            firstname, lastname, patronymic, company, groupNumber, id,
-          }) => ({
-            company: company?.name ?? '--',
-            groupNumber: groupNumber ?? '--',
-            name: `${lastname ?? ''} ${firstname ?? ''} ${patronymic ?? ''}`,
-            key: id,
-          }))}
+          dataSource={getDataSource(filtredStudents)}
           onRow={(record, rowIndex) => ({
             onClick: () => open(record.key.toString()),
           })}
+          expandable={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            expandedRowRender: (record) => <ExpandedRow id={record.key} />,
+          }}
         />
       </Space>
     </>

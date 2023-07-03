@@ -31,6 +31,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ companiesWithVacancies })
       <Empty description="Ничего не найдено" />
     );
   }
+
   return (
     <>
       {
