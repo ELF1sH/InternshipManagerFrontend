@@ -18,19 +18,9 @@ class DiaryTemplateRepository implements IDiaryTemplateRepository {
     })
     .then((response: AxiosResponse) => response.data);
 
-  public postDiaryTemplate = ({ file }: IPostDiaryTemplatePayload) => {
-    const formData = new FormData();
-    // @ts-ignore
-    formData.append('file', file);
-
-    return axiosInstance
-      .post('/diaries/templates', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response: AxiosResponse) => response.data);
-  };
+  public postDiaryTemplate = (payload: IPostDiaryTemplatePayload) => axiosInstance
+    .post('/diaries/templates', payload)
+    .then((response: AxiosResponse) => response.data);
 }
 
-const diaryTemplateRepository = new DiaryTemplateRepository();
+export const diaryTemplateRepository = new DiaryTemplateRepository();
