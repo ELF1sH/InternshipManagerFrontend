@@ -80,7 +80,6 @@ const ProfilePageView: React.FC = () => {
               key={id}
               name={company.name}
               beginningDate={`${startDate}, семестер ${semester} `}
-              button={<Button type="primary">Посмотреть фидбек</Button>}
               imgUrl={company.imageUrl}
             />
           ))
