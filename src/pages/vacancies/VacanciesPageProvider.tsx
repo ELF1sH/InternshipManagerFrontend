@@ -17,6 +17,7 @@ import { useNotifications } from 'modules/notification/useNotifications';
 import { VacanciesPageViewModel } from 'pages/vacancies/viewModel';
 import { VacanciesPageViewModelContext } from 'pages/vacancies/viewModel/context';
 import ClassesGridController from 'pages/vacancies/VacanciesPageController';
+import ClassesGridController2 from 'pages/vacancies/CompanyPageController';
 
 const VacanciesPageProvider: React.FC = () => {
   const { notifyError, notifySuccess } = useNotifications();
@@ -79,6 +80,7 @@ const VacanciesPageProvider: React.FC = () => {
   return (
     <VacanciesPageViewModelContext.Provider value={vacanciesPageViewModel}>
       <ClassesGridController />
+      <ClassesGridController2 />
     </VacanciesPageViewModelContext.Provider>
   );
 };

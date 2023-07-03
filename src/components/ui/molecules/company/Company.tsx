@@ -6,12 +6,13 @@ import { CompanyWrapper } from 'components/ui/molecules/company/styled';
 import Text from 'components/ui/atoms/text/Text';
 import Space from 'components/ui/atoms/space/Space';
 
-interface CompanyProps {
+export interface CompanyProps {
   name: string;
   minQuantity?: number;
   maxQuantity?: number;
   companyRole?: string;
   beginningDate?: string;
+  onClick?: void;
 }
 
 const Company: React.FC<CompanyProps> = ({
@@ -20,6 +21,7 @@ const Company: React.FC<CompanyProps> = ({
   minQuantity,
   companyRole,
   beginningDate,
+  onClick,
 }) => (
   <CompanyWrapper justifyContent="space-between" alignItems="center">
     <Space direction="vertical">

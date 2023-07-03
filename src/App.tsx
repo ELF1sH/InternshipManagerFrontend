@@ -12,6 +12,7 @@ import VacanciesPage from 'pages/vacancies/VacanciesPageProvider';
 import PreferencesPage from 'pages/preferences/PreferencesPageProvider';
 import ProfilePage from 'pages/profile/ProfilePageProvider';
 import StudentsPage from 'pages/students/StudentsPageProvider';
+import CompanyDetailsPageView from 'pages/vacancies/CompanyDetailsPageView';
 
 import { route } from 'utils/constants/route';
 
@@ -31,7 +32,7 @@ const App: React.FC = () => (
           <Route path={route.preferences} element={<PreferencesPage />} />
           <Route path={route.templates} element={<TemplatesPage />} />
           <Route path={route.students} element={<StudentsPage />} />
-
+          <Route path={route.company} element={<CompanyDetailsPageView />} />
           <Route path="*" element={<h1>NOT FOUND</h1>} />
         </Routes>
       </AuthorityProvider>
