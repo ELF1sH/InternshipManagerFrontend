@@ -76,6 +76,7 @@ export class VacanciesPageViewModel {
         vacancies: groupedVacancies,
         minQuantity,
         maxQuantity,
+        imageUrl,
       };
     });
   }

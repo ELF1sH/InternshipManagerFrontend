@@ -17,8 +17,17 @@ const ReportTemplates: React.FC = () => {
       <Title level={3}>Сданные дневники практик</Title>
       <Space gap={20} $wrap>
         {
-          diaries.map(({ id, filename, uploadDate }) => (
-            <ReportTemplate id={id} key={id} title={filename} turnInDate={uploadDate} />
+          diaries.map(({
+            id, filename, uploadDate, review, status,
+          }) => (
+            <ReportTemplate
+              id={id}
+              key={id}
+              title={filename}
+              turnInDate={uploadDate}
+              review={review}
+              status={status}
+            />
           ))
         }
       </Space>
