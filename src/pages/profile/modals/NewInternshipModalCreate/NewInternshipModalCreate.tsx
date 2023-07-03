@@ -8,8 +8,13 @@ import Button from 'components/ui/atoms/button/Button';
 
 import { useProfilePageViewModel } from 'pages/profile/viewModel/context';
 
-export const NewInternshipModalCreate = ({ setIsModalOpenCreate }:
-  {setIsModalOpenCreate:(val: boolean) => void}) => {
+interface NewInternshipModalCreateProps {
+  setIsModalOpenCreate:(val: boolean) => void
+}
+
+export const NewInternshipModalCreate = (
+  { setIsModalOpenCreate }: NewInternshipModalCreateProps,
+) => {
   const { createInternship } = useProfilePageViewModel();
   return (
 
