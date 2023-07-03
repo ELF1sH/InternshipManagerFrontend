@@ -5,13 +5,16 @@ import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
 import { profilesRepository } from 'domain/repositories/api/interfaces/ProfilesRepository';
 import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 import { GetIntershipHistoryUseCase } from 'domain/useCases/profiles/GetIntershipHistoryUseCase';
-import { internshipHistoryRepository } from 'domain/repositories/api/IntershipHistoryRepository';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';
 import { vacancyRepository } from 'domain/repositories/api/VacancyRepository';
 import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
 import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/PatchIntershipHistoryByVacancyUseCase copy';
 import { GetFeedbackListUseCase } from 'domain/useCases/feedback/GetFeedbackListUseCase';
 import { feedbackRepository } from 'domain/repositories/api/FeedbackRepository';
+import { GetStudentUseCase } from 'domain/useCases/students/GetStudentUseCase';
+import { studentsRepository } from 'domain/repositories/api/StudentsRepository';
+import { GetIntershipHistoryByIdUseCase } from 'domain/useCases/profiles/GetIntershipHistoryByIdUseCase';
+import { internshipHistoryRepository } from 'domain/repositories/api/IntershipHistoryRepository';
 
 import { ProfilePageViewModelContext } from 'pages/profile/viewModel/context';
 import { ProfilePageViewModel } from 'pages/profile/viewModel';
@@ -46,6 +49,14 @@ const ProfilePageProvider: React.FC = () => {
     requestCallback: feedbackRepository.getList,
   });
 
+  const getStudentUseCase = new GetStudentUseCase({
+    requestCallback: studentsRepository.getStudent,
+  });
+
+  const getIntershipHistoryByIdUseCase = new GetIntershipHistoryByIdUseCase({
+    requestCallback: internshipHistoryRepository.getListById,
+  });
+
   const viewModel = useMemo(
     () => new ProfilePageViewModel(
       getProfileUseCase,
@@ -55,6 +66,8 @@ const ProfilePageProvider: React.FC = () => {
       patchInternshipUseCase,
       createInternshipUseCase,
       getFeedbackUseCase,
+      getStudentUseCase,
+      getIntershipHistoryByIdUseCase,
     ),
     [],
   );

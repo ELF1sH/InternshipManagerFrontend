@@ -16,8 +16,13 @@ import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/
 import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
 import { GetFeedbackListUseCase } from 'domain/useCases/feedback/GetFeedbackListUseCase';
 import { IFeedback } from 'domain/entities/feedback';
+import { GetStudentUseCase } from 'domain/useCases/students/GetStudentUseCase';
+import { GetIntershipHistoryByIdUseCase } from 'domain/useCases/profiles/GetIntershipHistoryByIdUseCase';
+
+import { UserRole } from 'modules/authority/enums/UserRole';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
+import { userStore } from 'storesMobx/stores/UserStore';
 
 export class ProfilePageViewModel {
   @observable public pageStatus = new LoadStatus(true);
@@ -40,6 +45,8 @@ export class ProfilePageViewModel {
     private _patchinternshipByVacancy: PatchIntershipHistoryByVacancyUseCase,
     private _createInternshipByVacancy: PostIntershipUseCase,
     private _getFeedbackList: GetFeedbackListUseCase,
+    private _getStudentById: GetStudentUseCase,
+    private _getInternshipHistoryById: GetIntershipHistoryByIdUseCase,
   ) {
     makeObservable(this);
   }
@@ -103,13 +110,26 @@ export class ProfilePageViewModel {
     });
   }
 
-  @action public initRequests = () => {
-    Promise.all([this.getProfile(), this.getDiaries(),
-      this.getInternshipHistory(), this.getVacancies()])
+  @action public initRequests = (profileId?: number) => {
+    const promises = [this.getProfile()];
+
+    console.log(profileId);
+    if (userStore.role === UserRole.UNIVERSITY_DEPARTMENT && profileId) {
+      promises.push(
+        this.getStudentById(profileId),
+        this.getInternshipHistoryById(profileId),
+      );
+    } else if (userStore.role === UserRole.STUDENT) {
+      promises.push(
+        this.getDiaries(),
+        this.getInternshipHistory(),
+        this.getVacancies(),
+      );
+    }
+
+    Promise.all(promises)
       .then(() => {
-        this.getFeedback(this.profile?.id || 0).then(() => {
-          this.pageStatus.onEndRequest();
-        });
+        this.pageStatus.onEndRequest();
       })
       .catch(() => {
         this.pageStatus.onEndRequest(false);
@@ -191,4 +211,28 @@ export class ProfilePageViewModel {
     },
     onError: () => { throw new Error(); },
   });
+
+  @action public getStudentById = (payload: number) => this._getStudentById.fetch({
+    payload: { id: payload },
+    onSuccess: (student) => {
+      this.profile = {
+        ...student,
+        role: 'DEAN',
+      };
+
+      this.pageStatus.onEndRequest();
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public getInternshipHistoryById = (payload: number) => this
+    ._getInternshipHistoryById.fetch({
+      payload,
+      onSuccess: (history) => {
+        this.internshipHistory = history;
+
+        this.pageStatus.onEndRequest();
+      },
+      onError: () => { throw new Error(); },
+    });
 }

@@ -22,6 +22,10 @@ class InternshipHistoryRepository implements IInternshipHistoryRepository {
   ) => axiosInstance
     .post('/internship', { semester: payload.semester, companyName: payload.companyName })
     .then(() => {});
+
+  public getListById = (id: number) => axiosInstance
+    .get(`/internship/history/${id}`)
+    .then((response: AxiosResponse<IInternshipHistory[]>) => response.data);
 }
 
 export const internshipHistoryRepository = new InternshipHistoryRepository();
