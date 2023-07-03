@@ -63,27 +63,26 @@ const VacanciesPageView: React.FC = () => {
 
         <Space direction="vertical" gap={20}>
           {
-          companiesWithVacancies[0].vacancies
-            .map((val, idx) => (
-              <CompanyVacancy
-                key={idx}
-                name={val.name}
-                stacks={val.vacancies}
-                deleteVacancy={deleteVacancy}
-                onEditHandler={(val) => {
-                  openModal({
-                    formTitle: 'Редактирование компании',
-                    content: <NewVacancyModal
-                      addOrEditVacancy={editVacancy}
-                      defaultValues={val}
-                      buttonText="Сохранить изменения"
-                      closeModal={closeModal}
-                    />,
-                    footer: false,
-                  });
-                }}
-              />
-            ))
+          companiesWithVacancies?.[0]?.vacancies?.map((val, idx) => (
+            <CompanyVacancy
+              key={idx}
+              name={val.name}
+              stacks={val.vacancies}
+              deleteVacancy={deleteVacancy}
+              onEditHandler={(val) => {
+                openModal({
+                  formTitle: 'Редактирование компании',
+                  content: <NewVacancyModal
+                    addOrEditVacancy={editVacancy}
+                    defaultValues={val}
+                    buttonText="Сохранить изменения"
+                    closeModal={closeModal}
+                  />,
+                  footer: false,
+                });
+              }}
+            />
+          ))
             }
         </Space>
 

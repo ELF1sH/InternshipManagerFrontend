@@ -51,7 +51,7 @@ export class VacanciesPageViewModel {
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
     const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
 
-    return companiesList.map(({ id, name }) => {
+    return companiesList.map(({ id, name, imageUrl }) => {
       const vacancies = this.vacanciesList.filter((vac) => vac.company.id === id);
 
       const minQuantity = vacancies.reduce((acc, cur) => acc + cur.minimumQuantity, 0);
@@ -75,6 +75,7 @@ export class VacanciesPageViewModel {
         vacancies: groupedVacancies,
         minQuantity,
         maxQuantity,
+        imageUrl,
       };
     });
   }

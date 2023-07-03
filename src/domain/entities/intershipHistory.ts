@@ -6,4 +6,5 @@ export interface IInternshipHistory {
   orderNumber: number;
   startDate: string
   endDate: string;
+  semester: number
 }

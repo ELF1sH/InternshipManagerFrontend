@@ -8,6 +8,13 @@ class InternshipHistoryRepository implements IInternshipHistoryRepository {
   public getList = () => axiosInstance
     .get('/internship/history')
     .then((response: AxiosResponse<IInternshipHistory[]>) => response.data);
+
+  public patchByVacancy = (
+    payload:
+    { vacancyId: number; semester: number; },
+  ) => axiosInstance
+    .patch(`/internships/vacancies/${payload.vacancyId}`, { semester: payload.semester })
+    .then(() => {});
 }
 
 export const internshipHistoryRepository = new InternshipHistoryRepository();
