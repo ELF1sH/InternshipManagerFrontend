@@ -95,7 +95,9 @@ const ReportTemplate: React.FC<ReportTemplateProps> = ({
     cardActions.push(
       <EditOutlined
         onClick={() => {
-          clickEditHandler?.({ id, title, description });
+          clickEditHandler?.({
+            id, title, description, review, status,
+          });
         }}
         key="edit"
       />,

@@ -24,5 +24,6 @@ export const pathAccess: Record<UserRole, AppRoute[]> = {
     route.students,
     route.templates,
     route.profile,
+    route.diaries,
   ],
 };

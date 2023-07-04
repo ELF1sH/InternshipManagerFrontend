@@ -64,6 +64,10 @@ const links: Record<UserRole, SidebarLink[]> = {
       text: 'Шаблоны дневников практик',
       to: route.templates,
       icon: ClassesIcon,
+    }, {
+      text: 'Сданные дневники практик',
+      to: route.diaries,
+      icon: ClassesIcon,
     },
   ],
 };

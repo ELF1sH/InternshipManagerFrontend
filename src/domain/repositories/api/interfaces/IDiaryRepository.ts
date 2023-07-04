@@ -1,7 +1,7 @@
 import { IDiary } from 'domain/entities/diary';
 
 export interface IDiaryRepository {
-  getList: () => Promise<IDiary[]>;
+  getDiaries: () => Promise<IDiary[]>;
   getDiary: (payload: IGetDiaryPayload) => Promise<File>;
   postDiary: (payload: IPostDiaryPayload) => Promise<undefined>;
 }
