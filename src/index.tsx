@@ -27,19 +27,19 @@ root.render(
   <MobxStoreProvider>
     <ThemeProviderAnt>
       <ThemeProviderStyledComponents>
-        <EntityDrawerProvider>
-          <NotificationsProvider>
-            <ModalConfirmProvider>
-              <ModalProvider>
-                <BrowserRouter>
+        <BrowserRouter>
+          <EntityDrawerProvider>
+            <NotificationsProvider>
+              <ModalConfirmProvider>
+                <ModalProvider>
                   <AuthenticationProvider>
                     <App />
                   </AuthenticationProvider>
-                </BrowserRouter>
-              </ModalProvider>
-            </ModalConfirmProvider>
-          </NotificationsProvider>
-        </EntityDrawerProvider>
+                </ModalProvider>
+              </ModalConfirmProvider>
+            </NotificationsProvider>
+          </EntityDrawerProvider>
+        </BrowserRouter>
       </ThemeProviderStyledComponents>
     </ThemeProviderAnt>
   </MobxStoreProvider>,

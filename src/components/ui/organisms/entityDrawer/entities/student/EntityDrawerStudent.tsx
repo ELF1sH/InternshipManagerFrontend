@@ -8,14 +8,18 @@ import WithLoader from 'components/ui/molecules/withLoader/WithLoader';
 import { drawerPlacement, drawerWidth } from 'components/ui/organisms/entityDrawer/constants';
 import { useEntityDrawerViewModel } from 'components/ui/organisms/entityDrawer/viewModel/context';
 
+import ProfilePageProvider from 'pages/profile/ProfilePageProvider';
+
 const ContentWithLoader = WithLoader(EntityDrawerStudentContent, true);
 
 const EntityDrawerStudent: React.FC = () => {
   const {
-    isOpened, close, getDrawerViewModel,
+    isOpened, close, getDrawerViewModel, id,
   } = useEntityDrawerViewModel();
 
   const vm = getDrawerViewModel(type);
+
+  console.log(id);
 
   return (
     <Drawer
@@ -25,7 +29,7 @@ const EntityDrawerStudent: React.FC = () => {
       open={isOpened(type)}
       onClose={() => close(type)}
     >
-      <ContentWithLoader isLoading={vm.pageStatus.isLoading} isFailed={vm.pageStatus.isFailed} />
+      <ProfilePageProvider id={id} />
     </Drawer>
   );
 };

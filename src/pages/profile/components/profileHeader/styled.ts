@@ -15,7 +15,7 @@ export const ProfileHeaderBg = styled.div<IChildren>`
   background-image: url(${profileBg});
   background-position: center;
   background-size: cover;
-  margin: -20px -30px;
+  margin: -20px -24px;
   
   position: relative;
   margin-bottom: 120px;

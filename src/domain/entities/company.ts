@@ -8,5 +8,5 @@ export interface ICompany {
   contactLastname: string
   contactPatronymic: string
   vacancies: IVacancy[]
-  imageUrl: string;
+  imageUrl?: string
 }

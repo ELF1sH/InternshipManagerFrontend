@@ -4,5 +4,5 @@ import { useEntityDrawerViewModel } from 'components/ui/organisms/entityDrawer/v
 export const useStudentEntityDrawer = () => {
   const { open } = useEntityDrawerViewModel();
 
-  return { open: (id: string) => open(EntityDrawerType.STUDENT, id) };
+  return { open: (id: number) => open(EntityDrawerType.STUDENT, id) };
 };

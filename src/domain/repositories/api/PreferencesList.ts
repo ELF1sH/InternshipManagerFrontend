@@ -25,6 +25,10 @@ export class PreferencesRepository implements IPreferencesRepository {
   public delete = ({ id }: IDeletePreferencePayload) => axiosInstance
     .delete(`/preferences/${id}`)
     .then((response: AxiosResponse<void>) => response.data);
+
+  public getListById = (payload: number) => axiosInstance
+    .get(`/students/${payload}/preferences`)
+    .then((response: AxiosResponse<IGetPreferencesListResponse>) => response.data);
 }
 
 export const preferencesRepository = new PreferencesRepository();

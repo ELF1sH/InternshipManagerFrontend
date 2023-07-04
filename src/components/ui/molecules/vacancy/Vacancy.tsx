@@ -5,16 +5,18 @@ import Space from 'components/ui/atoms/space/Space';
 import Text from 'components/ui/atoms/text/Text';
 import Actions from 'components/ui/molecules/vacancy/components/actions/Actions';
 
-import { ISelection } from 'domain/entities/selection';
+import { ISelection, SelectionStatus } from 'domain/entities/selection';
 import { IPreferenceItem } from 'domain/entities/preferences';
-
-import { UserRole } from 'modules/authority/enums/UserRole';
 
 import { useStore } from 'storesMobx/MobxStoreProvider';
 
 export interface VacancyProps {
  name: string;
  stacks: Stack[];
+ patchSelection?: (id: number, status: SelectionStatus) => Promise<void>
+ postPreference?: (id: number) => Promise<void>
+ addToSelections?: (payload: number) => Promise<void>
+ showActions?: boolean
 }
 
 export interface Stack {
@@ -29,6 +31,10 @@ export interface Stack {
 const Vacancy: React.FC<VacancyProps> = ({
   name,
   stacks,
+  patchSelection,
+  postPreference,
+  addToSelections,
+  showActions = true,
 }) => {
   const { role } = useStore().userStore;
 
@@ -62,8 +68,15 @@ const Vacancy: React.FC<VacancyProps> = ({
               </Space>
 
               {
-                role === UserRole.STUDENT && (
-                  <Actions id={id} isSelected={isSelected} isPreferenced={isPreferenced} />
+                showActions && (
+                  <Actions
+                    id={id}
+                    isSelected={isSelected}
+                    isPreferenced={isPreferenced}
+                    patchSelection={patchSelection}
+                    postPreference={postPreference}
+                    addToSelections={addToSelections}
+                  />
                 )
               }
             </StackWrapper>

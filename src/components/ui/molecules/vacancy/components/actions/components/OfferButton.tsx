@@ -6,6 +6,10 @@ import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
 
 import { ISelection, SelectionStatus } from 'domain/entities/selection';
 
+import { UserRole } from 'modules/authority/enums/UserRole';
+
+import { useStore } from 'storesMobx/MobxStoreProvider';
+
 interface OfferButtonProps {
   isSelected?: ISelection;
 }
@@ -23,28 +27,32 @@ const getColor = (status?: SelectionStatus) => {
   }
 };
 
-const getTooltipTitle = (status?: SelectionStatus) => {
+const getTooltipTitle = (userRole: UserRole, status?: SelectionStatus) => {
   switch (status) {
     case SelectionStatus.GOT_OFFER:
-      return 'Вы получили оффер';
+      return userRole === UserRole.STUDENT ? 'Вы получили оффер' : 'Студент получил оффер';
     case SelectionStatus.LOST_OFFER:
-      return 'Вы получили отказ';
+      return userRole === UserRole.STUDENT ? 'Вы получили отказ' : 'Студент получил отказ';
     default:
       return '';
   }
 };
 
-const OfferButton: React.FC<OfferButtonProps> = ({ isSelected }) => (
-  <Tooltip placement="left" title={getTooltipTitle(isSelected?.status)}>
-    <IconButton
-      size="large"
-      icon={<OfferIcon />}
-      style={{
-        color: getColor(isSelected?.status),
-      }}
-    />
-  </Tooltip>
+const OfferButton: React.FC<OfferButtonProps> = ({ isSelected }) => {
+  const { role } = useStore().userStore;
 
-);
+  return (
+    <Tooltip placement="left" title={getTooltipTitle(role, isSelected?.status)}>
+      <IconButton
+        size="large"
+        icon={<OfferIcon />}
+        style={{
+          color: getColor(isSelected?.status),
+        }}
+      />
+    </Tooltip>
+
+  );
+};
 
 export default OfferButton;

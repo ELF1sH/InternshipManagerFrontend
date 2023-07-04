@@ -6,18 +6,16 @@ import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 
 import { IPreferenceItem } from 'domain/entities/preferences';
 
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
-
 interface AddToPreferenceButtonProps {
   id: number;
   isPreferenced?: IPreferenceItem;
+  postPreference?: (id: number) => Promise<void>
 }
 
 const AddToPreferenceButton: React.FC<AddToPreferenceButtonProps> = ({
   id, isPreferenced,
+  postPreference,
 }) => {
-  const { postPreference } = useVacanciesPageViewModel();
-
   if (isPreferenced) {
     return <CheckCircleOutlined style={{ fontSize: '20px', color: 'green', marginRight: '30px' }} />;
   }
@@ -28,7 +26,7 @@ const AddToPreferenceButton: React.FC<AddToPreferenceButtonProps> = ({
         size="large"
         icon={<PlusCircleOutlined />}
         style={{ marginRight: '20px' }}
-        onClick={() => postPreference(id)}
+        onClick={() => postPreference?.(id)}
       />
     </Tooltip>
   );

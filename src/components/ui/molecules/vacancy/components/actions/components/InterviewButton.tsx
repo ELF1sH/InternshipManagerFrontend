@@ -11,25 +11,27 @@ import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import { ISelection } from 'domain/entities/selection';
 
 import { useConfirmModal } from 'modules/confirmModal/useConfirmModal';
+import { UserRole } from 'modules/authority/enums/UserRole';
 
-import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
+import { useStore } from 'storesMobx/MobxStoreProvider';
 
 interface InterviewButtonProps {
   id: number;
   isSelected?: ISelection;
+  addToSelections?: (payload: number) => Promise<void>
 }
 
 const InterviewButton: React.FC<InterviewButtonProps> = ({
   id,
   isSelected,
+  addToSelections,
 }) => {
-  const { addToSelections } = useVacanciesPageViewModel();
-
   const { showConfirm } = useConfirmModal({
     title: interviewConfirmationTitle,
     content: interviewConfirmationContent,
     cbOnOk: () => addToSelections?.(id),
   });
+  const { role } = useStore().userStore;
 
   if (!isSelected) {
     return (
@@ -45,7 +47,7 @@ const InterviewButton: React.FC<InterviewButtonProps> = ({
   }
 
   return (
-    <Tooltip title="Вы прошли этап испытаний" placement="left">
+    <Tooltip title={role === UserRole.STUDENT ? 'Вы прошли этап испытаний' : 'Студент прошёл этап испытаний'} placement="left">
       <IconButton
         size="large"
         icon={(<InterviewIcon style={{ transform: 'scale(0.8)', color: 'green' }} />)}
