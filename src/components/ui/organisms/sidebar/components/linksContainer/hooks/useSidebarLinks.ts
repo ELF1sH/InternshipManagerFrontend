@@ -23,7 +23,7 @@ const links: Record<UserRole, SidebarLink[]> = {
     },
     {
       text: 'Получение стажировки',
-      to: route.internship,
+      to: route.gettingInternship,
       icon: ClassesIcon,
     },
     {

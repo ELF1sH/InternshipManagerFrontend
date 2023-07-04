@@ -25,7 +25,7 @@ export const UserSectionTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content:center;
-  gap: 4px;
+  gap: 6px;
   height: 100%;
 `;
 

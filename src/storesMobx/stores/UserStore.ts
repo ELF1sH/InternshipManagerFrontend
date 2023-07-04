@@ -4,8 +4,8 @@ import {
 // eslint-disable-next-line import/no-named-default
 import { default as jwtDecode } from 'jwt-decode';
 
-import { IUser } from 'domain/entities/user';
 import { profilesRepository } from 'domain/repositories/api/ProfilesRepository';
+import { IUser } from 'domain/entities/user';
 import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 
