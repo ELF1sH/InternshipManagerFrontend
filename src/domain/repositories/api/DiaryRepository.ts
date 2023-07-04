@@ -7,6 +7,7 @@ import {
   IGetDiaryPayload,
   IPostDiaryPayload,
 } from 'domain/repositories/api/interfaces/IDiaryRepository';
+import { PatchDiaryUseCasePayload } from 'domain/useCases/diary/PatchDiarytUseCase';
 
 class DiaryRepository implements IDiaryRepository {
   public getDiaries = () => axiosInstance
@@ -36,6 +37,10 @@ class DiaryRepository implements IDiaryRepository {
   public getDiariesList = () => axiosInstance
     .get('/diaries/list')
     .then((response: AxiosResponse<IDiary[]>) => response.data);
+
+  public patchDiary = (payload: PatchDiaryUseCasePayload) => axiosInstance
+    .patch('/diaries/status', payload)
+    .then((response: AxiosResponse<IDiary>) => response.data);
 }
 
 export const diaryRepository = new DiaryRepository();

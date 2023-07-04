@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import { IDiary, IDiaryStatus } from 'domain/entities/diary';
 import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCase';
+import { PatchDiaryUseCase, PatchDiaryUseCasePayload } from 'domain/useCases/diary/PatchDiarytUseCase';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
@@ -15,6 +16,7 @@ export class DiariesPageViewModel {
 
   public constructor(
     private _getDiariesList: GetDiariesListUseCase,
+    private _patchDiary: PatchDiaryUseCase,
   ) {
     makeObservable(this);
   }
@@ -80,6 +82,17 @@ export class DiariesPageViewModel {
     payload: undefined,
     onSuccess: (diaries) => {
       this.diaries = diaries;
+      this.pageStatus.onEndRequest();
+    },
+    onError: () => {
+      this.pageStatus.onEndRequest(false);
+    },
+  });
+
+  @action public patchDiary = (payload: PatchDiaryUseCasePayload) => this._patchDiary.fetch({
+    payload,
+    onSuccess: () => {
+      this.initRequests();
       this.pageStatus.onEndRequest();
     },
     onError: () => {

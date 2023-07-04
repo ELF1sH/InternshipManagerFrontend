@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCase';
 import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
+import { PatchDiaryUseCase } from 'domain/useCases/diary/PatchDiarytUseCase';
 
 import { DiariesPageViewModel } from 'pages/diaries/viewModel';
 import { DiariesPageViewModelContext } from 'pages/diaries/viewModel/context';
@@ -12,8 +13,12 @@ const DiariesPageProvider: React.FC = () => {
     requestCallback: diaryRepository.getDiariesList,
   });
 
+  const patchDiaryUseCase = new PatchDiaryUseCase({
+    requestCallback: diaryRepository.patchDiary,
+  });
+
   const viewModel = useMemo(
-    () => new DiariesPageViewModel(getDiariesUseCase),
+    () => new DiariesPageViewModel(getDiariesUseCase, patchDiaryUseCase),
     [],
   );
 
