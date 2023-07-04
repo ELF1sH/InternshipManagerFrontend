@@ -4,6 +4,7 @@ import {
 
 import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 
+import { ICompany } from 'domain/entities/company';
 import { SelectionStatus } from 'domain/entities/selection';
 import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
 import { PostPreferenceUseCase } from 'domain/useCases/preferences/PostPreferenceUseCase';
@@ -46,7 +47,27 @@ export class VacanciesPageViewModel {
     makeObservable(this);
   }
 
-  @computed public get companiesWithVacancies(): CompanyWithVacancies[] {
+  @computed public get companiesWithVacancies(): {
+    vacancies: {
+      vacancies: {
+        isPreferenced: IPreferenceItem | undefined;
+        techStack: string;
+        imageUrl?: string;
+        name: string;
+        isSelected: any;
+        company: Omit<ICompany, 'vacancies'>;
+        id: number;
+        minimumQuantity: number;
+        maximumQuantity: number
+      }[];
+      name: string
+    }[];
+    minQuantity: number;
+    maxQuantity: number;
+    imageUrl: string | undefined;
+    name: string;
+    id: number
+  }[] {
     const companies = this.vacanciesList.map((vacancy) => vacancy.company);
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
     const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);

@@ -21,7 +21,7 @@ export interface CompanyWithVacancies {
   name: string;
   minQuantity: number;
   maxQuantity: number;
-  imageUrl: string;
+  imageUrl?: string;
   vacancies: GroupedVacancy[];
 }
 
