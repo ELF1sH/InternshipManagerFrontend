@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import avatar from 'assets/avatar.png';
 
@@ -8,34 +9,40 @@ import {
 
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 
+import { useStore } from 'storesMobx/MobxStoreProvider';
+
 import { route } from 'utils/constants/route';
 
 interface UserSectionViewProps {
   isSidebarCollapsed: boolean
 }
 
-const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed }) => (
-  <UserSection isSidebarCollapsed={isSidebarCollapsed}>
-    <UserAvatar alt="User avatar" src={avatar} />
+const UserSectionView: React.FC<UserSectionViewProps> = ({ isSidebarCollapsed }) => {
+  const { user } = useStore().userStore;
 
-    {!isSidebarCollapsed && (
-      <UserSectionTextWrapper>
-        <UsernameLink>Иванов Иван Иванович</UsernameLink>
-        <UserLinksWrapper>
-          <UserLink to={route.settings}>Настройки</UserLink>
+  return (
+    <UserSection isSidebarCollapsed={isSidebarCollapsed}>
+      <UserAvatar alt="User avatar" src={avatar} />
 
-          <UserLink
-            href={route.base}
-            onClick={() => {
-              tokenRepository.removeAccessToken();
-            }}
-          >
-            Выйти
-          </UserLink>
-        </UserLinksWrapper>
-      </UserSectionTextWrapper>
-    )}
-  </UserSection>
-);
+      {!isSidebarCollapsed && (
+        <UserSectionTextWrapper>
+          <UsernameLink>{`${user?.lastname} ${user?.firstname} ${user?.patronymic}`}</UsernameLink>
+          <UserLinksWrapper>
+            <UserLink to={route.settings}>Настройки</UserLink>
 
-export default UserSectionView;
+            <UserLink
+              href={route.base}
+              onClick={() => {
+                tokenRepository.removeAccessToken();
+              }}
+            >
+              Выйти
+            </UserLink>
+          </UserLinksWrapper>
+        </UserSectionTextWrapper>
+      )}
+    </UserSection>
+  );
+};
+
+export default observer(UserSectionView);

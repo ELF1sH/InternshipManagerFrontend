@@ -186,7 +186,6 @@ export class VacanciesPageViewModel {
   @action private getProfile = () => this._getProfile.fetch({
     payload: undefined,
     onSuccess: (profile) => {
-      console.log(profile);
       this.profile = profile;
     },
   });

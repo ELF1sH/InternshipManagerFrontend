@@ -1,7 +1,12 @@
-import { action, makeObservable, observable } from 'mobx';
+import {
+  action, makeObservable, observable, runInAction,
+} from 'mobx';
 // eslint-disable-next-line import/no-named-default
 import { default as jwtDecode } from 'jwt-decode';
 
+import { IUser } from 'domain/entities/user';
+import { profilesRepository } from 'domain/repositories/api/ProfilesRepository';
+import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 import { tokenRepository } from 'domain/repositories/other/TokenRepository';
 
 import { UserRole, UserRoleBackend } from 'modules/authority/enums/UserRole';
@@ -13,16 +18,33 @@ export class UserStore {
 
   @observable public isAuthenticated: boolean = !!tokenRepository.getAccessToken();
 
-  public constructor() {
+  @observable public user: IUser | undefined;
+
+  public constructor(
+    private _getProfile: GetProfileUseCase,
+  ) {
     makeObservable(this);
 
     const accessToken = tokenRepository.getAccessToken();
 
     if (accessToken) {
-      const decoded = jwtDecode(tokenRepository.getAccessToken() ?? '') as IDecodedJWT;
+      const decoded = jwtDecode(accessToken) as IDecodedJWT;
       this.setRole(decoded.role);
     }
   }
+
+  @action public getProfile = () => {
+    if (!this.isAuthenticated) return;
+
+    this._getProfile.fetch({
+      payload: undefined,
+      onSuccess: (user) => {
+        runInAction(() => {
+          this.user = user;
+        });
+      },
+    });
+  };
 
   @action public onAuthenticateSuccess = () => {
     this.isAuthenticated = true;
@@ -54,4 +76,8 @@ export class UserStore {
   };
 }
 
-export const userStore = new UserStore();
+const getProfile = new GetProfileUseCase({
+  requestCallback: profilesRepository.getProfile,
+});
+
+export const userStore = new UserStore(getProfile);
