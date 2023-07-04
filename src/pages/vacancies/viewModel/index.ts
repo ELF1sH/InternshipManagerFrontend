@@ -37,6 +37,8 @@ export class VacanciesPageViewModel {
 
   @observable private companyList: ICompany[] = [];
 
+  @observable private company: ICompany | undefined;
+
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _addVacany: AddVacancyUseCase,
@@ -222,7 +224,7 @@ export class VacanciesPageViewModel {
 
   @action public addCompany = (payload: any) => this._addCompany.fetch({
     payload,
-    onSuccess: (newCompany) => { this.companyList.push(newCompany); },
+    onSuccess: (newCompany) => { this.company = newCompany; },
     onError: () => { throw new Error(); },
   });
 }
