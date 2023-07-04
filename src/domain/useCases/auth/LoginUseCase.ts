@@ -47,13 +47,15 @@ export class LoginUseCase extends APIUseCase<ILoginPayload, ILoginResponse> {
         const authToken = response?.authToken;
         const refreshToken = response?.refreshToken;
 
-        const decoded = jwtDecode(authToken) as IDecodedJWT;
-
-        this.userStore.setRole(decoded.role);
-
         if (authToken) {
+          const decoded = jwtDecode(authToken) as IDecodedJWT;
+          this.userStore.setRole(decoded.role);
+
           this.tokenRepository?.setAccessToken(authToken);
           this.tokenRepository?.setRefreshToken(refreshToken);
+
+          this.userStore.onAuthenticateSuccess();
+          this.userStore.getProfile();
 
           switch (decoded.role) {
             case UserRoleBackend.UNVERIFIED_STUDENT:
