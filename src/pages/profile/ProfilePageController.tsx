@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useSearchParams } from 'react-router-dom';
 
 import WithLoader from 'components/ui/molecules/withLoader/WithLoader';
 
@@ -9,16 +8,20 @@ import ProfilePageView from 'pages/profile/ProfilePageView';
 
 const ProfilePageViewWithLoader = WithLoader(ProfilePageView, true);
 
-const ProfilePageController: React.FC = () => {
+interface ProfilePageControllerProps {
+  id?: number;
+}
+
+const ProfilePageController: React.FC<ProfilePageControllerProps> = ({ id }) => {
   const { pageStatus, initRequests } = useProfilePageViewModel();
 
-  const [searchParams] = useSearchParams();
+  console.log(id);
 
   useEffect(() => {
     (async () => {
-      await initRequests(Number(searchParams.get('id')));
+      await initRequests(id);
     })();
-  }, []);
+  }, [id]);
 
   return (
     <ProfilePageViewWithLoader

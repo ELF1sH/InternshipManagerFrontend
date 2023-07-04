@@ -71,7 +71,7 @@ const TableDean: React.FC = () => {
             key: id,
           }))}
           onRow={(record, rowIndex) => ({
-            onClick: () => open(record.key.toString()),
+            onClick: () => open(record.key),
           })}
         />
       </Space>

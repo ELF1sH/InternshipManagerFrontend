@@ -24,7 +24,11 @@ import { ProfilePageViewModelContext } from 'pages/profile/viewModel/context';
 import { ProfilePageViewModel } from 'pages/profile/viewModel';
 import ProfilePageController from 'pages/profile/ProfilePageController';
 
-const ProfilePageProvider: React.FC = () => {
+interface ProfilePageProviderProps {
+  id?: number;
+}
+
+const ProfilePageProvider: React.FC<ProfilePageProviderProps> = ({ id }) => {
   const getProfileUseCase = new GetProfileUseCase({
     requestCallback: profilesRepository.getProfile,
   });
@@ -93,7 +97,7 @@ const ProfilePageProvider: React.FC = () => {
 
   return (
     <ProfilePageViewModelContext.Provider value={viewModel}>
-      <ProfilePageController />
+      <ProfilePageController id={id} />
     </ProfilePageViewModelContext.Provider>
   );
 };
