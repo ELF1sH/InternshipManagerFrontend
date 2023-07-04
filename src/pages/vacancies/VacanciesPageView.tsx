@@ -14,6 +14,7 @@ import { CompanyVacancy } from 'pages/vacancies/components/companyVacancy/Compan
 import { NewVacancyModal } from 'pages/vacancies/components/newVacancyModal/NewVacancyModal';
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
+import NewCompanyModal from 'pages/vacancies/components/newCompanyModal/NewCompanyModal';
 
 import { userStore } from 'storesMobx/stores/UserStore';
 
@@ -27,6 +28,7 @@ const VacanciesPageView: React.FC = () => {
     patchSelection,
     postPreference,
     addToSelections,
+    addCompanies,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
@@ -88,14 +90,27 @@ const VacanciesPageView: React.FC = () => {
           ))
             }
         </Space>
-
       </>
     );
   }
+
   if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (
       <>
-        <PageHeader header="Компании и стажировки" />
+        <PageHeader header="Компании и стажировки">
+          <Button
+            type="text"
+            icon={<PlusIcon size={24} />}
+            onClick={() => openModal({
+              formTitle: 'Добавление компаний',
+              content: <NewCompanyModal addCompanies={addCompanies} />,
+              footer: false,
+              width: '700px',
+            })}
+          >
+            Добавить компании
+          </Button>
+        </PageHeader>
         <Space direction="vertical" gap={20}>
           <FilterForm />
           <VacanciesList
@@ -114,7 +129,6 @@ const VacanciesPageView: React.FC = () => {
       <PageHeader header="Вакансии" />
 
       <Space direction="vertical" gap={20}>
-
         <FilterForm />
         <VacanciesList
           companiesWithVacancies={companiesWithVacancies}
@@ -123,7 +137,6 @@ const VacanciesPageView: React.FC = () => {
           addToSelections={addToSelections}
           showActions
         />
-
       </Space>
     </>
   );
