@@ -6,5 +6,6 @@ export interface IUser {
     patronymic: string;
     role: 'UNVERIFIED_STUDENT' | 'STUDENT' | 'DEAN' | 'COMPANY' | 'ADMIN';
     groupNumber: string
+    studyYear?: number;
     companyId?: number;
   }
