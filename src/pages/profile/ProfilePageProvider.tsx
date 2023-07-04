@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { GetDiariesListUseCase } from 'domain/useCases/diary/GetDiariesListUseCase';
 import { diaryRepository } from 'domain/repositories/api/DiaryRepository';
-import { profilesRepository } from 'domain/repositories/api/interfaces/ProfilesRepository';
+import { profilesRepository } from 'domain/repositories/api/ProfilesRepository';
 import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 import { GetIntershipHistoryUseCase } from 'domain/useCases/profiles/GetIntershipHistoryUseCase';
 import { GetVacancyListUseCase } from 'domain/useCases/vacancy/GetVacancyListUseCase';

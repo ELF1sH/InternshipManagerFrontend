@@ -4,6 +4,9 @@ import {
 
 import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 
+import { GetCompanyUseCase } from 'domain/useCases/company/GetCompanyUseCase';
+import { IUser } from 'domain/entities/user';
+import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
 import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUseCase';
 import { ICreateCompanyPayload, ICreateCompanyResponse } from 'domain/repositories/api/interfaces/ICompanyRepository';
 import { ICompany } from 'domain/entities/company';
@@ -40,6 +43,8 @@ export class VacanciesPageViewModel {
 
   @observable public createCompanyResponses: ICreateCompanyResponse[] = [];
 
+  @observable public profile: IUser | undefined;
+
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
     private _getCompanies: GetCompanyListUseCase,
@@ -53,6 +58,8 @@ export class VacanciesPageViewModel {
     private _patchSelection: PatchSelectionUseCase,
     private _addCompany: AddCompanyUseCase,
     private openDownloadCompanyCreationResult: (result: ICreateCompanyResponse[]) => void,
+    private _getProfile: GetProfileUseCase,
+    private _getCompanyUseCase: GetCompanyUseCase,
   ) {
     makeObservable(this);
   }
@@ -78,7 +85,12 @@ export class VacanciesPageViewModel {
     name: string;
     id: number
   }[] {
-    const companies = this.companyList;
+    let companies = this.companyList;
+
+    if (userStore.role === UserRole.COMPANY) {
+      companies = companies.filter((company) => company.id === this.profile?.companyId);
+    }
+
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
     const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
 
@@ -109,6 +121,10 @@ export class VacanciesPageViewModel {
         maxQuantity,
       };
     });
+  }
+
+  @computed public get company() {
+    return this.companyList.filter((company) => company.id === this.profile?.companyId).at(0);
   }
 
   @observable public companySearchString: string = '';
@@ -143,8 +159,13 @@ export class VacanciesPageViewModel {
   @action public initRequests = () => {
     const { role } = userStore;
     const required = [this.getVacancies(), this.getCompanies()];
+
     if (role === UserRole.STUDENT) {
       required.push(this.getSelections(), this.getPreferences());
+    }
+
+    if (role === UserRole.COMPANY) {
+      required.push(this.getProfile());
     }
 
     Promise.all(required)
@@ -162,11 +183,18 @@ export class VacanciesPageViewModel {
     onError: () => { throw new Error(); },
   });
 
+  @action private getProfile = () => this._getProfile.fetch({
+    payload: undefined,
+    onSuccess: (profile) => {
+      console.log(profile);
+      this.profile = profile;
+    },
+  });
+
   @action private getCompanies = () => this._getCompanies.fetch({
     payload: undefined,
     onSuccess: (companies) => {
       runInAction(() => {
-        console.log(companies);
         this.companyList = companies;
       });
     },
@@ -242,8 +270,6 @@ export class VacanciesPageViewModel {
 
     Promise.all(promises).then(() => {
       this.initRequests();
-
-      console.log(this.createCompanyResponses);
 
       this.openDownloadCompanyCreationResult(this.createCompanyResponses);
     });

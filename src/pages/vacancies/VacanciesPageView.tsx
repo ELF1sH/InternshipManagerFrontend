@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { Typography } from 'antd';
 
+import Company from 'components/ui/molecules/company/Company';
 import Space from 'components/ui/atoms/space/Space';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import VacanciesList, { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
@@ -29,6 +31,7 @@ const VacanciesPageView: React.FC = () => {
     postPreference,
     addToSelections,
     addCompanies,
+    company,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
@@ -65,6 +68,13 @@ const VacanciesPageView: React.FC = () => {
             Добавить
           </Button>
         </PageHeader>
+
+        <Company name={company?.name ?? ''} imageUrl={company?.imageUrl} />
+        <Typography.Text>{`Контактное лицо: ${company?.contactLastname} ${company?.contactFirstname} ${company?.contactPatronymic}`}</Typography.Text>
+        <br />
+        <Typography.Text>{`Телефон: ${company?.contactNumber}`}</Typography.Text>
+        <br />
+        <br />
 
         <Space direction="vertical" gap={20}>
           {
