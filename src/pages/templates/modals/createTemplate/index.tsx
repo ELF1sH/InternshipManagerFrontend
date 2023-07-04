@@ -2,15 +2,21 @@ import React from 'react';
 
 import { useModalViewModel } from 'components/ui/organisms/modal/context/ModalProvider';
 
-import CreateTemplateModal from 'pages/templates/modals/createTemplate/content/CreateTemplateModal';
+import { IPostDiaryTemplatePayload } from 'domain/repositories/api/interfaces/IDiaryTemplateRepository';
 
-export const useCreateTemplateModal = () => {
+import CreateTemplateModal, {
+  ITemplateFormState,
+} from 'pages/templates/modals/createTemplate/content/CreateTemplateModal';
+
+export const useCreateTemplateModal = (
+  onCreate: (payload: IPostDiaryTemplatePayload) => void,
+) => {
   const { openModal } = useModalViewModel();
 
-  const openCreateTemplateModal = () => {
+  const openCreateTemplateModal = (formState?: ITemplateFormState) => {
     openModal({
-      formTitle: 'Редактирование шаблона',
-      content: <CreateTemplateModal />,
+      formTitle: formState ? 'Редактирование шаблона' : 'Создание шаблона',
+      content: <CreateTemplateModal onCreate={onCreate} formState={formState} />,
       footer: false,
     });
   };

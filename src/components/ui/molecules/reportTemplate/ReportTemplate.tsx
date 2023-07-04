@@ -19,29 +19,6 @@ interface ReportTemplateProps {
   clickEditHandler?: (reportTemplate: ReportTemplateProps) => void
 }
 
-const b64toBlob = (content: string) => {
-  const contentType = 'application/pdf';
-  const sliceSize = 512;
-  // method which converts base64 to binary
-  const byteCharacters = window.atob(content);
-
-  const byteArrays = [];
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-    const byteNumbers = new Array(slice.length);
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-  const blob = new Blob(byteArrays, {
-    type: contentType,
-  }); // statement which creates the blob
-  return blob;
-};
-
 const ReportTemplate: React.FC<ReportTemplateProps> = ({
   id,
   title,

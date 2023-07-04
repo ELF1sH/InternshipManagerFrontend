@@ -11,7 +11,7 @@ export interface IGetDiaryTemplatePayload {
 }
 
 export interface IPostDiaryTemplatePayload {
-  file: string;
+  file: File;
   request: {
     description: string;
     course: string;

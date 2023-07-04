@@ -1,15 +1,19 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
+import DiaryTemplate from 'components/ui/molecules/diaryTemplate/DiaryTemplate';
 import Space from 'components/ui/atoms/space/Space';
-import ReportTemplate from 'components/ui/molecules/reportTemplate/ReportTemplate';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import Button from 'components/ui/atoms/button/Button';
 import PlusIcon from 'components/ui/atoms/icons/PlusIcon';
 
+import { useTemplatesPageViewModel } from 'pages/templates/viewModel/context';
 import { useCreateTemplateModal } from 'pages/templates/modals/createTemplate';
 
 const TemplatesPageView: React.FC = () => {
-  const { openCreateTemplateModal } = useCreateTemplateModal();
+  const { postTemplate, templates } = useTemplatesPageViewModel();
+
+  const { openCreateTemplateModal } = useCreateTemplateModal(postTemplate);
 
   return (
     <>
@@ -24,29 +28,14 @@ const TemplatesPageView: React.FC = () => {
       </PageHeader>
 
       <Space $wrap gap={20}>
-        <ReportTemplate
-          title="Дневник практики 1"
-          description="Тут идет описание дневника практики номер 1"
-          clickEditHandler={() => {}}
-        />
-        <ReportTemplate
-          title="Дневник практики 1"
-          description="Тут идет описание дневника практики номер 1"
-          clickEditHandler={() => {}}
-        />
-        <ReportTemplate
-          title="Дневник практики 1"
-          description="Тут идет описание дневника практики номер 1"
-          clickEditHandler={() => {}}
-        />
-        <ReportTemplate
-          title="Дневник практики 1"
-          description="Тут идет описание дневника практики номер 1"
-          clickEditHandler={() => {}}
-        />
+        {
+          templates.map((template) => (
+            <DiaryTemplate template={template} key={template.id} />
+          ))
+        }
       </Space>
     </>
   );
 };
 
-export default TemplatesPageView;
+export default observer(TemplatesPageView);

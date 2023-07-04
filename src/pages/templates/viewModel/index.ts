@@ -11,8 +11,6 @@ import { GetDiaryTemplateUseCase } from 'domain/useCases/diaryTemplate/GetDiaryT
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
 
 export class TemplatesPageViewModel {
-  @observable public a = 34;
-
   @observable public templates: IDiaryTemplate[] = [];
 
   @observable public pageStatus = new LoadStatus();
