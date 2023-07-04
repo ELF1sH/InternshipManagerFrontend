@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { GetCompanyUseCase } from 'domain/useCases/company/GetCompanyUseCase';
+import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
+import { profilesRepository } from 'domain/repositories/api/ProfilesRepository';
 import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUseCase';
 import { companyRepository } from 'domain/repositories/api/CompanyRepository';
 import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
@@ -75,6 +78,14 @@ const VacanciesPageProvider: React.FC = () => {
     requestCallback: companyRepository.addCompany,
   });
 
+  const getProfileUseCase = new GetProfileUseCase({
+    requestCallback: profilesRepository.getProfile,
+  });
+
+  const getCompanyUseCase = new GetCompanyUseCase({
+    requestCallback: companyRepository.getCompany,
+  });
+
   const vacanciesPageViewModel = useMemo(
     () => new VacanciesPageViewModel(
       getVacancyListUseCase,
@@ -89,6 +100,8 @@ const VacanciesPageProvider: React.FC = () => {
       patchPreferenceUseCase,
       addCompaniesListUseCase,
       openDownloadCompanyCreationResult,
+      getProfileUseCase,
+      getCompanyUseCase,
     ),
     [],
   );

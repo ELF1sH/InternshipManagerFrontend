@@ -3,6 +3,7 @@ import { ICandidate } from 'domain/entities/condidate';
 
 export interface ICompanyRepository {
   getList: () => Promise<IGetCompanyListResponse>
+  getCompany: (payload: IGetCompanyPayload) => Promise<IGetCompanyResponse>;
   getCandidates: () => Promise<IGetCandidatesListResponse>
   addCompany: (payload: ICreateCompanyPayload) => Promise<ICreateCompanyResponse>
 }
@@ -19,3 +20,9 @@ export interface ICreateCompanyResponse {
   password: string;
   company: ICompany;
 }
+
+export interface IGetCompanyPayload {
+  id: number;
+}
+
+export type IGetCompanyResponse = ICompany;

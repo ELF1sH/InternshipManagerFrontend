@@ -161,7 +161,6 @@ export class ProfilePageViewModel {
   @action public initRequests = (profileId?: number) => {
     const promises = [this.getProfile()];
 
-    console.log(profileId);
     if (userStore.role === UserRole.UNIVERSITY_DEPARTMENT && profileId) {
       promises.push(
         this.getStudentById(profileId),
@@ -191,12 +190,7 @@ export class ProfilePageViewModel {
   @action private getProfile = () => this._getProfile.fetch({
     payload: undefined,
     onSuccess: (profile) => {
-      console.log(profile);
       this.profile = profile;
-      this.pageStatus.onEndRequest();
-    },
-    onError: () => {
-      this.pageStatus.onEndRequest(false);
     },
   });
 
@@ -204,10 +198,6 @@ export class ProfilePageViewModel {
     payload: undefined,
     onSuccess: (diaries) => {
       this.diaries = diaries;
-      this.pageStatus.onEndRequest();
-    },
-    onError: () => {
-      this.pageStatus.onEndRequest(false);
     },
   });
 
@@ -216,11 +206,7 @@ export class ProfilePageViewModel {
     onSuccess: (internshipHistory) => {
       runInAction(() => {
         this.internshipHistory = internshipHistory.sort((a, b) => a.orderNumber - b.orderNumber);
-        this.pageStatus.onEndRequest();
       });
-    },
-    onError: () => {
-      this.pageStatus.onEndRequest(false);
     },
   });
 
@@ -231,7 +217,6 @@ export class ProfilePageViewModel {
         this.vacanciesList = vacancies;
       });
     },
-    onError: () => { throw new Error(); },
   });
 
   @action public patchinternshipByVacancy = ({ vacancyId, semester }:{vacancyId: number,
@@ -295,7 +280,6 @@ export class ProfilePageViewModel {
           this.selectionsList = selectionsList;
         });
       },
-      onError: () => { throw new Error(); },
     });
 
     @action private getPreferences = (payload: number) => this._getPreferencesById.fetch({
@@ -305,17 +289,12 @@ export class ProfilePageViewModel {
           this.preferencesList = preferences;
         });
       },
-      onError: () => { throw new Error(); },
     });
 
     @action private getDiariesById = (payload: number) => this._getDiariesById.fetch({
       payload,
       onSuccess: (diaries) => {
         this.diaries = diaries;
-        this.pageStatus.onEndRequest();
-      },
-      onError: () => {
-        this.pageStatus.onEndRequest(false);
       },
     });
 }
