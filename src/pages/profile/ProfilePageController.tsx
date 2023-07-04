@@ -15,8 +15,6 @@ interface ProfilePageControllerProps {
 const ProfilePageController: React.FC<ProfilePageControllerProps> = ({ id }) => {
   const { pageStatus, initRequests } = useProfilePageViewModel();
 
-  console.log(id);
-
   useEffect(() => {
     (async () => {
       await initRequests(id);

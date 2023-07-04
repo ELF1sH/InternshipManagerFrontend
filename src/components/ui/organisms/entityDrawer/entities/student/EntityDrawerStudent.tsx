@@ -19,8 +19,6 @@ const EntityDrawerStudent: React.FC = () => {
 
   const vm = getDrawerViewModel(type);
 
-  console.log(id);
-
   return (
     <Drawer
       title={vm.title}

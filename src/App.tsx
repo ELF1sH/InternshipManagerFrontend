@@ -6,6 +6,7 @@ import Sidebar from 'components/ui/organisms/sidebar/SidebarController';
 
 import AuthorityProvider from 'modules/authority/AuthorityProvider';
 
+import GettingInternshipPage from 'pages/gettingInternship/GettingInternshipPageProvider';
 import SettingsPage from 'pages/settings/SettingsPage';
 import TemplatesPage from 'pages/templates/TemplatesPageProvider';
 import VacanciesPage from 'pages/vacancies/VacanciesPageProvider';
@@ -33,6 +34,7 @@ const App: React.FC = () => (
           <Route path={route.templates} element={<TemplatesPage />} />
           <Route path={route.students} element={<StudentsPage />} />
           <Route path={route.diaries} element={<DiariesPage />} />
+          <Route path={route.gettingInternship} element={<GettingInternshipPage />} />
 
           <Route path="*" element={<h1>NOT FOUND</h1>} />
         </Routes>

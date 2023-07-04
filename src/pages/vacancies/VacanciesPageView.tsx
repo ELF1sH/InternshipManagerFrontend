@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { Typography } from 'antd';
 
+import Company from 'components/ui/molecules/company/Company';
 import Space from 'components/ui/atoms/space/Space';
 import PageHeader from 'components/ui/molecules/pageHeader/PageHeader';
 import VacanciesList, { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
@@ -14,6 +16,7 @@ import { CompanyVacancy } from 'pages/vacancies/components/companyVacancy/Compan
 import { NewVacancyModal } from 'pages/vacancies/components/newVacancyModal/NewVacancyModal';
 import { useVacanciesPageViewModel } from 'pages/vacancies/viewModel/context';
 import FilterForm from 'pages/vacancies/components/filterForm/FilterForm';
+import NewCompanyModal from 'pages/vacancies/components/newCompanyModal/NewCompanyModal';
 
 import { userStore } from 'storesMobx/stores/UserStore';
 
@@ -27,6 +30,8 @@ const VacanciesPageView: React.FC = () => {
     patchSelection,
     postPreference,
     addToSelections,
+    addCompanies,
+    company,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
@@ -64,6 +69,13 @@ const VacanciesPageView: React.FC = () => {
           </Button>
         </PageHeader>
 
+        <Company name={company?.name ?? ''} imageUrl={company?.imageUrl} />
+        <Typography.Text>{`Контактное лицо: ${company?.contactLastname} ${company?.contactFirstname} ${company?.contactPatronymic}`}</Typography.Text>
+        <br />
+        <Typography.Text>{`Телефон: ${company?.contactNumber}`}</Typography.Text>
+        <br />
+        <br />
+
         <Space direction="vertical" gap={20}>
           {
           companiesWithVacancies?.[0]?.vacancies?.map((val, idx) => (
@@ -88,14 +100,27 @@ const VacanciesPageView: React.FC = () => {
           ))
             }
         </Space>
-
       </>
     );
   }
+
   if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (
       <>
-        <PageHeader header="Компании и стажировки" />
+        <PageHeader header="Компании и стажировки">
+          <Button
+            type="text"
+            icon={<PlusIcon size={24} />}
+            onClick={() => openModal({
+              formTitle: 'Добавление компаний',
+              content: <NewCompanyModal addCompanies={addCompanies} />,
+              footer: false,
+              width: '700px',
+            })}
+          >
+            Добавить компании
+          </Button>
+        </PageHeader>
         <Space direction="vertical" gap={20}>
           <FilterForm />
           <VacanciesList
@@ -114,7 +139,6 @@ const VacanciesPageView: React.FC = () => {
       <PageHeader header="Вакансии" />
 
       <Space direction="vertical" gap={20}>
-
         <FilterForm />
         <VacanciesList
           companiesWithVacancies={companiesWithVacancies}
@@ -123,7 +147,6 @@ const VacanciesPageView: React.FC = () => {
           addToSelections={addToSelections}
           showActions
         />
-
       </Space>
     </>
   );

@@ -12,8 +12,8 @@ import {
   IAddStudentsListPayload,
 } from 'domain/repositories/api/interfaces/IStudentsRepository';
 
-import { StudentsPageViewModel } from 'pages/students/viewModel';
 import { useDownloadStudentCreationResult } from 'pages/students/modals/downloadStudentCreationResult';
+import { StudentsPageViewModel } from 'pages/students/viewModel';
 import { useAddStudentsTableColumns } from 'pages/students/modals/importStudentsViaCSV/hooks/useColumns';
 
 import compareObjects from 'utils/compareObjects';

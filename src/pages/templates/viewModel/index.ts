@@ -29,8 +29,6 @@ export class TemplatesPageViewModel {
       runInAction(() => {
         this.templates = templates;
 
-        console.log(templates);
-
         this.pageStatus.onEndRequest();
       });
     },

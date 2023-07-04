@@ -4,6 +4,11 @@ import {
 
 import { CompanyWithVacancies } from 'components/ui/organisms/vacanciesList/VacanciesList';
 
+import { GetCompanyUseCase } from 'domain/useCases/company/GetCompanyUseCase';
+import { IUser } from 'domain/entities/user';
+import { GetProfileUseCase } from 'domain/useCases/profiles/GetProfileUseCase';
+import { GetCompanyListUseCase } from 'domain/useCases/company/GetCompanyListUseCase';
+import { ICreateCompanyPayload, ICreateCompanyResponse } from 'domain/repositories/api/interfaces/ICompanyRepository';
 import { ICompany } from 'domain/entities/company';
 import { SelectionStatus } from 'domain/entities/selection';
 import { PatchSelectionUseCase } from 'domain/useCases/vacancy/PatchSelectionUseCase';
@@ -18,6 +23,7 @@ import { DeleteVacancyUseCase } from 'domain/useCases/vacancy/DeleteVacancyUseCa
 import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
 import { AddToSelectionsUseCase } from 'domain/useCases/vacancy/AddToSelectionsUseCase';
 import { ICreateOrEditVacancyPayload } from 'domain/repositories/api/interfaces/IVacancyRepository';
+import { AddCompanyUseCase } from 'domain/useCases/company/AddCompanyUseCase';
 
 import { UserRole } from 'modules/authority/enums/UserRole';
 
@@ -33,8 +39,15 @@ export class VacanciesPageViewModel {
 
   @observable private preferencesList?: IPreferenceItem[] = [];
 
+  @observable private companyList: ICompany[] = [];
+
+  @observable public createCompanyResponses: ICreateCompanyResponse[] = [];
+
+  @observable public profile: IUser | undefined;
+
   public constructor(
     private _getVacancies: GetVacancyListUseCase,
+    private _getCompanies: GetCompanyListUseCase,
     private _addVacany: AddVacancyUseCase,
     private _addToSelections: AddToSelectionsUseCase,
     private _getSelections: GetSelectionsUseCase,
@@ -43,6 +56,10 @@ export class VacanciesPageViewModel {
     private _getPreferences: GetPreferencesListUseCase,
     private _postPreference: PostPreferenceUseCase,
     private _patchSelection: PatchSelectionUseCase,
+    private _addCompany: AddCompanyUseCase,
+    private openDownloadCompanyCreationResult: (result: ICreateCompanyResponse[]) => void,
+    private _getProfile: GetProfileUseCase,
+    private _getCompanyUseCase: GetCompanyUseCase,
   ) {
     makeObservable(this);
   }
@@ -68,7 +85,12 @@ export class VacanciesPageViewModel {
     name: string;
     id: number
   }[] {
-    const companies = this.vacanciesList.map((vacancy) => vacancy.company);
+    let companies = this.companyList;
+
+    if (userStore.role === UserRole.COMPANY) {
+      companies = companies.filter((company) => company.id === this.profile?.companyId);
+    }
+
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
     const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
 
@@ -99,6 +121,10 @@ export class VacanciesPageViewModel {
         maxQuantity,
       };
     });
+  }
+
+  @computed public get company() {
+    return this.companyList.filter((company) => company.id === this.profile?.companyId).at(0);
   }
 
   @observable public companySearchString: string = '';
@@ -132,9 +158,14 @@ export class VacanciesPageViewModel {
 
   @action public initRequests = () => {
     const { role } = userStore;
-    const required = [this.getVacancies()];
+    const required = [this.getVacancies(), this.getCompanies()];
+
     if (role === UserRole.STUDENT) {
       required.push(this.getSelections(), this.getPreferences());
+    }
+
+    if (role === UserRole.COMPANY) {
+      required.push(this.getProfile());
     }
 
     Promise.all(required)
@@ -150,6 +181,22 @@ export class VacanciesPageViewModel {
       });
     },
     onError: () => { throw new Error(); },
+  });
+
+  @action private getProfile = () => this._getProfile.fetch({
+    payload: undefined,
+    onSuccess: (profile) => {
+      this.profile = profile;
+    },
+  });
+
+  @action private getCompanies = () => this._getCompanies.fetch({
+    payload: undefined,
+    onSuccess: (companies) => {
+      runInAction(() => {
+        this.companyList = companies;
+      });
+    },
   });
 
   @action private getSelections = () => this._getSelections.fetch({
@@ -214,4 +261,26 @@ export class VacanciesPageViewModel {
       onError: () => { throw new Error(); },
     })
   );
+
+  @action public addCompanies = (companies: ICreateCompanyPayload[]) => {
+    this.createCompanyResponses = [];
+
+    const promises = companies.map((company) => this.addCompany(company));
+
+    Promise.all(promises).then(() => {
+      this.initRequests();
+
+      this.openDownloadCompanyCreationResult(this.createCompanyResponses);
+    });
+  };
+
+  private addCompany = (company: ICreateCompanyPayload) => this._addCompany.fetch({
+    payload: company,
+    onSuccess: (res) => {
+      runInAction(() => {
+        this.createCompanyResponses = [...this.createCompanyResponses, res];
+      });
+    },
+    onError: () => { throw new Error(); },
+  });
 }

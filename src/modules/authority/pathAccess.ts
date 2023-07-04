@@ -9,7 +9,7 @@ export const pathAccess: Record<UserRole, AppRoute[]> = {
     ...basicPaths,
     route.profile,
     route.vacancies,
-    route.internship,
+    route.gettingInternship,
     route.preferences,
     route.templates,
   ],
