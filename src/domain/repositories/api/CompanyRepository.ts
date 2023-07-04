@@ -1,8 +1,12 @@
 import { AxiosResponse } from 'axios';
 
-import { AddCompanyRequest, ICompany } from 'domain/entities/company';
 import { axiosInstance } from 'domain/repositories/api/axios';
-import { ICompanyRepository, IGetCandidatesListResponse, IGetCompanyListResponse } from 'domain/repositories/api/interfaces/ICompanyRepository';
+import {
+  ICompanyRepository,
+  ICreateCompanyPayload, ICreateCompanyResponse,
+  IGetCandidatesListResponse,
+  IGetCompanyListResponse,
+} from 'domain/repositories/api/interfaces/ICompanyRepository';
 
 class CompanyRepository implements ICompanyRepository {
   public getList = () => axiosInstance
@@ -13,9 +17,9 @@ class CompanyRepository implements ICompanyRepository {
     .get('/companies/candidates')
     .then((response: AxiosResponse<IGetCandidatesListResponse>) => response.data);
 
-  public addCompany = (payload: AddCompanyRequest) => axiosInstance
-    .post('/companies', payload)
-    .then((response:AxiosResponse<ICompany>) => response.data);
+  public addCompany = (payload: ICreateCompanyPayload) => axiosInstance
+    .post('/companies/delegates', payload)
+    .then((response:AxiosResponse<ICreateCompanyResponse>) => response.data);
 }
 
 export const companyRepository = new CompanyRepository();

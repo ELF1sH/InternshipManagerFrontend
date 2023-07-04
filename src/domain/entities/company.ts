@@ -10,5 +10,3 @@ export interface ICompany {
   vacancies: IVacancy[]
   imageUrl?: string
 }
-
-export type AddCompanyRequest = Omit<ICompany, 'vacancies'>

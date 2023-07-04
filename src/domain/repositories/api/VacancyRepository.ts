@@ -8,7 +8,6 @@ import {
 } from 'domain/repositories/api/interfaces/IVacancyRepository';
 import { IVacancy } from 'domain/entities/vacancy';
 import { axiosInstance } from 'domain/repositories/api/axios';
-import { AddCompanyRequest, ICompany } from 'domain/entities/company';
 
 class VacancyRepository implements IVacancyRepository {
   // ==============================================
@@ -50,10 +49,6 @@ class VacancyRepository implements IVacancyRepository {
   public patchSelection = ({ id, status }: IPatchSelectionPayload) => axiosInstance
     .patch(`/selections/${id}?status=${status}`)
     .then((response: AxiosResponse<any>) => response.data);
-
-  public addCompany = (payload: AddCompanyRequest) => axiosInstance
-    .post('/companies', payload)
-    .then((response: AxiosResponse<ICompany>) => response.data);
 }
 
 export const vacancyRepository = new VacancyRepository();

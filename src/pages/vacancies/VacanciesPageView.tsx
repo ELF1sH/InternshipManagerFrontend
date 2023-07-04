@@ -28,7 +28,7 @@ const VacanciesPageView: React.FC = () => {
     patchSelection,
     postPreference,
     addToSelections,
-    addCompany,
+    addCompanies,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
@@ -90,10 +90,10 @@ const VacanciesPageView: React.FC = () => {
           ))
             }
         </Space>
-
       </>
     );
   }
+
   if (currentRole === UserRole.UNIVERSITY_DEPARTMENT) {
     return (
       <>
@@ -103,11 +103,12 @@ const VacanciesPageView: React.FC = () => {
             icon={<PlusIcon size={24} />}
             onClick={() => openModal({
               formTitle: 'Добавление компаний',
-              content: <NewCompanyModal addCompany={addCompany} />,
+              content: <NewCompanyModal addCompanies={addCompanies} />,
               footer: false,
+              width: '700px',
             })}
           >
-            Добавить вручную
+            Добавить компании
           </Button>
         </PageHeader>
         <Space direction="vertical" gap={20}>
@@ -128,7 +129,6 @@ const VacanciesPageView: React.FC = () => {
       <PageHeader header="Вакансии" />
 
       <Space direction="vertical" gap={20}>
-
         <FilterForm />
         <VacanciesList
           companiesWithVacancies={companiesWithVacancies}
@@ -137,7 +137,6 @@ const VacanciesPageView: React.FC = () => {
           addToSelections={addToSelections}
           showActions
         />
-
       </Space>
     </>
   );
