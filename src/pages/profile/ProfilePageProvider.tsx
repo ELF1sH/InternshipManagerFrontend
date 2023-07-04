@@ -34,7 +34,7 @@ const ProfilePageProvider: React.FC<ProfilePageProviderProps> = ({ id }) => {
   });
 
   const getDiariesUseCase = new GetDiariesListUseCase({
-    requestCallback: diaryRepository.getList,
+    requestCallback: diaryRepository.getDiaries,
   });
 
   const getIntershipHistoryUseCase = new GetIntershipHistoryUseCase({

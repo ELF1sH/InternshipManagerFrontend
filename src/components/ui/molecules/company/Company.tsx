@@ -64,7 +64,7 @@ const Company: React.FC<CompanyProps> = ({
       </div>
       {button}
     </Space>
-    
+
     {
       imageUrl && <img alt="company logo" src={imageUrl} height={50} />
     }
