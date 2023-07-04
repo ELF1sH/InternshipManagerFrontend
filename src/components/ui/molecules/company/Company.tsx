@@ -10,8 +10,8 @@ interface CompanyProps {
   maxQuantity?: number;
   companyRole?: string;
   beginningDate?: string;
-  button?: React.ReactElement
-  imageUrl?: string
+  imageUrl?: string;
+  button?: React.ReactElement;
 }
 
 const Company: React.FC<CompanyProps> = ({

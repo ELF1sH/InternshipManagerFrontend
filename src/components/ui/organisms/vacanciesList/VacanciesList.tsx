@@ -15,14 +15,16 @@ export interface VacanciesListProps {
   addToSelections?: (payload: number) => Promise<void>
   showActions?: boolean
 }
+
 export interface CompanyWithVacancies {
   id: number;
   name: string;
   minQuantity: number;
   maxQuantity: number;
-  imageUrl?: string
+  imageUrl: string;
   vacancies: GroupedVacancy[];
 }
+
 interface GroupedVacancy {
   name: string;
   vacancies: IVacancy[];
