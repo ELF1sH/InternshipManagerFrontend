@@ -25,33 +25,9 @@ interface ReportTemplateProps {
   clickEditHandler?: (reportTemplate: ReportTemplateProps) => void
 }
 
-const b64toBlob = (content: string) => {
-  const contentType = 'application/pdf';
-  const sliceSize = 512;
-  // method which converts base64 to binary
-  const byteCharacters = window.atob(content);
-
-  const byteArrays = [];
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-    const byteNumbers = new Array(slice.length);
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-  const blob = new Blob(byteArrays, {
-    type: contentType,
-  }); // statement which creates the blob
-  return blob;
-};
-
 const GetReportTemplateStatus = ({ status }:{status: IDiaryStatus}) => {
   switch (status) {
     case IDiaryStatus.ACCEPTED:
-
       return (
         <Text strong style={{ color: 'green' }}>
           <Space alignItems="center" gap={4}>
@@ -62,7 +38,6 @@ const GetReportTemplateStatus = ({ status }:{status: IDiaryStatus}) => {
       );
 
     case IDiaryStatus.PENDING:
-
       return (
         <Text strong>
           На рассмотрении
@@ -71,7 +46,6 @@ const GetReportTemplateStatus = ({ status }:{status: IDiaryStatus}) => {
       );
 
     case IDiaryStatus.REJECTED:
-
       return (
         <Text strong style={{ color: 'red' }}>
           <Space alignItems="center" gap={4}>
@@ -79,7 +53,6 @@ const GetReportTemplateStatus = ({ status }:{status: IDiaryStatus}) => {
             <CloseCircleOutlined />
           </Space>
         </Text>
-
       );
 
     default:
@@ -136,37 +109,37 @@ const ReportTemplate: React.FC<ReportTemplateProps> = ({
       style={{ width: '280px' }}
     >
       <Space direction="vertical">
-
         {
-        turnInDate && (
-          <Text>
-            Дата сдачи:
-            &nbsp;
-            <Text strong>{turnInDate}</Text>
-          </Text>
-        )
-      }
-        {
-        review && (
-          <Text>
-            Комментарий:
-            &nbsp;
-            <Text strong>{review}</Text>
-          </Text>
-        )
-      }
-        {
-        status && (
-          <Space>
+          turnInDate && (
             <Text>
-              Статус:
+              Дата сдачи:
               &nbsp;
+              <Text strong>{turnInDate}</Text>
             </Text>
+          )
+        }
 
-            <GetReportTemplateStatus status={status} />
-          </Space>
-        )
-      }
+        {
+          review && (
+            <Text>
+              Комментарий:
+              &nbsp;
+              <Text strong>{review}</Text>
+            </Text>
+          )
+        }
+
+        {
+          status && (
+            <Space>
+              <Text>
+                Статус:
+                &nbsp;
+              </Text>
+              <GetReportTemplateStatus status={status} />
+            </Space>
+          )
+        }
         {description}
       </Space>
     </Card>

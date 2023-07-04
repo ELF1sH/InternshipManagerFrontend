@@ -6,6 +6,8 @@ import { EntityDrawerType } from 'components/ui/organisms/entityDrawer/enums';
 export class EntityDrawerViewModel {
   @observable public openedDrawers: EntityDrawerType[] = [];
 
+  @observable public id: number | undefined;
+
   public constructor(
     private studentViewModel: EntityDrawerStudentViewModel,
   ) {
@@ -23,13 +25,15 @@ export class EntityDrawerViewModel {
     }
   };
 
-  @action public open = (type: EntityDrawerType, id: string) => {
+  @action public open = (type: EntityDrawerType, id: number) => {
     if (this.openedDrawers.includes(type)) throw new Error('Drawer is already opened');
 
     this.openedDrawers = [
       ...this.openedDrawers,
       type,
     ];
+
+    this.id = id;
 
     (async () => {
       await this.getDrawerViewModel(type).fetch(+id);

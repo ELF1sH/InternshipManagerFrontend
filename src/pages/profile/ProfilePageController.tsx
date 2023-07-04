@@ -8,14 +8,20 @@ import ProfilePageView from 'pages/profile/ProfilePageView';
 
 const ProfilePageViewWithLoader = WithLoader(ProfilePageView, true);
 
-const ProfilePageController: React.FC = () => {
+interface ProfilePageControllerProps {
+  id?: number;
+}
+
+const ProfilePageController: React.FC<ProfilePageControllerProps> = ({ id }) => {
   const { pageStatus, initRequests } = useProfilePageViewModel();
+
+  console.log(id);
 
   useEffect(() => {
     (async () => {
-      await initRequests();
+      await initRequests(id);
     })();
-  }, []);
+  }, [id]);
 
   return (
     <ProfilePageViewWithLoader

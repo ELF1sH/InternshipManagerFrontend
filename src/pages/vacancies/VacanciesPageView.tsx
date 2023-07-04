@@ -24,6 +24,9 @@ const VacanciesPageView: React.FC = () => {
     addNewVacancy,
     deleteVacancy,
     editVacancy,
+    patchSelection,
+    postPreference,
+    addToSelections,
   } = useVacanciesPageViewModel();
 
   const { openModal, closeModal } = useModalViewModel();
@@ -95,7 +98,12 @@ const VacanciesPageView: React.FC = () => {
         <PageHeader header="Компании и стажировки" />
         <Space direction="vertical" gap={20}>
           <FilterForm />
-          <VacanciesList companiesWithVacancies={filtredCompanies} />
+          <VacanciesList
+            companiesWithVacancies={filtredCompanies}
+            patchSelection={patchSelection}
+            postPreference={postPreference}
+            addToSelections={addToSelections}
+          />
         </Space>
       </>
     );
@@ -108,7 +116,13 @@ const VacanciesPageView: React.FC = () => {
       <Space direction="vertical" gap={20}>
 
         <FilterForm />
-        <VacanciesList companiesWithVacancies={companiesWithVacancies} />
+        <VacanciesList
+          companiesWithVacancies={companiesWithVacancies}
+          patchSelection={patchSelection}
+          postPreference={postPreference}
+          addToSelections={addToSelections}
+          showActions
+        />
 
       </Space>
     </>

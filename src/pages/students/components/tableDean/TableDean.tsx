@@ -64,7 +64,7 @@ const TableDean: React.FC = () => {
           columns={columns}
           dataSource={getDataSource(filtredStudents)}
           onRow={(record, rowIndex) => ({
-            onClick: () => open(record.key.toString()),
+            onClick: () => open(record.key),
           })}
           expandable={{
             // eslint-disable-next-line react/no-unstable-nested-components

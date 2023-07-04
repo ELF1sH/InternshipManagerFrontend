@@ -16,8 +16,17 @@ import { PatchIntershipHistoryByVacancyUseCase } from 'domain/useCases/profiles/
 import { PostIntershipUseCase } from 'domain/useCases/profiles/PostIntershipUseCase';
 import { GetFeedbackListUseCase } from 'domain/useCases/feedback/GetFeedbackListUseCase';
 import { IFeedback } from 'domain/entities/feedback';
+import { GetStudentUseCase } from 'domain/useCases/students/GetStudentUseCase';
+import { GetIntershipHistoryByIdUseCase } from 'domain/useCases/profiles/GetIntershipHistoryByIdUseCase';
+import { IPreferenceItem } from 'domain/entities/preferences';
+import { GetPreferencesListByIdUseCase } from 'domain/useCases/preferences/GetPreferencesListByIdUseCase';
+import { GetSelectionsByIdUseCase } from 'domain/useCases/vacancy/GetSelectionsByIdUseCase';
+import { GetDiariesListByIdUseCase } from 'domain/useCases/diary/GetDiariesListByIdUseCase';
+
+import { UserRole } from 'modules/authority/enums/UserRole';
 
 import { LoadStatus } from 'storesMobx/helpers/LoadStatus';
+import { userStore } from 'storesMobx/stores/UserStore';
 
 export class ProfilePageViewModel {
   @observable public pageStatus = new LoadStatus(true);
@@ -32,6 +41,10 @@ export class ProfilePageViewModel {
 
   @observable public feedbackList: IFeedback[] = [];
 
+  @observable private selectionsList?: any[] = [];
+
+  @observable private preferencesList?: IPreferenceItem[] = [];
+
   public constructor(
     private _getProfile: GetProfileUseCase,
     private _getDiaries: GetDiariesListUseCase,
@@ -40,6 +53,11 @@ export class ProfilePageViewModel {
     private _patchinternshipByVacancy: PatchIntershipHistoryByVacancyUseCase,
     private _createInternshipByVacancy: PostIntershipUseCase,
     private _getFeedbackList: GetFeedbackListUseCase,
+    private _getStudentById: GetStudentUseCase,
+    private _getInternshipHistoryById: GetIntershipHistoryByIdUseCase,
+    private _getSelectionsById: GetSelectionsByIdUseCase,
+    private _getPreferencesById: GetPreferencesListByIdUseCase,
+    private _getDiariesById: GetDiariesListByIdUseCase,
   ) {
     makeObservable(this);
   }
@@ -49,7 +67,7 @@ export class ProfilePageViewModel {
     const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
     const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
 
-    return companiesList.map(({ id, name }) => {
+    return companiesList.map(({ id, name, imageUrl }) => {
       const vacancies = this.vacanciesList.filter((vac) => vac.company.id === id);
 
       const minQuantity = vacancies.reduce((acc, cur) => acc + cur.minimumQuantity, 0);
@@ -62,6 +80,8 @@ export class ProfilePageViewModel {
         name: uniqueName,
         vacancies: vacancies.filter(({ name }) => name === uniqueName).map((vacancy) => ({
           ...vacancy,
+          isSelected: this.selectionsList?.find((sel) => sel.vacancy.id === vacancy.id),
+          isPreferenced: this.preferencesList?.find((pref) => pref.vacancy.id === vacancy.id),
         })),
       }));
 
@@ -71,8 +91,43 @@ export class ProfilePageViewModel {
         vacancies: groupedVacancies,
         minQuantity,
         maxQuantity,
+        imageUrl,
       };
     });
+  }
+
+  @computed public get companiesWithVacanciesSelectedOrPreferenced(): CompanyWithVacancies[] {
+    const companies = this.vacanciesList.map((vacancy) => vacancy.company);
+    const uniqueIDs = Array.from(new Set(companies.map((company) => company.id)));
+    const companiesList = uniqueIDs.map((id) => companies.find((company) => company.id === id)!);
+
+    return companiesList.map(({ id, name, imageUrl }) => {
+      const vacancies = this.vacanciesList.filter((vac) => vac.company.id === id);
+
+      const minQuantity = vacancies.reduce((acc, cur) => acc + cur.minimumQuantity, 0);
+      const maxQuantity = vacancies.reduce((acc, cur) => acc + cur.maximumQuantity, 0);
+
+      const vacancyNames = vacancies.map((vac) => vac.name);
+      const uniqueVacancyNames = Array.from(new Set(vacancyNames));
+
+      const groupedVacancies = uniqueVacancyNames.map((uniqueName) => ({
+        name: uniqueName,
+        vacancies: vacancies.filter(({ name }) => name === uniqueName).map((vacancy) => ({
+          ...vacancy,
+          isSelected: this.selectionsList?.find((sel) => sel.vacancy.id === vacancy.id),
+          isPreferenced: this.preferencesList?.find((pref) => pref.vacancy.id === vacancy.id),
+        })).filter((val) => val.isSelected || val.isPreferenced),
+      })).filter((group) => group.vacancies.length > 0);
+
+      return {
+        id,
+        name,
+        vacancies: groupedVacancies,
+        minQuantity,
+        maxQuantity,
+        imageUrl,
+      };
+    }).filter((company) => company.vacancies.length > 0);
   }
 
   @observable public companySearchString: string = '';
@@ -103,13 +158,30 @@ export class ProfilePageViewModel {
     });
   }
 
-  @action public initRequests = () => {
-    Promise.all([this.getProfile(), this.getDiaries(),
-      this.getInternshipHistory(), this.getVacancies()])
+  @action public initRequests = (profileId?: number) => {
+    const promises = [this.getProfile()];
+
+    console.log(profileId);
+    if (userStore.role === UserRole.UNIVERSITY_DEPARTMENT && profileId) {
+      promises.push(
+        this.getStudentById(profileId),
+        this.getInternshipHistoryById(profileId),
+        this.getSelections(profileId),
+        this.getPreferences(profileId),
+        this.getVacancies(),
+        this.getDiariesById(profileId),
+      );
+    } else if (userStore.role === UserRole.STUDENT) {
+      promises.push(
+        this.getDiaries(),
+        this.getInternshipHistory(),
+        this.getVacancies(),
+      );
+    }
+
+    Promise.all(promises)
       .then(() => {
-        this.getFeedback(this.profile?.id || 0).then(() => {
-          this.pageStatus.onEndRequest();
-        });
+        this.pageStatus.onEndRequest();
       })
       .catch(() => {
         this.pageStatus.onEndRequest(false);
@@ -191,4 +263,59 @@ export class ProfilePageViewModel {
     },
     onError: () => { throw new Error(); },
   });
+
+  @action public getStudentById = (payload: number) => this._getStudentById.fetch({
+    payload: { id: payload },
+    onSuccess: (student) => {
+      this.profile = {
+        ...student,
+        role: 'DEAN',
+      };
+
+      this.pageStatus.onEndRequest();
+    },
+    onError: () => { throw new Error(); },
+  });
+
+  @action public getInternshipHistoryById = (payload: number) => this
+    ._getInternshipHistoryById.fetch({
+      payload,
+      onSuccess: (history) => {
+        this.internshipHistory = history;
+
+        this.pageStatus.onEndRequest();
+      },
+      onError: () => { throw new Error(); },
+    });
+
+    @action private getSelections = (payload: number) => this._getSelectionsById.fetch({
+      payload,
+      onSuccess: (selectionsList) => {
+        runInAction(() => {
+          this.selectionsList = selectionsList;
+        });
+      },
+      onError: () => { throw new Error(); },
+    });
+
+    @action private getPreferences = (payload: number) => this._getPreferencesById.fetch({
+      payload,
+      onSuccess: (preferences) => {
+        runInAction(() => {
+          this.preferencesList = preferences;
+        });
+      },
+      onError: () => { throw new Error(); },
+    });
+
+    @action private getDiariesById = (payload: number) => this._getDiariesById.fetch({
+      payload,
+      onSuccess: (diaries) => {
+        this.diaries = diaries;
+        this.pageStatus.onEndRequest();
+      },
+      onError: () => {
+        this.pageStatus.onEndRequest(false);
+      },
+    });
 }
