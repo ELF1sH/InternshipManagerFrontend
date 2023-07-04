@@ -20,7 +20,7 @@ const DiariesPageView: React.FC = () => {
     patchDiary,
   } = useDiariesPageViewModel();
 
-  const { openModal } = useModalViewModel();
+  const { openModal, closeModal } = useModalViewModel();
   const [filtredDiaries, setFiltredDiaries] = useState<
   IDiary[]
   >(diaries);
@@ -61,7 +61,10 @@ const DiariesPageView: React.FC = () => {
                           review: diary.review,
                           status: diary.status,
                         }}
-                        editDiaryFormOnFinish={(vals) => patchDiary({ ...vals, id: diary.id })}
+                        editDiaryFormOnFinish={(vals) => {
+                          patchDiary({ ...vals, id: diary.id });
+                          closeModal();
+                        }}
                       />,
                       footer: false,
                     });
