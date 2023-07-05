@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { ButtonType } from 'antd/es/button';
 
 import {
   interviewConfirmationContent,
@@ -18,13 +19,17 @@ import { useStore } from 'storesMobx/MobxStoreProvider';
 interface InterviewButtonProps {
   id: number;
   isSelected?: ISelection;
-  addToSelections?: (payload: number) => Promise<void>
+  addToSelections?: (payload: number) => Promise<void>;
+  onClick?: () => void;
+  type?: ButtonType;
 }
 
 const InterviewButton: React.FC<InterviewButtonProps> = ({
   id,
   isSelected,
   addToSelections,
+  onClick,
+  type,
 }) => {
   const { showConfirm } = useConfirmModal({
     title: interviewConfirmationTitle,
@@ -32,6 +37,17 @@ const InterviewButton: React.FC<InterviewButtonProps> = ({
     cbOnOk: () => addToSelections?.(id),
   });
   const { role } = useStore().userStore;
+
+  if (onClick) {
+    return (
+      <IconButton
+        size="large"
+        icon={(<InterviewIcon style={{ transform: 'scale(0.8)' }} />)}
+        onClick={onClick}
+        type={type}
+      />
+    );
+  }
 
   if (!isSelected) {
     return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { ButtonType } from 'antd/es/button';
 
 import { offerConfirmationContent, offerConfirmationTitle } from 'components/ui/molecules/vacancy/components/actions/constants';
 import AcceptedOffer from 'components/ui/atoms/icons/AcceptedOffer';
@@ -16,6 +17,9 @@ interface AcceptOfferButtonProps {
   id: number;
   isSelected?: ISelection;
   patchSelection?: (id: number, status: SelectionStatus) => Promise<void>
+  ok?: boolean;
+  onClick?: () => void;
+  type?: ButtonType;
 }
 
 const getColor = (status?: SelectionStatus) => {
@@ -44,6 +48,9 @@ const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({
   id,
   isSelected,
   patchSelection,
+  ok,
+  onClick,
+  type,
 }) => {
   const { role } = useStore().userStore;
 
@@ -63,6 +70,17 @@ const AcceptOfferButton: React.FC<AcceptOfferButtonProps> = ({
     okText: 'Принять оффер',
     cancelText: 'Отклонить оффер',
   });
+
+  if (onClick) {
+    return (
+      <IconButton
+        size="large"
+        icon={<AcceptedOffer />}
+        onClick={onClick}
+        type={type}
+      />
+    );
+  }
 
   if (isSelected?.status === SelectionStatus.GOT_OFFER) {
     return (

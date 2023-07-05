@@ -22,7 +22,7 @@ import FilterForm from 'pages/students/components/filterForm/FilterForm';
 const TableDean: React.FC = () => {
   const { openModal } = useModalViewModel();
   const {
-    studentsList, filtredStudents: filtredStudentsPromise, addStudentsList, setStudents,
+    studentsList, filtredStudents: filtredStudentsPromise, addStudentsList, selectionStatuses,
   } = useStudentsPageViewModel();
 
   const { columns } = useTableDeanColumns();

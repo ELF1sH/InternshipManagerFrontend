@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
+import { ButtonType } from 'antd/es/button';
 
 import { IconButton } from 'components/ui/atoms/iconButton/IconButton';
 import OfferIcon from 'components/ui/atoms/icons/OfferIcon';
@@ -12,6 +13,8 @@ import { useStore } from 'storesMobx/MobxStoreProvider';
 
 interface OfferButtonProps {
   isSelected?: ISelection;
+  onClick?: () => void;
+  type?: ButtonType;
 }
 
 const getColor = (status?: SelectionStatus) => {
@@ -38,8 +41,19 @@ const getTooltipTitle = (userRole: UserRole, status?: SelectionStatus) => {
   }
 };
 
-const OfferButton: React.FC<OfferButtonProps> = ({ isSelected }) => {
+const OfferButton: React.FC<OfferButtonProps> = ({ isSelected, onClick, type }) => {
   const { role } = useStore().userStore;
+
+  if (onClick) {
+    return (
+      <IconButton
+        size="large"
+        icon={<OfferIcon />}
+        onClick={onClick}
+        type={type}
+      />
+    );
+  }
 
   return (
     <Tooltip placement="left" title={getTooltipTitle(role, isSelected?.status)}>

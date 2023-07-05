@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { GetSelectionsUseCase } from 'domain/useCases/vacancy/GetSelectionsUseCase';
 import { GetSelectionsByStudentUseCase } from 'domain/useCases/vacancy/GetSelectionsByStudentUseCase';
 import { GetStudentsListUseCase } from 'domain/useCases/students/GetStudentsListUseCase';
 import { studentsRepository } from 'domain/repositories/api/StudentsRepository';
@@ -34,6 +35,10 @@ const StudentsPageProvider: React.FC = () => {
     requestCallback: vacancyRepository.getSelectionsByStudent,
   });
 
+  const getSelections = new GetSelectionsUseCase({
+    requestCallback: vacancyRepository.getSelectionsList,
+  });
+
   const studentsPageViewModel = useMemo(
     () => new StudentsPageViewModel(
       getStudentsListUseCase,
@@ -41,6 +46,7 @@ const StudentsPageProvider: React.FC = () => {
       getCandidatesListUseCase,
       patchSelectionUseCase,
       getSelectionsByStudentUseCase,
+      getSelections,
     ),
     [],
   );
